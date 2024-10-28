@@ -107,7 +107,7 @@ export default class Exception extends Error {
       end: this._end,
       stack: this.trace(start, end)
     };
-    if (this._errors) {
+    if (Object.keys(this._errors).length > 0) {
       json.errors = this._errors;
     }
     return json;
