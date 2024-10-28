@@ -15,6 +15,8 @@ import {
   shouldBeAnArray
 } from './helpers';
 
+export type * from './types';
+
 export {
   ArgString,
   FileData,
