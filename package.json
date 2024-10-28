@@ -1,0 +1,36 @@
+{
+  "name": "@stackpress/types",
+  "version": "0.1.1",
+  "license": "Apache-2.0",
+  "description": "Common types in typescript",
+  "author": "Chris <chris@incept.asia>",
+  "homepage": "https://github.com/stackpress/types",
+  "bugs": "https://github.com/stackpress/idea/types",
+  "repository": "stackpress/idea",
+  "main": "index.js",
+  "files": [
+    "dist",
+    "index.js",
+    "index.d.ts",
+    "LICENSE",
+    "README.md",
+    "tsconfig.json"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "nyc ts-mocha tests/*.test.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/chai": "4.3.5",
+    "@types/expect": "24.3.0",
+    "@types/mocha": "10.0.1",
+    "@types/node": "22.7.4",
+    "chai": "4.3.7",
+    "mocha": "10.2.0",
+    "nyc": "15.1.0",
+    "ts-mocha": "10.0.0",
+    "ts-node": "10.9.1",
+    "typescript": "5.6.2"
+  }
+}
