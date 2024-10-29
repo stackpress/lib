@@ -42,6 +42,16 @@ export default class Exception extends Error {
     }
   }
 
+  /**
+   * Upgrades an error to an exception
+   */
+  public static upgrade(error: Error, code = 500) {
+    const exception = new this(error.message, code);
+    exception.name = error.name;
+    exception.stack = error.stack;
+    return exception;
+  }
+
   //error code
   protected _code: number;
   //itemized errors
