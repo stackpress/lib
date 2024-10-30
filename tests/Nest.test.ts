@@ -76,6 +76,27 @@ describe('Hash Store Tests', () => {
     expect(store.has('zoo')).to.equal(true);
     expect(store.get('foo', 'zoo', 1)).to.equal('bar');
     expect(store.get('foo', 'zoo', 2)).to.equal('john doe');
+
+    store = new Nest;
+    store.withQuery.set('filter%5Btype%5D=user&span%5Bcreated%5D%5B0%5D=2024-10-29T13%3A27%3A54.431&span%5Bcreated%5D%5B1%5D=2024-10-29T13%3A27%3A54.431&span%5Bupdated%5D%5B0%5D=2024-10-29T13%3A27%3A54.432&span%5Bupdated%5D%5B1%5D=2024-10-29T13%3A27%3A54.432');
+    expect(store.get('span', 'created', 0)).to.equal('2024-10-29T13:27:54.431');
+    expect(store.get('span', 'created', 1)).to.equal('2024-10-29T13:27:54.431');
+    expect(store.get('span', 'updated', 0)).to.equal('2024-10-29T13:27:54.432');
+    expect(store.get('span', 'updated', 1)).to.equal('2024-10-29T13:27:54.432');
+
+    store = new Nest;
+    store.withQuery.set('filter%5Btype%5D=&span%5Bcreated%5D%5B0%5D=&span%5Bcreated%5D%5B1%5D=&span%5Bupdated%5D%5B0%5D=&span%5Bupdated%5D%5B1%5D=');
+    expect(store.get('filter', 'type')).to.equal('');
+    expect(store.get('span', 'created', 0)).to.equal('');
+    expect(store.get('span', 'created', 1)).to.equal('');
+    expect(store.get('span', 'updated', 0)).to.equal('');
+    expect(store.get('span', 'updated', 1)).to.equal('');
+
+    store = new Nest;
+    store.withQuery.set('tags%5B%5D=foo&tags%5B%5D=bar&filter%5Btype%5D%5B%5D=john+doe');
+    expect(store.get('tags', 0)).to.equal('foo');
+    expect(store.get('tags', 1)).to.equal('bar');
+    expect(store.get('filter', 'type', 0)).to.equal('john doe');
   });
 
   it('Should set with form data', async () => {

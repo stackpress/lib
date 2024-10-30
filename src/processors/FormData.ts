@@ -142,22 +142,26 @@ export default class FormData {
     
     //change path to N notation
     const separator = '~~' + Math.floor(Math.random() * 10000) + '~~';
+    //ex. part.form.name = foo[bar][][baz]
     const keys = part.form.name
+      //to. foo[bar~~123~~~~123~~baz]
       .replace(/\]\[/g, separator)
+      //to. foo~~123~~bar~~123~~~~123~~baz]
       .replace('[', separator)
+      //to. foo~~123~~bar~~123~~~~123~~baz
       .replace(/\[/g, '')
       .replace(/\]/g, '')
-      .split(separator);
+      //to. foo,bar,,baz
+      .split(separator)
+      .map((key: any) => {
+        const index = Number(key);
+        //if its a possible integer
+        if (key && !isNaN(index) && key.indexOf('.') === -1) {
+          return index;
+        }
 
-    keys.map((key: any) => {
-      const index = parseInt(key);
-      //if its a possible integer
-      if (!isNaN(index) && key.indexOf('.') === -1) {
-        return index;
-      }
-
-      return key;
-    });
+        return key;
+      });
 
     //get nest paths
     const paths = path.concat(keys);
@@ -177,8 +181,8 @@ export default class FormData {
       }
 
       //try parsing float
-      if (!isNaN(parseFloat(value))) {
-        this.nest.set(...paths, parseFloat(value));
+      if (value.length > 0 && !isNaN(Number(value))) {
+        this.nest.set(...paths, Number(value));
       //try parsing true
       } else if (value === 'true') {
         this.nest.set(...paths, true);
