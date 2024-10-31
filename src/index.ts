@@ -7,6 +7,12 @@ import ReadonlyMap from './readonly/Map';
 import ReadonlyNest from './readonly/Nest';
 import ReadonlyPath from './readonly/Path';
 import ReadonlySet from './readonly/Set';
+
+import StatusCode from './StatusCode';
+import TaskQueue from './TaskQueue';
+import EventEmitter from './EventEmitter';
+import Terminal from './Terminal';
+
 import Nest from './Nest';
 import Exception from './Exception';
 import {
@@ -27,6 +33,10 @@ export {
   ReadonlyNest,
   ReadonlyPath,
   ReadonlySet,
+  StatusCode,
+  TaskQueue,
+  EventEmitter,
+  Terminal,
   Nest,
   Exception,
   makeArray,
