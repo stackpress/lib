@@ -22,7 +22,7 @@ export default class Terminal extends EventEmitter<Record<string, [Hash]>> {
   }
 
   /**
-   * asks for input
+   * Asks for input
    */
   public static async input(question: string, answer?: string) {
     return await input({

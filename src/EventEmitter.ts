@@ -1,32 +1,13 @@
-import type { Task, TaskAction } from './TaskQueue';
+import type { 
+  Event, 
+  EventMap, 
+  EventName, 
+  EventAction, 
+  EventMatch, 
+  Task 
+} from './types';
 import TaskQueue from './TaskQueue';
 import StatusCode from './StatusCode';
-
-//map of event names to their arguments
-export type EventMap = Record<string, Array<unknown>>;
-export type EventName<M extends EventMap> = string & keyof M;
-export type EventAction<A extends Array<unknown>> = TaskAction<A>;
-
-/**
- * Abstraction defining what an event is
- */
-export type EventMatch = {
-  //The name of the event
-  event: string;
-  //The regexp pattern of the event
-  pattern: string;
-  //Parameters extracted from the pattern
-  parameters: string[];
-}
-
-export interface Event<A extends Array<unknown>> extends Task<A> {
-  //The name of the event
-  event: string;
-  //The regexp pattern of the event
-  pattern: string;
-  //Parameters extracted from the pattern
-  parameters: string[];
-}
 
 /**
  * Allows the ability to listen to events made known by another
