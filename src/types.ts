@@ -43,3 +43,46 @@ export type SuccessResponse<T = unknown> = {
 };
 
 export type StatusResponse<T = unknown> = ErrorResponse|SuccessResponse<T>;
+
+//--------------------------------------------------------------------//
+// Status Types
+
+export type Status = {
+  code: number, 
+  message: string
+};
+
+//--------------------------------------------------------------------//
+// TaskQueue Types
+
+export type TaskAction<A extends Array<unknown>> = (...args: A) => boolean|void|Promise<boolean|void>;
+export interface Task<A extends Array<unknown>> { 
+  action: TaskAction<A>, 
+  priority: number 
+};
+
+//--------------------------------------------------------------------//
+// EventEmitter Types
+
+//map of event names to their arguments
+export type EventMap = Record<string, Array<unknown>>;
+export type EventName<M extends EventMap> = string & keyof M;
+export type EventAction<A extends Array<unknown>> = TaskAction<A>;
+export type EventMatch = {
+  //The name of the event
+  event: string;
+  //The regexp pattern of the event
+  pattern: string;
+  //Parameters extracted from the pattern
+  parameters: string[];
+}
+
+export interface Event<A extends Array<unknown>> extends Task<A> {
+  //The name of the event
+  event: string;
+  //The regexp pattern of the event
+  pattern: string;
+  //Parameters extracted from the pattern
+  parameters: string[];
+}
+
