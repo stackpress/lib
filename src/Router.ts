@@ -3,10 +3,8 @@ import type { Method, Route, RouterMap, RouterAction } from './types';
 import EventEmitter from './EventEmitter';
 
 /**
- * Event driven routing system. Allows the ability to listen to 
- * events made known by another piece of functionality. Events are 
- * items that transpire based on an action. With events you can add 
- * extra functionality right after the event has triggered.
+ * Event driven routing system. Bring 
+ * your own request and response types.
  */
 export default class Router<R, S> extends EventEmitter<RouterMap<R, S>> {
   //map of event names to routes 

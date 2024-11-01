@@ -1,2 +1,3 @@
-# types
+# Types
+
 Common typescript types

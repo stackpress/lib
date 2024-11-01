@@ -12,6 +12,7 @@ import StatusCode from './StatusCode';
 import ItemQueue from './ItemQueue';
 import TaskQueue from './TaskQueue';
 import EventEmitter from './EventEmitter';
+import Router from './Router';
 import Terminal from './Terminal';
 
 import Nest from './Nest';
@@ -38,6 +39,7 @@ export {
   ItemQueue,
   TaskQueue,
   EventEmitter,
+  Router,
   Terminal,
   Nest,
   Exception,
