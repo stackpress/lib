@@ -89,3 +89,15 @@ export interface Event<A extends Array<unknown>> extends TaskItem<A> {
   parameters: string[];
 }
 
+//--------------------------------------------------------------------//
+// Router Types
+
+export type Method = 'ALL' 
+  | 'CONNECT' | 'DELETE'  | 'GET' 
+  | 'HEAD'    | 'OPTIONS' | 'PATCH' 
+  | 'POST'    | 'PUT'     | 'TRACE';
+
+export type Route = { method: Method, path: string };
+
+export type RouterMap<R, S> = Record<string, [ R, S ]>;
+export type RouterAction<R, S> = (req: R, res: S) => void | boolean | Promise<void|boolean>;
