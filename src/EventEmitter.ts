@@ -1,10 +1,10 @@
-import type { 
+import type {
+  Task, 
+  TaskItem,
   Event, 
   EventMap, 
   EventName, 
-  EventAction, 
-  EventMatch, 
-  Task 
+  EventMatch
 } from './types';
 import TaskQueue from './TaskQueue';
 import StatusCode from './StatusCode';
@@ -17,7 +17,7 @@ import StatusCode from './StatusCode';
  */
 export default class EventEmitter<M extends EventMap> {
   //A route map to task queues
-  protected _listeners: { [ K in keyof M ]?: Set<Task<M[K]>> } = {};
+  protected _listeners: { [ K in keyof M ]?: Set<TaskItem<M[K]>> } = {};
   //Event regular expression map
   public readonly regexp = new Set<string>();
 
@@ -125,7 +125,7 @@ export default class EventEmitter<M extends EventMap> {
    */
   public on<N extends EventName<M>>(
     event: N|RegExp, 
-    action: EventAction<M[N]>,
+    action: Task<M[N]>,
     priority = 0
   ) {
     //if it is a regexp object
@@ -139,11 +139,11 @@ export default class EventEmitter<M extends EventMap> {
 
     //add the event to the listeners
     if (typeof this._listeners[event] === 'undefined') {
-      this._listeners[event] = new Set<Task<M[N]>>();
+      this._listeners[event] = new Set<TaskItem<M[N]>>();
     }
 
-    const listeners = this._listeners[event] as Set<Task<M[N]>>;
-    listeners.add({ action, priority });
+    const listeners = this._listeners[event] as Set<TaskItem<M[N]>>;
+    listeners.add({ item: action, priority });
     return this;
   }
 
@@ -160,7 +160,7 @@ export default class EventEmitter<M extends EventMap> {
         continue;
       }
       //then loop the observers
-      const tasks = this._listeners[event] as Set<Task<M[N]>>;
+      const tasks = this._listeners[event] as Set<TaskItem<M[N]>>;
       tasks.forEach(task => {
         const event: Event<M[N]> = { ...match, ...task };
         queue.add(async (...args) => {
@@ -168,7 +168,7 @@ export default class EventEmitter<M extends EventMap> {
           this._event = event;
           //if this is the same event, call the 
           //method, if the method returns false
-          return await task.action(...args);
+          return await task.item(...args);
         }, task.priority);
       });
     }
@@ -179,11 +179,11 @@ export default class EventEmitter<M extends EventMap> {
   /**
    * Stops listening to an event
    */
-  public unbind<N extends EventName<M>>(event: N, action: EventAction<M[N]>) {
+  public unbind<N extends EventName<M>>(event: N, action: Task<M[N]>) {
     const set = this._listeners[event];
     if (set) {
       set.forEach(task => {
-        if (task.action === action) {
+        if (task.item === action) {
           set.delete(task);
         }
       });
@@ -205,8 +205,8 @@ export default class EventEmitter<M extends EventMap> {
         continue;
       }
 
-      for (const { action, priority } of tasks ) {
-        this.on(event, action, priority);
+      for (const { item, priority } of tasks) {
+        this.on(event, item, priority);
       }
     }
     return this;

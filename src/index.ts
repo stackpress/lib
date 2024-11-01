@@ -9,6 +9,7 @@ import ReadonlyPath from './readonly/Path';
 import ReadonlySet from './readonly/Set';
 
 import StatusCode from './StatusCode';
+import ItemQueue from './ItemQueue';
 import TaskQueue from './TaskQueue';
 import EventEmitter from './EventEmitter';
 import Terminal from './Terminal';
@@ -34,6 +35,7 @@ export {
   ReadonlyPath,
   ReadonlySet,
   StatusCode,
+  ItemQueue,
   TaskQueue,
   EventEmitter,
   Terminal,

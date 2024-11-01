@@ -53,13 +53,16 @@ export type Status = {
 };
 
 //--------------------------------------------------------------------//
+// DataQueue Types
+
+export interface Item<I> { item: I, priority: number };
+
+//--------------------------------------------------------------------//
 // TaskQueue Types
 
-export type TaskAction<A extends Array<unknown>> = (...args: A) => boolean|void|Promise<boolean|void>;
-export interface Task<A extends Array<unknown>> { 
-  action: TaskAction<A>, 
-  priority: number 
-};
+export type TaskResult = boolean|void|Promise<boolean|void>;
+export type Task<A extends Array<unknown>> = (...args: A) => TaskResult;
+export type TaskItem<A extends Array<unknown>> = Item<Task<A>>;
 
 //--------------------------------------------------------------------//
 // EventEmitter Types
@@ -67,7 +70,7 @@ export interface Task<A extends Array<unknown>> {
 //map of event names to their arguments
 export type EventMap = Record<string, Array<unknown>>;
 export type EventName<M extends EventMap> = string & keyof M;
-export type EventAction<A extends Array<unknown>> = TaskAction<A>;
+//export type EventAction<A extends Array<unknown>> = TaskAction<A>;
 export type EventMatch = {
   //The name of the event
   event: string;
@@ -77,7 +80,7 @@ export type EventMatch = {
   parameters: string[];
 }
 
-export interface Event<A extends Array<unknown>> extends Task<A> {
+export interface Event<A extends Array<unknown>> extends TaskItem<A> {
   //The name of the event
   event: string;
   //The regexp pattern of the event
