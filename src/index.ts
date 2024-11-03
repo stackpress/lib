@@ -3,10 +3,15 @@ import FileData from './processors/FileData';
 import FormData from './processors/FormData';
 import PathString from './processors/PathString';
 import QueryString from './processors/QueryString';
+
 import ReadonlyMap from './readonly/Map';
 import ReadonlyNest from './readonly/Nest';
 import ReadonlyPath from './readonly/Path';
 import ReadonlySet from './readonly/Set';
+
+import FileLoader from './filesystem/FileLoader';
+import FileSystem from './filesystem/FileSystem';
+import NodeFS from './filesystem/NodeFS';
 
 import StatusCode from './StatusCode';
 import ItemQueue from './ItemQueue';
@@ -35,6 +40,9 @@ export {
   ReadonlyNest,
   ReadonlyPath,
   ReadonlySet,
+  FileLoader,
+  FileSystem,
+  NodeFS,
   StatusCode,
   ItemQueue,
   TaskQueue,
