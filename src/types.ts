@@ -1,3 +1,5 @@
+import type { IncomingMessage, ServerResponse } from 'http';
+
 //--------------------------------------------------------------------//
 // Data Types
 
@@ -101,3 +103,12 @@ export type Route = { method: Method, path: string };
 
 export type RouterMap<R, S> = Record<string, [ R, S ]>;
 export type RouterAction<R, S> = (req: R, res: S) => void | boolean | Promise<void|boolean>;
+
+//--------------------------------------------------------------------//
+// Filesystem Types
+
+export type FileStat = { isFile(): boolean };
+export type FileRecursiveOption = { recursive?: boolean };
+export type FileStream = { 
+  pipe: (res: ServerResponse<IncomingMessage>) => void 
+};
