@@ -32,10 +32,11 @@ export default class FileLoader {
     this._cwd = cwd || process.cwd();
     this._fs = filesystem;
   }
+  
   /**
    * Returns the absolute path to the file
    */
-  public absolute(pathname: string, pwd = this._cwd) {
+  public absolute(pathname: string, pwd = this._cwd, exists = false) {
     //ex. @/path/to/file.ext
     if (pathname.startsWith('@/')) {
       pathname = path.resolve(this._cwd, pathname.substring(2));
@@ -48,11 +49,20 @@ export default class FileLoader {
     //the path should start with modules
     if (!pathname.startsWith('/') && !pathname.startsWith('\\')) {
       const modules = this.modules(this._cwd);
-      const resolved = require.resolve(pathname, { paths: [ modules ] });
-      if (resolved.startsWith('/') || resolved.startsWith('\\')) {
-        return resolved;
+      try { //to resolve (this will throw an error if it fails)
+        const resolved = require.resolve(pathname, { paths: [ modules ] });
+        if (resolved.startsWith('/') || resolved.startsWith('\\')) {
+          return resolved;
+        }
+      } catch(e) {
+        //absolute() can be used to determine an absolute
+        //path of a path about to be created...
+        if (exists) throw e;
       }
       pathname = path.resolve(modules, pathname);
+    }
+    if (exists && !this._fs.existsSync(pathname)) {
+      throw new Error(`Cannot find '${pathname}'`);
     }
     return pathname;
   }
@@ -63,7 +73,7 @@ export default class FileLoader {
    */
   public modules(cwd = this._cwd): string {
     if (cwd === '/') {
-      throw new Error('Could not find node_modules');
+      throw new Error('Cannot find node_modules');
     }
     if (this._fs.existsSync(path.resolve(cwd, 'node_modules', '@stackpress', 'types'))) {
       return path.resolve(cwd, 'node_modules');
