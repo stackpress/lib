@@ -107,8 +107,8 @@ export type RouterAction<R, S> = (req: R, res: S) => void | boolean | Promise<vo
 //--------------------------------------------------------------------//
 // Filesystem Types
 
-export type FileStat = { isFile(): boolean };
 export type FileRecursiveOption = { recursive?: boolean };
+export type FileStat = { isFile(): boolean };
 export type FileStream = { 
   pipe: (res: ServerResponse<IncomingMessage>) => void 
 };

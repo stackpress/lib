@@ -28,15 +28,16 @@ export default class FileLoader {
   /**
    * Choose the filesystem to use
    */
-  constructor(filesystem: FileSystem, cwd?: string) {
+  constructor(fs: FileSystem, cwd?: string) {
     this._cwd = cwd || process.cwd();
-    this._fs = filesystem;
+    this._fs = fs;
   }
   
   /**
    * Returns the absolute path to the file
    */
-  public absolute(pathname: string, pwd = this._cwd, exists = false) {
+  public absolute(source: string, pwd = this._cwd, exists = false) {
+    let pathname = source;
     //ex. @/path/to/file.ext
     if (pathname.startsWith('@/')) {
       pathname = path.resolve(this._cwd, pathname.substring(2));
@@ -48,21 +49,13 @@ export default class FileLoader {
     //if the pathname does not start with /, 
     //the path should start with modules
     if (!pathname.startsWith('/') && !pathname.startsWith('\\')) {
-      const modules = this.modules(this._cwd);
-      try { //to resolve (this will throw an error if it fails)
-        const resolved = require.resolve(pathname, { paths: [ modules ] });
-        if (resolved.startsWith('/') || resolved.startsWith('\\')) {
-          return resolved;
-        }
-      } catch(e) {
-        //absolute() can be used to determine an absolute
-        //path of a path about to be created...
-        if (exists) throw e;
-      }
-      pathname = path.resolve(modules, pathname);
+      //NOTE: This resolves to a file in the node_modules directory
+      //where as absolute() should resolve to a file or directory
+      //require.resolve(pathname, { paths: [ modules ] });
+      pathname = path.resolve(this.modules(this._cwd), pathname);
     }
     if (exists && !this._fs.existsSync(pathname)) {
-      throw new Error(`Cannot find '${pathname}'`);
+      throw new Error(`Cannot find '${source}'`);
     }
     return pathname;
   }
@@ -105,17 +98,17 @@ export default class FileLoader {
   /**
    * require() should be monitored separately from the code
    */
-  public require(file: string) {
+  public require(source: string) {
     //if JSON, safely require it
-    if (path.extname(file) === '.json') {
-      const contents = this._fs.readFileSync(file, 'utf8');
+    if (path.extname(source) === '.json') {
+      const contents = this._fs.readFileSync(source, 'utf8');
       try {
         return JSON.parse(contents) || {};
       } catch(e) {}
       return {};
     }
     
-    return require(file);
+    return require(source);
   }
 
   /**
@@ -151,20 +144,21 @@ export default class FileLoader {
 
   /**
    * Returns the absolute path to the file given the source route
+   * NOTE: source should be the source file (not source directory)
    */
-  public route(sourceFile: string, destination: string) {
-    const dirname = path.dirname(sourceFile);
+  public route(source: string, destination: string) {
+    const dirname = path.dirname(source);
     return path.resolve(dirname, destination);
   }
 
   /**
    * Returns true if the file exists
    */
-  private _fileExists(path: string) {
-    if (!this._fs.existsSync(path)) {
+  private _fileExists(source: string) {
+    if (!this._fs.existsSync(source)) {
       return false;
     }
-    const stats = this._fs.lstatSync(path);
+    const stats = this._fs.lstatSync(source);
     return stats && stats.isFile();
   }
 }
