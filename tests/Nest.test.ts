@@ -16,9 +16,17 @@ describe('Hash Store Tests', () => {
     store.set('foo', 'bar', 'zoo');
     store.set('foo', 'zoo', ['foo', 'bar', 'zoo']);
 
+    type Foo = { 
+      foo: {
+        bar: string;
+        zoo: string[];
+      } 
+    };
+
     expect(store.has('foo', 'bar')).to.equal(true);
     expect(store.has('bar', 'foo')).to.equal(false);
-    expect(store.get('foo', 'zoo', 1)).to.equal('bar');
+    expect(store.get<string>('foo', 'zoo', 1)).to.equal('bar');
+    expect(store.get<Foo>().foo.zoo[0]).to.equal('foo');
 
     store.delete('foo', 'bar');
     expect(store.has('foo', 'bar')).to.equal(false);
@@ -58,7 +66,7 @@ describe('Hash Store Tests', () => {
 
     expect(store.withPath.has('foo.bar')).to.equal(true);
     expect(store.withPath.has('bar.foo')).to.equal(false);
-    expect(store.withPath.get('foo.zoo.1')).to.equal('bar');
+    expect(store.withPath.get<string>('foo.zoo.1')).to.equal('bar');
 
     store.withPath.delete('foo.bar');
     expect(store.withPath.has('foo.bar')).to.equal(false);
@@ -75,7 +83,7 @@ describe('Hash Store Tests', () => {
 
     expect(store.has('zoo')).to.equal(true);
     expect(store.get('foo', 'zoo', 1)).to.equal('bar');
-    expect(store.get('foo', 'zoo', 2)).to.equal('john doe');
+    expect(store.get<string>('foo', 'zoo', 2)).to.equal('john doe');
 
     store = new Nest;
     store.withQuery.set('filter%5Btype%5D=user&span%5Bcreated%5D%5B0%5D=2024-10-29T13%3A27%3A54.431&span%5Bcreated%5D%5B1%5D=2024-10-29T13%3A27%3A54.431&span%5Bupdated%5D%5B0%5D=2024-10-29T13%3A27%3A54.432&span%5Bupdated%5D%5B1%5D=2024-10-29T13%3A27%3A54.432');

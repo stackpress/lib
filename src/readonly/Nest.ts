@@ -71,13 +71,15 @@ export default class ReadonlyNest {
   /**
    * Retrieves the data hashd specified by the path
    */
-  public get<T = any>(...path: Key[]): NestedObject<unknown>|T|undefined {
+  public get<T extends NestedObject<unknown>>(): T;
+  public get<T = any>(...path: Key[]): T;
+  public get<T = any>(...path: Key[]): NestedObject<unknown>|T {
     if (!path.length) {
       return this._data;
     }
 
     if (!this.has(...path)) {
-      return undefined;
+      return undefined as T;
     }
 
     const last = path.pop() as Key;

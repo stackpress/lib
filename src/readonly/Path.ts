@@ -28,9 +28,9 @@ export default class ReadonlyPath {
   /**
    * Gets a value given the path in the hash.
    */
-  get(notation: string, separator: string = '.'): any {
+  get<T = any>(notation: string, separator: string = '.') {
     const path = notation.split(separator);
-    return this.hash.get(...path);
+    return this.hash.get<T>(...path);
   }
 
   /**
