@@ -70,6 +70,33 @@ describe('Event Emitter Tests', () => {
     expect(triggered[3]).to.equal(1)
   })
 
+  it('Should call all listeners', async () => {
+    const emitter = new EventEmitter
+  
+    const triggered: number[] = []
+    emitter.on('trigger basic something', async x => {
+      expect(x).to.equal(1)
+      triggered.push(1)
+    })
+  
+    emitter.on('trigger basic something', async x => {
+      expect(x).to.equal(1)
+      triggered.push(2)
+    })
+  
+    emitter.on('trigger basic something', async x => {
+      expect(x).to.equal(1)
+      triggered.push(3)
+    })
+  
+    await emitter.emit('trigger basic something', 1)
+  
+    expect(triggered.length).to.equal(3)
+    expect(triggered[0]).to.equal(1)
+    expect(triggered[1]).to.equal(2)
+    expect(triggered[2]).to.equal(3)
+  })
+
   it('Should have meta', async () => {
     const emitter = new EventEmitter
   
