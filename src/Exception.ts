@@ -8,6 +8,30 @@ import { status } from './StatusCode';
  */
 export default class Exception extends Error {
   /**
+   * In house syncronous try catch. Async already has this 
+   */
+  public static try<T = unknown, E = Exception>(callback: () => T) {
+    return {
+      catch: (catcher: (error: E, kind: string) => T) => {
+        try {
+          return callback();
+        } catch (error) {
+          if (error instanceof Exception) {
+            return catcher(error as E, error.type);
+          } else if (error instanceof Error) {
+            const e = Exception.upgrade(error);
+            return catcher(e as E, e.type);
+          } else if (typeof error === 'string') {
+            const e = Exception.for(error);
+            return catcher(e as E, e.type);
+          }
+          return catcher(error as E, 'unknown');
+        }
+      }
+    };
+  }
+
+  /**
    * General use expressive reasons
    */
   public static for(message: string, ...values: unknown[]) {
@@ -48,6 +72,9 @@ export default class Exception extends Error {
    * Upgrades an error to an exception
    */
   public static upgrade(error: Error, code = 500) {
+    if (error instanceof Exception) {
+      return error;
+    }
     const exception = new this(error.message, code);
     exception.name = error.name;
     exception.stack = error.stack;
@@ -58,6 +85,8 @@ export default class Exception extends Error {
   protected _code: number;
   //error code
   protected _status: string;
+  //error code
+  protected _type: string;
   //itemized errors
   protected _errors: NestedObject<string> = {};
   //starting index
@@ -94,12 +123,19 @@ export default class Exception extends Error {
   }
 
   /**
+   * Returns the error type
+   */
+  public get type() {
+    return this._type;
+  }
+
+  /**
    * An exception should provide a message and a name
    */
   public constructor(message: string, code = 500) {
-    super();
-    this.message = message;
+    super(message);
     this.name = this.constructor.name;
+    this._type = this.constructor.name;
     this._code = code;
     this._status = status(code)?.status || 'Unknown';
   }
