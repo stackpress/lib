@@ -19,6 +19,14 @@ export type FileMeta = {
 };
 
 //--------------------------------------------------------------------//
+// Status Types
+
+export type Status = {
+  code: number, 
+  status: string
+};
+
+//--------------------------------------------------------------------//
 // Response Types
 
 export type Trace = { 
@@ -28,31 +36,20 @@ export type Trace = {
   char: number 
 };
 
-export type ErrorResponse = {
-  code: number,
-  status: string, 
+export type ErrorResponse = Status & {
+  error: string,
   errors?: NestedObject<string>,
   start?: number,
   end?: number,
   stack?: Trace[]
 };
 
-export type SuccessResponse<T = unknown> = {
-  code: number,
-  status: string, 
+export type SuccessResponse<T = unknown> = Status & {
   results: T,
   total?: number
 };
 
 export type StatusResponse<T = unknown> = ErrorResponse|SuccessResponse<T>;
-
-//--------------------------------------------------------------------//
-// Status Types
-
-export type Status = {
-  code: number, 
-  message: string
-};
 
 //--------------------------------------------------------------------//
 // DataQueue Types

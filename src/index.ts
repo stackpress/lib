@@ -13,7 +13,7 @@ import FileLoader from './filesystem/FileLoader';
 import FileSystem from './filesystem/FileSystem';
 import NodeFS from './filesystem/NodeFS';
 
-import StatusCode from './StatusCode';
+import StatusCode, { status } from './StatusCode';
 import ItemQueue from './ItemQueue';
 import TaskQueue from './TaskQueue';
 import EventEmitter from './EventEmitter';
@@ -51,6 +51,7 @@ export {
   Terminal,
   Nest,
   Exception,
+  status,
   makeArray,
   makeObject,
   shouldBeAnArray

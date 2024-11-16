@@ -1,5 +1,7 @@
 import type { NestedObject, Trace, ErrorResponse } from './types';
 
+import { status } from './StatusCode';
+
 /**
  * Exceptions are used to give more information
  * of an error that has occured
@@ -54,6 +56,8 @@ export default class Exception extends Error {
 
   //error code
   protected _code: number;
+  //error code
+  protected _status: string;
   //itemized errors
   protected _errors: NestedObject<string> = {};
   //starting index
@@ -97,6 +101,7 @@ export default class Exception extends Error {
     this.message = message;
     this.name = this.constructor.name;
     this._code = code;
+    this._status = status(code)?.status || 'Unknown';
   }
 
   /**
@@ -112,7 +117,8 @@ export default class Exception extends Error {
   public toResponse(start = 0, end = 0) {
     const json: ErrorResponse = {
       code: this._code,
-      status: this.message,
+      status: this._status,
+      error: this.message,
       start: this._start,
       end: this._end,
       stack: this.trace(start, end)
