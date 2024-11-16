@@ -109,20 +109,17 @@ describe('Exception Tests', () => {
   });
 
   it('Should try', () => {
-    const actual = Exception.try<string>(() => {
-      return 'Something good';
-    }).catch(() => {
-      return 'Something good is bad';
-    });
-    expect(actual).to.equal('Something good');
+    const actual = Exception
+      .try<string>(() => 'Something good')
+      .catch(() => 'Something good is bad');
+    
+      expect(actual).to.equal('Something good');
   });
 
   it('Should catch', () => {
     const actual = Exception.try<string>(() => {
       throw Exception.for('Something good is bad');
-    }).catch((e, type) => {
-      return e.message;
-    });
+    }).catch(e => e.message);
     expect(actual).to.equal('Something good is bad');
   });
 });
