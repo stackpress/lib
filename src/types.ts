@@ -7,7 +7,7 @@ export type Key = string|number;
 export interface NestedObject<V = unknown> {
   [ key: Key ]: V|NestedObject<V>;
 };
-
+export type UnknownNest = NestedObject<unknown>;
 export type Scalar = string|number|boolean|null;
 export type Hash = NestedObject<Scalar>;
 export type ScalarInput = Scalar|Scalar[]|Hash;

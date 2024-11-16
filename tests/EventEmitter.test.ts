@@ -164,7 +164,7 @@ describe('Event Emitter Tests', () => {
   
     expect(triggered.length).to.equal(1)
     expect(triggered[0]).to.equal(2)
-    expect(actual.code).to.equal(308)
+    expect(actual.code).to.equal(309)
   })
 
   it('Should unbind', async () => {

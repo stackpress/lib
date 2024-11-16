@@ -1,4 +1,4 @@
-import type { Key, NestedObject } from './types';
+import type { Key, UnknownNest } from './types';
 
 import Exception from './Exception';
 import ArgString from './processors/ArgString';
@@ -16,7 +16,9 @@ import {
 /**
  * Nest easily manipulates object data
  */
-export default class Nest extends ReadonlyNest {
+export default class Nest<M extends UnknownNest = UnknownNest> 
+  extends ReadonlyNest<M>
+{
   /**
    * Parser for terminal args
    */
@@ -40,7 +42,7 @@ export default class Nest extends ReadonlyNest {
   /**
    * Safely sets the data
    */
-  public set data(data: NestedObject<unknown>) {
+  public set data(data: M) {
     Exception.require(
       data?.constructor === Object, 
       'Argument 1 expected Object'
@@ -51,7 +53,7 @@ export default class Nest extends ReadonlyNest {
   /**
    * Sets the initial data
    */
-  public constructor(data: NestedObject<unknown> = {}) {
+  public constructor(data: M = {} as M) {
     super(data);
     this.withArgs = new ArgString(this);
     this.withFormData = new FormData(this);
@@ -63,7 +65,7 @@ export default class Nest extends ReadonlyNest {
    * Clears all the data
    */
   public clear() {
-    this._data = {};
+    this._data = {} as M;
     return this;
   }
 
@@ -80,10 +82,10 @@ export default class Nest extends ReadonlyNest {
     }
 
     const last = path.pop() as Key;
-    let pointer = this._data;
+    let pointer = this._data as UnknownNest;
 
     path.forEach(step => {
-      pointer = pointer[step] as NestedObject<unknown>;
+      pointer = pointer[step] as UnknownNest;
     });
 
     delete pointer[last];
@@ -108,7 +110,7 @@ export default class Nest extends ReadonlyNest {
     }
 
     const value = path.pop();
-    let last = path.pop(), pointer = this._data;
+    let last = path.pop(), pointer = this._data as UnknownNest;
 
     path.forEach((step, i) => {
       if (step === null || step === '') {
@@ -119,7 +121,7 @@ export default class Nest extends ReadonlyNest {
         pointer[step] = {};
       }
 
-      pointer = pointer[step] as NestedObject<unknown>;
+      pointer = pointer[step] as UnknownNest;
     });
 
     if (last === null || last === '') {
@@ -131,7 +133,7 @@ export default class Nest extends ReadonlyNest {
     //loop through the steps one more time fixing the objects
     pointer = this._data;
     path.forEach((step) => {
-      const next = pointer[step] as NestedObject<unknown>;
+      const next = pointer[step] as UnknownNest;
       //if next is not an array and next should be an array
       if (!Array.isArray(next) && shouldBeAnArray(next)) {
         //transform next into an array
@@ -142,7 +144,7 @@ export default class Nest extends ReadonlyNest {
         pointer[step] = makeObject(next);
       }
 
-      pointer = pointer[step] as NestedObject<unknown>;
+      pointer = pointer[step] as UnknownNest;
     });
 
     return this;

@@ -1,10 +1,10 @@
-import type { Key, NestedObject } from '../types';
+import type { Key, UnknownNest } from '../types';
 import Path from './Path';
 
 /**
  * Nest easily manipulates object data
  */
-export default class ReadonlyNest {
+export default class ReadonlyNest<M extends UnknownNest = UnknownNest>  {
   /**
    * Parser for path notations
    */
@@ -13,12 +13,12 @@ export default class ReadonlyNest {
   /**
    * The raw data
    */
-  protected _data: NestedObject<unknown>;
+  protected _data: M;
 
   /**
    * Returns the raw data
    */
-  public get data(): NestedObject<unknown> {
+  public get data(): M {
     return this._data;
   }
 
@@ -32,7 +32,7 @@ export default class ReadonlyNest {
   /**
    * Sets the initial data
    */
-  public constructor(data: NestedObject<unknown> = {}) {
+  public constructor(data: M = {} as M) {
     this._data = data;
     this.withPath = new Path(this);
   }
@@ -71,9 +71,9 @@ export default class ReadonlyNest {
   /**
    * Retrieves the data hashd specified by the path
    */
-  public get<T extends NestedObject<unknown>>(): T;
+  public get<T extends UnknownNest = M>(): T;
   public get<T = any>(...path: Key[]): T;
-  public get<T = any>(...path: Key[]): NestedObject<unknown>|T {
+  public get<T = any>(...path: Key[]): UnknownNest|T {
     if (!path.length) {
       return this._data;
     }
@@ -83,10 +83,10 @@ export default class ReadonlyNest {
     }
 
     const last = path.pop() as Key;
-    let pointer = this._data;
+    let pointer = this._data as UnknownNest;
 
     path.forEach(step => {
-      pointer = pointer[step] as NestedObject<unknown>;
+      pointer = pointer[step] as UnknownNest;
     });
 
     return pointer[last] as T;
@@ -102,7 +102,7 @@ export default class ReadonlyNest {
 
     let found = true;
     const last = path.pop() as Key;
-    let pointer = this._data;
+    let pointer = this._data as UnknownNest;
 
     path.forEach(step => {
       if (!found) {
@@ -114,7 +114,7 @@ export default class ReadonlyNest {
         return;
       }
 
-      pointer = pointer[step] as NestedObject<unknown>;
+      pointer = pointer[step] as UnknownNest;
     });
 
     return !(!found || typeof pointer[last] === 'undefined');

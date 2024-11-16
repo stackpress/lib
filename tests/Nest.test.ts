@@ -114,4 +114,23 @@ describe('Hash Store Tests', () => {
     expect(store.has('foo')).to.equal(true);
     expect(store.get('bar')).to.equal('zoo');
   });
+
+  it('Should use type map', async () => {
+    let store = new Nest<{
+      foo: {
+        bar: string;
+        zoo: string[];
+      };
+      product: {
+        title: string;
+        price: number;
+        rating: number[];
+        abstract: { name: string }[];
+      };
+      boom: number[];
+    }>;
+    store.set('foo', 'bar', 'zoo');
+    store.set('foo', 'zoo', ['foo', 'bar', 'zoo']);
+    expect(store.get().foo.zoo[0]).to.equal('foo');
+  });
 });

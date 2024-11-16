@@ -89,7 +89,8 @@ describe('Exception Tests', () => {
     } catch(e) {
       const json = e.toResponse();
       expect(json.code).to.equal(500)
-      expect(json.status).to.equal('Something good is bad')
+      expect(json.status).to.equal('Internal Server Error')
+      expect(json.error).to.equal('Something good is bad')
     }
   });
 
