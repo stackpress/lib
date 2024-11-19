@@ -1,12 +1,12 @@
 {
   "name": "@stackpress/types",
-  "version": "0.1.25",
+  "version": "0.1.26",
   "license": "Apache-2.0",
   "description": "Common types in typescript",
   "author": "Chris <chris@incept.asia>",
   "homepage": "https://github.com/stackpress/types",
-  "bugs": "https://github.com/stackpress/idea/types",
-  "repository": "stackpress/idea",
+  "bugs": "https://github.com/stackpress/types/issues",
+  "repository": "stackpress/types",
   "main": "index.js",
   "files": [
     "dist",
