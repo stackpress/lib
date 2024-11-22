@@ -16,11 +16,11 @@ describe('Hash Store Tests', () => {
     store.set('foo', 'bar', 'zoo');
     store.set('foo', 'zoo', ['foo', 'bar', 'zoo']);
 
-    type Foo = { 
+    type Foo = {
       foo: {
         bar: string;
         zoo: string[];
-      } 
+      }
     };
 
     expect(store.has('foo', 'bar')).to.equal(true);
@@ -133,4 +133,65 @@ describe('Hash Store Tests', () => {
     store.set('foo', 'zoo', ['foo', 'bar', 'zoo']);
     expect(store.get().foo.zoo[0]).to.equal('foo');
   });
+
+  //<!------------- NEW TESTS ------------------------------->
+  it('Should clear all data', async () => {
+    let store = new Nest;
+    store.set('foo', 'bar');
+    store.set('baz', 'qux');
+    expect(store.has('foo')).to.equal(true);
+    expect(store.has('baz')).to.equal(true);
+    store.clear();
+    expect(store.has('foo')).to.equal(false);
+    expect(store.has('baz')).to.equal(false);
+  });
+
+
+  it('Should set deeply nested data', async () => {
+    let store = new Nest;
+    store.set('user', 'address', 'city', 'New York');
+    store.set('user', 'address', 'zipcode', '10001');
+    expect(store.get('user', 'address', 'city')).to.equal('New York');
+    expect(store.get('user', 'address', 'zipcode')).to.equal('10001');
+  });
+
+
+  it('Should delete from nested data', async () => {
+    let store = new Nest;
+    store.set('user', 'address', 'city', 'New York');
+    store.set('user', 'address', 'zipcode', '10001');
+    store.delete('user', 'address', 'zipcode');
+    expect(store.has('user', 'address', 'zipcode')).to.equal(false);
+    expect(store.get('user', 'address', 'city')).to.equal('New York');
+  });
+
+
+  it('Should not set an empty object', async () => {
+    let store = new Nest;
+    store.set('empty', {});
+    expect(store.get('empty')).to.deep.equal({});
+  });
+
+  it('Should throw error on invalid data', async () => {
+    let store = new Nest;
+    try {
+      store.data = {} as any;
+    } catch (error) {
+      expect(error).to.exist;
+      expect(error.message).to.equal('Argument 1 expected Object');
+    }
+  });
+
+  it('Should handle non-object data', async () => {
+    let store = new Nest;
+    store.set('user', 'name', 'John Doe');
+    store.set('user', 'age', 30);
+    expect(store.get('user', 'name')).to.equal('John Doe');
+    expect(store.get('user', 'age')).to.equal(30);
+  });
+
+
+
+
+
 });
