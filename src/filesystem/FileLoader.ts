@@ -122,11 +122,14 @@ export default class FileLoader {
     exists = false
   ) {
     try { //to resolve using require.resolve first...
-      return require.resolve(pathname);
+      const resolved = require.resolve(pathname);
+      //if resolved is an absolute path
+      if (resolved.startsWith('/') || resolved.startsWith('\\')) {
+        return resolved;
+      }
     } catch(e) {}
-    
+    //get the absolute path
     const absolute = this.absolute(pathname, pwd);
-
     //ex. /plugin/foo
     //it's already absolute...
     //Check if pathname is literally a file
