@@ -1,6 +1,8 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import Nest from '../src/Nest';
+import ReadonlyNest from '../src/readonly/Nest';
+
 
 const body = `--BOUNDARY\r
 Content-Disposition: form-data; name="foo"\r
@@ -191,6 +193,112 @@ describe('Hash Store Tests', () => {
   });
 
 
+
+  // <!------ READONLY NEST ---------!>
+  describe('ReadonlyNest Tests', () => {
+    it('Should initialize with empty data', () => {
+      const nest = new ReadonlyNest();
+      expect(nest.data).to.deep.equal({});
+      expect(nest.size).to.equal(0);
+    });
+
+    it('Should initialize with provided data', () => {
+      const data = { foo: 'bar' };
+      const nest = new ReadonlyNest(data);
+      expect(nest.data).to.deep.equal(data);
+      expect(nest.size).to.equal(1);
+    });
+
+    it('Should get data by path', () => {
+      const data = { foo: { bar: 'baz' } };
+      const nest = new ReadonlyNest(data);
+      expect(nest.get('foo', 'bar')).to.equal('baz');
+    });
+
+    it('Should return undefined for non-existent paths', () => {
+      const data = { foo: 'bar' };
+      const nest = new ReadonlyNest(data);
+      expect(nest.get('bar')).to.equal(undefined);
+    });
+
+    it('Should check if path exists', () => {
+      const data = { foo: { bar: 'baz' } };
+      const nest = new ReadonlyNest(data);
+      expect(nest.has('foo', 'bar')).to.equal(true);
+      expect(nest.has('foo', 'baz')).to.equal(false);
+    });
+
+    it('Should get all keys', () => {
+      const data = { foo: 'bar', zoo: 'baz' };
+      const nest = new ReadonlyNest(data);
+      expect(nest.keys()).to.deep.equal(['foo', 'zoo']);
+    });
+
+    it('Should get all entries', () => {
+      const data = { foo: 'bar', zoo: 'baz' };
+      const nest = new ReadonlyNest(data);
+      expect(nest.entries()).to.deep.equal([['foo', 'bar'], ['zoo', 'baz']]);
+    });
+
+    it('Should handle empty array in forEach', async () => {
+      const data = { foo: [] };
+      const nest = new ReadonlyNest(data);
+      const result = await nest.forEach('foo', (value, key) => {
+        expect(value).to.equal(undefined);
+        return true;
+      });
+      expect(result).to.equal(false);
+    });
+
+    it('Should loop through data in forEach', async () => {
+      const data = { foo: ['bar', 'baz'] };
+      const nest = new ReadonlyNest(data);
+      let count = 0;
+      const result = await nest.forEach('foo', (value: any, index: string | number) => {
+        expect(value).to.equal(['bar', 'baz'][index]);
+        count++;
+        return true;
+      });
+      expect(count).to.equal(2);
+      expect(result).to.equal(true);
+    });
+
+    it('Should handle toString with expand', () => {
+      const data = { foo: { bar: 'baz' } };
+      const nest = new ReadonlyNest(data);
+      expect(nest.toString()).to.equal('{\n  "foo": {\n    "bar": "baz"\n  }\n}');
+    });
+
+    it('Should handle toString without expand', () => {
+      const data = { foo: { bar: 'baz' } };
+      const nest = new ReadonlyNest(data);
+      expect(nest.toString(false)).to.equal('{"foo":{"bar":"baz"}}');
+    });
+
+
+    it('Should correctly handle nested objects', async () => {
+      const data = { user: { name: 'John Doe', address: { city: 'New York', zipcode: '10001' } } };
+      const nest = new ReadonlyNest(data);
+      expect(nest.get('user', 'address', 'city')).to.equal('New York');
+      expect(nest.get('user', 'address', 'zipcode')).to.equal('10001');
+    });
+
+    it('Should return false for empty object', async () => {
+      const data = { empty: {} };
+      const nest = new ReadonlyNest(data);
+      expect(nest.get('empty')).to.deep.equal({});
+    });
+
+    it('Should not iterate over empty list in forEach', async () => {
+      const data = { foo: [] };
+      const nest = new ReadonlyNest(data);
+      const result = await nest.forEach('foo', (value: any, key: any) => {
+        expect(value).to.equal(undefined);
+        return false;
+      });
+      expect(result).to.equal(false);
+    });
+  });
 
 
 
