@@ -283,4 +283,24 @@ describe('Event Emitter Tests', () => {
     expect(triggered[0]).to.equal(2)
     expect(triggered[1]).to.equal(1)
   })
+
+  // <!------------------ Add Unit Tests -----------> 
+  it('Should handle clearing a non-existent event gracefully', () => {
+    const emitter = new EventEmitter();
+    expect(emitter.listeners['non-existent event']).to.be.undefined;
+    emitter.clear('non-existent event');
+    expect(emitter.listeners['non-existent event']).to.be.undefined;
+  });
+
+  it('Should return empty matches when no patterns match', () => {
+    const emitter = new EventEmitter();
+    emitter.on('exampleEvent', async () => {});
+    emitter.on(/regexEvent/, async () => {});
+    const matches = emitter.match('nonMatchingEvent');
+    expect(matches.size).to.equal(0);
+  });
+
+
+
+
 })
