@@ -1,6 +1,7 @@
 import type FileSystem from './FileSystem';
 
 import path from 'path';
+import Exception from '../Exception';
 
 /**
  * Loader
@@ -55,7 +56,7 @@ export default class FileLoader {
       pathname = path.resolve(this.modules(this._cwd), pathname);
     }
     if (exists && !this._fs.existsSync(pathname)) {
-      throw new Error(`Cannot find '${source}'`);
+      throw Exception.for(`Cannot find '${source}'`);
     }
     return pathname;
   }
@@ -66,7 +67,7 @@ export default class FileLoader {
    */
   public modules(cwd = this._cwd): string {
     if (cwd === '/') {
-      throw new Error('Cannot find node_modules');
+      throw Exception.for('Cannot find node_modules');
     }
     if (this._fs.existsSync(path.resolve(cwd, 'node_modules', '@stackpress', 'types'))) {
       return path.resolve(cwd, 'node_modules');
@@ -117,8 +118,13 @@ export default class FileLoader {
   public resolve(
     pathname: string, 
     pwd = this._cwd, 
-    extnames = [ '.js', '.json' ]
+    extnames = [ '.js', '.json' ], 
+    exists = false
   ) {
+    try { //to resolve using require.resolve first...
+      return require.resolve(pathname);
+    } catch(e) {}
+    
     const absolute = this.absolute(pathname, pwd);
 
     //ex. /plugin/foo
@@ -137,6 +143,10 @@ export default class FileLoader {
       if (this._fileExists(file)) {
         return file;
       }
+    }
+
+    if (exists) {
+      throw Exception.for(`Cannot resolve '${pathname}'`);
     }
 
     return null;
