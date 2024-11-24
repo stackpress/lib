@@ -75,4 +75,80 @@ describe('ArgString Tests', () => {
     argString.set();
     expect(mockNest.withPath.size).to.equal(0);
   });
+
+
+  // <!------------- ADD NEW UNIT TEST TO ACHIEVE THE MORE THAN 85% --------!>
+
+  it('should split args string into individual arguments', () => {
+    argString.set('test', 'arg1 arg2 --key=value');
+    expect(mockNest.withPath.get('test.0')).to.equal('arg1');
+    expect(mockNest.withPath.get('test.1')).to.equal('arg2');
+    expect(mockNest.withPath.get('test.key')).to.equal('value');
+  });
+  
+  it('should handle -k=value syntax correctly', () => {
+    argString.set('foo', '-k=value');
+    expect(mockNest.withPath.get('foo.k')).to.equal('value');
+  });
+  
+  it('should parse short flags grouped together (-abc)', () => {
+    argString.set('bar', '-abc');
+    expect(mockNest.withPath.get('bar.a')).to.be.true;
+    expect(mockNest.withPath.get('bar.b')).to.be.true;
+    expect(mockNest.withPath.get('bar.c')).to.be.true;
+  });
+  
+  it('should parse short flags with values (-a value)', () => {
+    argString.set('bar', '-a value');
+    expect(mockNest.withPath.get('bar.a')).to.equal('value');
+  });
+  
+  it('should correctly coerce values in _format', () => {
+    argString.set('baz', '--number=42 --boolean=true --string=hello');
+    expect(mockNest.withPath.get('baz.number')).to.equal(42);
+    expect(mockNest.withPath.get('baz.boolean')).to.be.true;
+    expect(mockNest.withPath.get('baz.string')).to.equal('hello');
+  });
+  
+  it('should handle adding new values to arrays in _format', () => {
+    mockNest.set('foo.key', ['existing']);
+    argString.set('foo', '--key=newValue');
+    expect(mockNest.withPath.get('foo.key')).to.deep.equal(['existing', 'newValue']);
+  });
+  
+
+  it('should return the current nest when no path is provided', () => {
+    const result = argString.set();
+    expect(result).to.equal(mockNest);
+  });
+  
+  it('should parse --key=value syntax into path key-value pairs', () => {
+    argString.set('example', '--foo=bar');
+    expect(mockNest.withPath.get('example.foo')).to.equal('bar');
+  });
+
+  it('should coerce string values into their correct types', () => {
+    argString.set('coerce', '--isTrue=true --isFalse=false --number=42 --float=3.14 --string=hello');
+    expect(mockNest.withPath.get('coerce.isTrue')).to.be.true;
+    expect(mockNest.withPath.get('coerce.isFalse')).to.be.false;
+    expect(mockNest.withPath.get('coerce.number')).to.equal(42);
+    expect(mockNest.withPath.get('coerce.float')).to.equal(3.14);
+    expect(mockNest.withPath.get('coerce.string')).to.equal('hello');
+  });
+
+  it('should handle an empty string as args', () => {
+    argString.set('test', '');
+    expect(mockNest.withPath.get('test')).to.be.undefined;
+  });
+
+  it('should skip the specified number of arguments', () => {
+    argString.set('test', 'arg1 arg2 arg3', 1);
+    expect(mockNest.withPath.get('test.0')).to.equal('arg2');
+    expect(mockNest.withPath.get('test.1')).to.equal('arg3');
+  });
+
+
+
+  
+  
 });
