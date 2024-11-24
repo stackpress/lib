@@ -192,6 +192,31 @@ describe('Hash Store Tests', () => {
     expect(store.get('user', 'age')).to.equal(30);
   });
 
+  // <!------ More Unit Test -------------- >
+  it('Should correctly process object input at the root level', () => {
+    const store = new Nest();
+    store.set({
+      key1: 'value1',
+      key2: {
+        subKey: 'subValue',
+      },
+    });
+    expect(store.get('key1')).to.equal('value1');
+    expect(store.get('key2', 'subKey')).to.equal('subValue');
+  });
+
+  it('Should not modify the structure if no arguments are passed', () => {
+    const store = new Nest();
+    store.set('key', 'value');
+    store.set();
+    expect(store.get('key')).to.equal('value');
+  });
+
+  it('Should handle invalid paths gracefully', () => {
+    const store = new Nest();
+    store.set('key', null, 'value');
+    expect(store.get('key', '0')).to.equal('value'); 
+  });
 
 
   // <!------ READONLY NEST ---------!>
