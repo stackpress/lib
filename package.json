@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@stackpress/types",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "license": "Apache-2.0",
   "description": "Common types in typescript",
   "author": "Chris <chris@incept.asia>",
