@@ -75,4 +75,24 @@ describe('FormData Tests', () => {
     formData.set('path', buffer);
     expect(mockNest.data.size).to.equal(0);
   });
+
+  /*
+  * ADD MORE UNIT TEST
+  */
+
+
+  it('should parse numeric values from form-data', () => {
+    const buffer = Buffer.from(
+      '--boundary\r\n' +
+      'Content-Disposition: form-data; name="numberValue"\r\n\r\n' +
+      '42\r\n' +
+      '--boundary--'
+    );
+    formData.set('path', buffer);
+    const numberValue = mockNest.get('path.numberValue');
+    expect(numberValue).to.be.a('number');
+    expect(numberValue).to.equal(42);
+  });
+
+
 });
