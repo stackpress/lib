@@ -188,4 +188,43 @@ describe('Exception Tests', () => {
   });
 
 
+  it('Should handle unknown error types gracefully', () => {
+    const actual = Exception.try<string>(() => {
+      throw 42; // Throwing a non-standard error (number)
+    }).catch((e, kind) => {
+      expect(e).to.not.be.instanceOf(Exception);
+      expect(kind).to.equal('unknown');
+      return `Unknown error of kind: ${kind}`;
+    });
+    expect(actual).to.equal('Unknown error of kind: unknown');
+  });
+
+  it('Should handle undefined status codes', () => {
+    const exception = new Exception('Undefined status test', 9999); // Invalid status code
+    const response = exception.toResponse();
+    expect(response.status).to.equal('Unknown');
+  });
+
+  it('Should handle trace with malformed stack entry', () => {
+    try {
+      const err = new Exception('Malformed stack test');
+      err.stack = 'Some non-standard stack entry';
+      throw err;
+    } catch (e) {
+      const trace = e.trace();
+      expect(trace).to.be.an('array').that.is.empty;
+    }
+  });
+
+
+  /*
+  * ADD ANOTHER UNIT TEST
+  */
+
+  it('Should handle undefined status codes', () => {
+    const exception = new Exception('Undefined status test', 9999);
+    const response = exception.toResponse();
+    expect(response.status).to.equal('Unknown');
+  });
+
 });
