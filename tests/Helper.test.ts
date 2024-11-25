@@ -69,4 +69,17 @@ describe('Helper Tests', () => {
     const result = shouldBeAnArray(input);
     expect(result).to.be.false;
   });
-});
+
+
+  /*
+  * ADD NEW UNIT TEST
+  */
+
+    it('should handle all edge cases correctly', () => {
+      expect(shouldBeAnArray(null as NestedObject<unknown> | null)).to.be.false;
+      expect(shouldBeAnArray(undefined as NestedObject<unknown> | undefined)).to.be.false;
+      expect(shouldBeAnArray({})).to.be.false;
+    });
+  
+    
+}); 
