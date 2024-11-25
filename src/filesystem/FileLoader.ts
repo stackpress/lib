@@ -121,13 +121,6 @@ export default class FileLoader {
     extnames = [ '.js', '.json' ], 
     exists = false
   ) {
-    try { //to resolve using require.resolve first...
-      const resolved = require.resolve(pathname);
-      //if resolved is an absolute path
-      if (resolved.startsWith('/') || resolved.startsWith('\\')) {
-        return resolved;
-      }
-    } catch(e) {}
     //get the absolute path
     const absolute = this.absolute(pathname, pwd);
     //ex. /plugin/foo
@@ -136,7 +129,8 @@ export default class FileLoader {
     if (this._fileExists(absolute)) {
       return absolute;
     }
-
+    //we want to try resolving manually using the extnames
+    //as prefrenced first...
     for (const extname of extnames) {
       let file = absolute + extname;
       if (this._fileExists(file)) {
@@ -147,6 +141,14 @@ export default class FileLoader {
         return file;
       }
     }
+
+    try { //to resolve using require.resolve last...
+      const resolved = require.resolve(pathname);
+      //if resolved is an absolute path
+      if (resolved.startsWith('/') || resolved.startsWith('\\')) {
+        return resolved;
+      }
+    } catch(e) {}
 
     if (exists) {
       throw Exception.for(`Cannot resolve '${pathname}'`);
@@ -167,7 +169,7 @@ export default class FileLoader {
   /**
    * Returns true if the file exists
    */
-  private _fileExists(source: string) {
+  protected _fileExists(source: string) {
     if (!this._fs.existsSync(source)) {
       return false;
     }
