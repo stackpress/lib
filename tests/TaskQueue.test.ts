@@ -76,7 +76,10 @@ describe('Task Queue Tests', () => {
 
 
 
-  // <!------------------------------- NEW TEST ------------------------------->
+  /*
+  * ADD UNIT TEST
+  */
+
   it("should return NOT_FOUND when the queue is empty", async () => {
     const queue = new TaskQueue<[]>();
     const status = await queue.run();
@@ -112,10 +115,10 @@ it("should abort if a task returns false", async () => {
   });
   queue.push(async (x: number) => {
     results.push(x + 2);
-    return false; // Abort here
+    return false;
   });
   queue.push(async (x: number) => {
-    results.push(x + 3); // Should not run
+    results.push(x + 3);
     return true;
   });
   const status = await queue.run(5);
@@ -126,28 +129,28 @@ it("should abort if a task returns false", async () => {
 it("should abort if `_before` returns false", async () => {
   const queue = new TaskQueue<[number]>();
   const results: number[] = [];
-  queue.before = async (x: number) => x < 5; // Abort if x is not less than 5
+  queue.before = async (x: number) => x < 5; 
   queue.push(async (x: number) => {
     results.push(x + 1);
     return true;
   });
-  const status = await queue.run(5); // `_before` returns false
+  const status = await queue.run(5);
   expect(status).to.equal(StatusCode.ABORT);
-  expect(results).to.deep.equal([]); // No tasks should run
+  expect(results).to.deep.equal([]); 
 });
 
 it("should abort if `_after` returns false", async () => {
   const queue = new TaskQueue<[number]>();
   const results: number[] = [];
-  queue.after = async (x: number) => x < 5; // Abort if x is not less than 5
+  queue.after = async (x: number) => x < 5; 
   queue.push(async (x: number) => {
     results.push(x + 1);
     return true;
   });
 
-  const status = await queue.run(5); // `_after` returns false
+  const status = await queue.run(5); 
   expect(status).to.equal(StatusCode.ABORT);
-  expect(results).to.deep.equal([6]); // First task runs, then aborts
+  expect(results).to.deep.equal([6]); 
 
 
 });

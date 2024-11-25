@@ -136,7 +136,10 @@ describe('Hash Store Tests', () => {
     expect(store.get().foo.zoo[0]).to.equal('foo');
   });
 
-  //<!------------- NEW TESTS ------------------------------->
+  /*
+  * ADD UNIT TEST
+  */
+ 
   it('Should clear all data', async () => {
     let store = new Nest;
     store.set('foo', 'bar');

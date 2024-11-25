@@ -77,7 +77,9 @@ describe('ArgString Tests', () => {
   });
 
 
-  // <!------------- ADD NEW UNIT TEST TO ACHIEVE THE MORE THAN 85% --------!>
+  /*
+  * ADD NEW UNIT TEST TO ACHIEVE THE MORE THAN 85% 
+  */
 
   it('should split args string into individual arguments', () => {
     argString.set('test', 'arg1 arg2 --key=value');

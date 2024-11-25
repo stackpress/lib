@@ -284,7 +284,10 @@ describe('Event Emitter Tests', () => {
     expect(triggered[1]).to.equal(1)
   })
 
-  // <!------------------ Add Unit Tests -----------> 
+  /*
+  * ADD UNIT TEST
+  */
+
   it('Should handle clearing a non-existent event gracefully', () => {
     const emitter = new EventEmitter();
     expect(emitter.listeners['non-existent event']).to.be.undefined;
