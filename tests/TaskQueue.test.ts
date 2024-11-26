@@ -105,7 +105,6 @@ describe('Task Queue Tests', () => {
     expect(results).to.deep.equal([6, 7]);
   });
 
-
   it("should abort if a task returns false", async () => {
     const queue = new TaskQueue<[number]>();
     const results: number[] = [];
@@ -155,4 +154,3 @@ describe('Task Queue Tests', () => {
 
   });
 });
-
