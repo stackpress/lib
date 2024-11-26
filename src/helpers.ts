@@ -1,4 +1,4 @@
-import type { NestedObject } from './types';
+import type { NestedObject, CallableMap } from './types';
 
 /**
  * Transforms an object into an array
@@ -45,3 +45,25 @@ export function shouldBeAnArray(object: NestedObject<unknown>): boolean {
 
   return true;
 }
+
+export function map<K, V> (data?: [K, V][]): CallableMap<K, V> {
+  const map = new Map<K, V>(data);
+  return Object.assign(
+    (name: K) => map.get(name),
+    {
+      size: map.size,
+      clear: () => map.clear(),
+      delete: (name: K) => map.delete(name),
+      entries: () => map.entries(),
+      forEach: (
+        callback: (value: V, key: K, map: Map<K, V>) => void
+      ) => map.forEach(callback),
+      get: (name: K) => map.get(name),
+      has: (name: K) => map.has(name),
+      keys: () => map.keys(),
+      set: (name: K, value: V) => map.set(name, value),
+      toString: () => map.toString(),
+      values: () => map.values()
+    } as Map<K, V>
+  );
+};

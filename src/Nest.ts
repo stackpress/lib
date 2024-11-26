@@ -1,4 +1,4 @@
-import type { Key, UnknownNest } from './types';
+import type { Key, UnknownNest, CallableNest } from './types';
 
 import Exception from './Exception';
 import ArgString from './processors/ArgString';
@@ -150,3 +150,28 @@ export default class Nest<M extends UnknownNest = UnknownNest>
     return this;
   }
 }
+
+export function nest<M extends UnknownNest = UnknownNest>(data?: M): CallableNest<M> {
+  const nest = new Nest<M>(data);
+  return Object.assign(
+    <T = any>(...path: Key[]) => nest.get<T>(...path),
+    {
+      data: nest.data,
+      size: nest.size,
+      clear: () => nest.clear(),
+      delete: (...path: Key[]) => nest.delete(...path),
+      entries: () => nest.entries(),
+      forEach: (...path: Key[]) => nest.forEach(...path),
+      get: <T = any>(...path: Key[]) => nest.get<T>(...path),
+      has: (...path: Key[]) => nest.has(...path),
+      keys: () => nest.keys(),
+      set: (...path: any[]) => nest.set(...path),
+      toString: () => nest.toString(),
+      values: () => nest.values(),
+      withArgs: nest.withArgs,
+      withFormData: nest.withFormData,
+      withPath: nest.withPath,
+      withQuery: nest.withQuery
+    } as Nest<M>
+  );
+};

@@ -1,6 +1,8 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import Nest from '../src/Nest';
+
+import type { CallableNest } from '../src/types';
+import Nest, { nest } from '../src/Nest';
 
 const body = `--BOUNDARY\r
 Content-Disposition: form-data; name="foo"\r
@@ -132,5 +134,53 @@ describe('Hash Store Tests', () => {
     store.set('foo', 'bar', 'zoo');
     store.set('foo', 'zoo', ['foo', 'bar', 'zoo']);
     expect(store.get().foo.zoo[0]).to.equal('foo');
+  });
+
+  it('Should be callable', async () => {
+    let store: CallableNest = nest();
+    store.set('foo', 'bar', 'zoo');
+    store.set('foo', 'zoo', ['foo', 'bar', 'zoo']);
+
+    type Foo = { 
+      foo: {
+        bar: string;
+        zoo: string[];
+      } 
+    };
+
+    expect(store.has('foo', 'bar')).to.equal(true);
+    expect(store.has('bar', 'foo')).to.equal(false);
+    expect(store<string>('foo', 'zoo', 1)).to.equal('bar');
+    expect(store<Foo>().foo.zoo[0]).to.equal('foo');
+
+    store.delete('foo', 'bar');
+    expect(store.has('foo', 'bar')).to.equal(false);
+    expect(store.has('foo', 'zoo')).to.equal(true);
+
+    //foo=bar&zoo[]=1&zoo[]=2&zoo[]=3&product[title]=test
+    //&product[price]=1000&product[rating][]=1&product[rating][]=2
+    //&product[rating][]=3&product[abstract][][name]=john
+    //&product[abstract][][name]=james&boom[]=1
+    store = nest();
+    store.set('foo', 'bar');
+    store.set('zoo', '', 1);
+    store.set('zoo', '', 2);
+    store.set('zoo', '', 3);
+    store.set('product', 'title', 'test');
+    store.set('product', 'price', 1000);
+    store.set('product', 'rating', '', 1);
+    store.set('product', 'rating', '', 2);
+    store.set('product', 'rating', '', 3);
+    store.set('product', 'abstract', '', 'name', 'john');
+    store.set('product', 'abstract', '', 'name', 'james');
+    store.set('boom', '', 1);
+
+    const expected = '{"foo":"bar","zoo":[1,2,3],"product":{"title":"test",'
+      + '"price":1000,"rating":[1,2,3],"abstract":[{"name":"john"},'
+      + '{"name":"james"}]},"boom":[1]}';
+
+    const actual = JSON.stringify(store());
+
+    expect(actual).to.equal(expected);
   });
 });

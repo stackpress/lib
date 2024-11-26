@@ -20,9 +20,10 @@ import EventEmitter from './EventEmitter';
 import Router from './Router';
 import Terminal from './Terminal';
 
-import Nest from './Nest';
+import Nest, { nest } from './Nest';
 import Exception from './Exception';
 import {
+  map,
   makeArray,
   makeObject,
   shouldBeAnArray
@@ -51,6 +52,8 @@ export {
   Terminal,
   Nest,
   Exception,
+  map,
+  nest,
   status,
   makeArray,
   makeObject,
