@@ -12,7 +12,7 @@ Content-Disposition: form-data; name="bar"\r
 zoo
 --BOUNDARY--`
 
-describe('Hash Store Tests', () => {
+describe('Nest Store Tests', () => {
   it('Should CRUD', async () => {
     let store = new Nest;
     store.set('foo', 'bar', 'zoo');
@@ -138,6 +138,7 @@ describe('Hash Store Tests', () => {
 
   it('Should be callable', async () => {
     let store: CallableNest = nest();
+    expect(store.size).to.equal(0);
     store.set('foo', 'bar', 'zoo');
     store.set('foo', 'zoo', ['foo', 'bar', 'zoo']);
 
@@ -148,10 +149,13 @@ describe('Hash Store Tests', () => {
       } 
     };
 
+    expect(store.size).to.equal(1);
     expect(store.has('foo', 'bar')).to.equal(true);
     expect(store.has('bar', 'foo')).to.equal(false);
     expect(store<string>('foo', 'zoo', 1)).to.equal('bar');
     expect(store<Foo>().foo.zoo[0]).to.equal('foo');
+    //@ts-ignore
+    expect(store.data.foo.zoo[0]).to.equal('foo');
 
     store.delete('foo', 'bar');
     expect(store.has('foo', 'bar')).to.equal(false);

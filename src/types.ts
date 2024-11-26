@@ -19,7 +19,10 @@ export type FileMeta = {
   type: string;
 };
 
-export type CallableMap<K, V> = ((name: K) => V|undefined) & Map<K, V>;
+export type CallableSet<V = any> = ((index: number) => V|undefined) & Set<V> & {
+  index: (index: number) => V|undefined
+};
+export type CallableMap<K = any, V = any> = ((name: K) => V|undefined) & Map<K, V>;
 export type CallableNest<M extends UnknownNest = UnknownNest> = (
   <T = any>(...path: Key[]) => T
 ) & Nest<M>;

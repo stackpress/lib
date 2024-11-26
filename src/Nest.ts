@@ -40,6 +40,13 @@ export default class Nest<M extends UnknownNest = UnknownNest>
   public withQuery: QueryString;
 
   /**
+   * Returns the raw data
+   */
+  public get data(): M {
+    return this._data;
+  }
+
+  /**
    * Safely sets the data
    */
   public set data(data: M) {
@@ -152,26 +159,28 @@ export default class Nest<M extends UnknownNest = UnknownNest>
 }
 
 export function nest<M extends UnknownNest = UnknownNest>(data?: M): CallableNest<M> {
-  const nest = new Nest<M>(data);
-  return Object.assign(
-    <T = any>(...path: Key[]) => nest.get<T>(...path),
+  const store = new Nest<M>(data);
+  const callable = Object.assign(
+    <T = any>(...path: Key[]) => store.get<T>(...path),
     {
-      data: nest.data,
-      size: nest.size,
-      clear: () => nest.clear(),
-      delete: (...path: Key[]) => nest.delete(...path),
-      entries: () => nest.entries(),
-      forEach: (...path: Key[]) => nest.forEach(...path),
-      get: <T = any>(...path: Key[]) => nest.get<T>(...path),
-      has: (...path: Key[]) => nest.has(...path),
-      keys: () => nest.keys(),
-      set: (...path: any[]) => nest.set(...path),
-      toString: () => nest.toString(),
-      values: () => nest.values(),
-      withArgs: nest.withArgs,
-      withFormData: nest.withFormData,
-      withPath: nest.withPath,
-      withQuery: nest.withQuery
+      clear: () => store.clear(),
+      delete: (...path: Key[]) => store.delete(...path),
+      entries: () => store.entries(),
+      forEach: (...path: Key[]) => store.forEach(...path),
+      get: <T = any>(...path: Key[]) => store.get<T>(...path),
+      has: (...path: Key[]) => store.has(...path),
+      keys: () => store.keys(),
+      set: (...path: any[]) => store.set(...path),
+      toString: () => store.toString(),
+      values: () => store.values(),
+      withArgs: store.withArgs,
+      withFormData: store.withFormData,
+      withPath: store.withPath,
+      withQuery: store.withQuery
     } as Nest<M>
   );
+  //magic size/data property
+  Object.defineProperty(callable, 'size', { get: () => store.size });
+  Object.defineProperty(callable, 'data', { get: () => store.data });
+  return callable;
 };
