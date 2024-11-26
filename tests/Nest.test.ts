@@ -135,18 +135,17 @@ describe('Nest Store Tests', () => {
     store.set('foo', 'zoo', ['foo', 'bar', 'zoo']);
     expect(store.get().foo.zoo[0]).to.equal('foo');
   });
-
   it('Should be callable', async () => {
     let store: CallableNest = nest();
     expect(store.size).to.equal(0);
     store.set('foo', 'bar', 'zoo');
     store.set('foo', 'zoo', ['foo', 'bar', 'zoo']);
 
-    type Foo = { 
+    type Foo = {
       foo: {
         bar: string;
         zoo: string[];
-      } 
+      }
     };
 
     expect(store.size).to.equal(1);
@@ -189,9 +188,9 @@ describe('Nest Store Tests', () => {
   });
 
   /*
-  * ADD UNIT TEST
-  */
- 
+ * ADD UNIT TEST
+ */
+
   it('Should clear all data', async () => {
     let store = new Nest;
     store.set('foo', 'bar');
@@ -247,7 +246,9 @@ describe('Nest Store Tests', () => {
     expect(store.get('user', 'age')).to.equal(30);
   });
 
-  // <!------ More Unit Test -------------- >
+  /*
+  * More Unit Test 
+  */
   it('Should correctly process object input at the root level', () => {
     const store = new Nest();
     store.set({
@@ -270,14 +271,13 @@ describe('Nest Store Tests', () => {
   it('Should handle invalid paths gracefully', () => {
     const store = new Nest();
     store.set('key', null, 'value');
-    expect(store.get('key', '0')).to.equal('value'); 
+    expect(store.get('key', '0')).to.equal('value');
   });
 
 
   /*
-  * READONLY NEST 
+  *  READONLY NEST
   */
- 
   describe('ReadonlyNest Tests', () => {
     it('Should initialize with empty data', () => {
       const nest = new ReadonlyNest();
@@ -382,4 +382,5 @@ describe('Nest Store Tests', () => {
       expect(result).to.equal(false);
     });
   });
+
 });
