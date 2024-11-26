@@ -24,6 +24,7 @@ import Nest, { nest } from './Nest';
 import Exception from './Exception';
 import {
   map,
+  set,
   makeArray,
   makeObject,
   shouldBeAnArray
@@ -53,6 +54,7 @@ export {
   Nest,
   Exception,
   map,
+  set,
   nest,
   status,
   makeArray,
