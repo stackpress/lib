@@ -1,4 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'http';
+import type Nest from './Nest';
 
 //--------------------------------------------------------------------//
 // Data Types
@@ -17,6 +18,14 @@ export type FileMeta = {
   name: string;
   type: string;
 };
+
+export type CallableSet<V = any> = ((index: number) => V|undefined) & Set<V> & {
+  index: (index: number) => V|undefined
+};
+export type CallableMap<K = any, V = any> = ((name: K) => V|undefined) & Map<K, V>;
+export type CallableNest<M extends UnknownNest = UnknownNest> = (
+  <T = any>(...path: Key[]) => T
+) & Nest<M>;
 
 //--------------------------------------------------------------------//
 // Status Types

@@ -1,4 +1,4 @@
-import type { Key, UnknownNest } from './types';
+import type { Key, UnknownNest, CallableNest } from './types';
 
 import Exception from './Exception';
 import ArgString from './processors/ArgString';
@@ -38,6 +38,13 @@ export default class Nest<M extends UnknownNest = UnknownNest>
    * Parser for query string
    */
   public withQuery: QueryString;
+
+  /**
+   * Returns the raw data
+   */
+  public get data(): M {
+    return this._data;
+  }
 
   /**
    * Safely sets the data
@@ -150,3 +157,30 @@ export default class Nest<M extends UnknownNest = UnknownNest>
     return this;
   }
 }
+
+export function nest<M extends UnknownNest = UnknownNest>(data?: M): CallableNest<M> {
+  const store = new Nest<M>(data);
+  const callable = Object.assign(
+    <T = any>(...path: Key[]) => store.get<T>(...path),
+    {
+      clear: () => store.clear(),
+      delete: (...path: Key[]) => store.delete(...path),
+      entries: () => store.entries(),
+      forEach: (...path: Key[]) => store.forEach(...path),
+      get: <T = any>(...path: Key[]) => store.get<T>(...path),
+      has: (...path: Key[]) => store.has(...path),
+      keys: () => store.keys(),
+      set: (...path: any[]) => store.set(...path),
+      toString: () => store.toString(),
+      values: () => store.values(),
+      withArgs: store.withArgs,
+      withFormData: store.withFormData,
+      withPath: store.withPath,
+      withQuery: store.withQuery
+    } as Nest<M>
+  );
+  //magic size/data property
+  Object.defineProperty(callable, 'size', { get: () => store.size });
+  Object.defineProperty(callable, 'data', { get: () => store.data });
+  return callable;
+};

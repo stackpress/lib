@@ -1,6 +1,7 @@
 import type FileSystem from './FileSystem';
 
 import path from 'path';
+import Exception from '../Exception';
 
 /**
  * Loader
@@ -55,7 +56,7 @@ export default class FileLoader {
       pathname = path.resolve(this.modules(this._cwd), pathname);
     }
     if (exists && !this._fs.existsSync(pathname)) {
-      throw new Error(`Cannot find '${source}'`);
+      throw Exception.for(`Cannot find '${source}'`);
     }
     return pathname;
   }
@@ -66,7 +67,7 @@ export default class FileLoader {
    */
   public modules(cwd = this._cwd): string {
     if (cwd === '/') {
-      throw new Error('Cannot find node_modules');
+      throw Exception.for('Cannot find node_modules');
     }
     if (this._fs.existsSync(path.resolve(cwd, 'node_modules', '@stackpress', 'types'))) {
       return path.resolve(cwd, 'node_modules');
@@ -117,17 +118,19 @@ export default class FileLoader {
   public resolve(
     pathname: string, 
     pwd = this._cwd, 
-    extnames = [ '.js', '.json' ]
+    extnames = [ '.js', '.json' ], 
+    exists = false
   ) {
+    //get the absolute path
     const absolute = this.absolute(pathname, pwd);
-
     //ex. /plugin/foo
     //it's already absolute...
     //Check if pathname is literally a file
     if (this._fileExists(absolute)) {
       return absolute;
     }
-
+    //we want to try resolving manually using the extnames
+    //as prefrenced first...
     for (const extname of extnames) {
       let file = absolute + extname;
       if (this._fileExists(file)) {
@@ -137,6 +140,18 @@ export default class FileLoader {
       if (this._fileExists(file)) {
         return file;
       }
+    }
+
+    try { //to resolve using require.resolve last...
+      const resolved = require.resolve(pathname);
+      //if resolved is an absolute path
+      if (resolved.startsWith('/') || resolved.startsWith('\\')) {
+        return resolved;
+      }
+    } catch(e) {}
+
+    if (exists) {
+      throw Exception.for(`Cannot resolve '${pathname}'`);
     }
 
     return null;
@@ -154,7 +169,7 @@ export default class FileLoader {
   /**
    * Returns true if the file exists
    */
-  private _fileExists(source: string) {
+  protected _fileExists(source: string) {
     if (!this._fs.existsSync(source)) {
       return false;
     }

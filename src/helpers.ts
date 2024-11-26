@@ -1,4 +1,4 @@
-import type { NestedObject } from './types';
+import type { NestedObject, CallableMap, CallableSet } from './types';
 
 /**
  * Transforms an object into an array
@@ -48,4 +48,50 @@ export function shouldBeAnArray(object: NestedObject<unknown> | null | undefined
   return true;
 }
 
- 
+export function map<K = any, V = any> (data?: [K, V][]): CallableMap<K, V> {
+  const store = new Map<K, V>(data);
+  const callable = Object.assign(
+    (name: K) => store.get(name),
+    {
+      clear: () => store.clear(),
+      delete: (name: K) => store.delete(name),
+      entries: () => store.entries(),
+      forEach: (
+        callback: (value: V, key: K, map: Map<K, V>) => void
+      ) => store.forEach(callback),
+      get: (name: K) => store.get(name),
+      has: (name: K) => store.has(name),
+      keys: () => store.keys(),
+      set: (name: K, value: V) => store.set(name, value),
+      values: () => store.values()
+    } as Map<K, V>
+  );
+  //magic size property
+  Object.defineProperty(callable, 'size', { get: () => store.size });
+  return callable;
+};
+
+export function set<V = any> (data?: V[]): CallableSet<V> {
+  const store = new Set<V>(data);
+  const callable = Object.assign(
+    (index: number) => Array.from(store.values())[index],
+    {
+      add: (value: V) => store.add(value),
+      clear: () => store.clear(),
+      delete: (value: V) => store.delete(value),
+      entries: () => store.entries(),
+      forEach: (
+        callback: (value: V, value2: V, set: Set<V>) => void
+      ) => store.forEach(callback),
+      has: (value: V) => store.has(value),
+      index: (index: number) => Array.from(store.values())[index],
+      values: () => store.values()
+    } as Set<V> & {
+      index: (index: number) => V|undefined
+    }
+  );
+  //magic size property
+  Object.defineProperty(callable, 'size', { get: () => store.size });
+  return callable;
+};
+
