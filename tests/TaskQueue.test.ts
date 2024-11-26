@@ -104,53 +104,55 @@ describe('Task Queue Tests', () => {
     expect(status).to.equal(StatusCode.OK);
     expect(results).to.deep.equal([6, 7]);
   });
+
+
+  it("should abort if a task returns false", async () => {
+    const queue = new TaskQueue<[number]>();
+    const results: number[] = [];
+    queue.push(async (x: number) => {
+      results.push(x + 1);
+      return true;
+    });
+    queue.push(async (x: number) => {
+      results.push(x + 2);
+      return false;
+    });
+    queue.push(async (x: number) => {
+      results.push(x + 3);
+      return true;
+    });
+    const status = await queue.run(5);
+    expect(status).to.equal(StatusCode.ABORT);
+    expect(results).to.deep.equal([6, 7]);
+  });
+
+  it("should abort if `_before` returns false", async () => {
+    const queue = new TaskQueue<[number]>();
+    const results: number[] = [];
+    queue.before = async (x: number) => x < 5;
+    queue.push(async (x: number) => {
+      results.push(x + 1);
+      return true;
+    });
+    const status = await queue.run(5);
+    expect(status).to.equal(StatusCode.ABORT);
+    expect(results).to.deep.equal([]);
+  });
+
+  it("should abort if `_after` returns false", async () => {
+    const queue = new TaskQueue<[number]>();
+    const results: number[] = [];
+    queue.after = async (x: number) => x < 5;
+    queue.push(async (x: number) => {
+      results.push(x + 1);
+      return true;
+    });
+
+    const status = await queue.run(5);
+    expect(status).to.equal(StatusCode.ABORT);
+    expect(results).to.deep.equal([6]);
+
+
+  });
 });
 
-it("should abort if a task returns false", async () => {
-  const queue = new TaskQueue<[number]>();
-  const results: number[] = [];
-  queue.push(async (x: number) => {
-    results.push(x + 1);
-    return true;
-  });
-  queue.push(async (x: number) => {
-    results.push(x + 2);
-    return false;
-  });
-  queue.push(async (x: number) => {
-    results.push(x + 3);
-    return true;
-  });
-  const status = await queue.run(5);
-  expect(status).to.equal(StatusCode.ABORT);
-  expect(results).to.deep.equal([6, 7]);
-});
-
-it("should abort if `_before` returns false", async () => {
-  const queue = new TaskQueue<[number]>();
-  const results: number[] = [];
-  queue.before = async (x: number) => x < 5; 
-  queue.push(async (x: number) => {
-    results.push(x + 1);
-    return true;
-  });
-  const status = await queue.run(5);
-  expect(status).to.equal(StatusCode.ABORT);
-  expect(results).to.deep.equal([]); 
-});
-
-it("should abort if `_after` returns false", async () => {
-  const queue = new TaskQueue<[number]>();
-  const results: number[] = [];
-  queue.after = async (x: number) => x < 5; 
-  queue.push(async (x: number) => {
-    results.push(x + 1);
-    return true;
-  });
-
-  const status = await queue.run(5); 
-  expect(status).to.equal(StatusCode.ABORT);
-  expect(results).to.deep.equal([6]); 
-
-
-});
