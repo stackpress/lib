@@ -26,8 +26,10 @@ export function makeObject(array: any[]): NestedObject<unknown> {
 /**
  * Returns true if object keys is all numbers
  */
-export function shouldBeAnArray(object: NestedObject<unknown>): boolean {
-  if (typeof object !== 'object') {
+
+export function shouldBeAnArray(object: NestedObject<unknown> | null | undefined): boolean {
+  // Check for null, undefined, or non-object types
+  if (!object || typeof object !== 'object') {
     return false;
   }
 
@@ -92,3 +94,4 @@ export function set<V = any> (data?: V[]): CallableSet<V> {
   Object.defineProperty(callable, 'size', { get: () => store.size });
   return callable;
 };
+

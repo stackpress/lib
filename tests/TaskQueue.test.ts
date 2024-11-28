@@ -1,6 +1,7 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import TaskQueue from '../src/TaskQueue';
+import StatusCode from '../src/StatusCode';
 
 describe('Task Queue Tests', () => {
   it('Should run tasks', async () => {
@@ -22,7 +23,7 @@ describe('Task Queue Tests', () => {
       }, 10);
 
     expect(queue.size).to.equal(3);
-    
+
     await queue.run(1);
 
     expect(triggered[0]).to.equal(4);
@@ -71,5 +72,85 @@ describe('Task Queue Tests', () => {
     expect(actual.code).to.equal(309);
     expect(triggered[0]).to.equal(3);
     expect(triggered.length).to.equal(1);
+  });
+
+
+
+  /*
+  * ADD UNIT TEST
+  */
+
+  it("should return NOT_FOUND when the queue is empty", async () => {
+    const queue = new TaskQueue<[]>();
+    const status = await queue.run();
+    expect(status).to.equal(StatusCode.NOT_FOUND);
+  });
+
+  it("should execute tasks in sequence and return OK", async () => {
+    const queue = new TaskQueue<[number]>();
+    const results: number[] = [];
+
+    queue.push(async (x: number) => {
+      results.push(x + 1);
+      return true;
+    });
+    queue.push(async (x: number) => {
+      results.push(x + 2);
+      return true;
+    });
+
+    const status = await queue.run(5);
+
+    expect(status).to.equal(StatusCode.OK);
+    expect(results).to.deep.equal([6, 7]);
+  });
+
+  it("should abort if a task returns false", async () => {
+    const queue = new TaskQueue<[number]>();
+    const results: number[] = [];
+    queue.push(async (x: number) => {
+      results.push(x + 1);
+      return true;
+    });
+    queue.push(async (x: number) => {
+      results.push(x + 2);
+      return false;
+    });
+    queue.push(async (x: number) => {
+      results.push(x + 3);
+      return true;
+    });
+    const status = await queue.run(5);
+    expect(status).to.equal(StatusCode.ABORT);
+    expect(results).to.deep.equal([6, 7]);
+  });
+
+  it("should abort if `_before` returns false", async () => {
+    const queue = new TaskQueue<[number]>();
+    const results: number[] = [];
+    queue.before = async (x: number) => x < 5;
+    queue.push(async (x: number) => {
+      results.push(x + 1);
+      return true;
+    });
+    const status = await queue.run(5);
+    expect(status).to.equal(StatusCode.ABORT);
+    expect(results).to.deep.equal([]);
+  });
+
+  it("should abort if `_after` returns false", async () => {
+    const queue = new TaskQueue<[number]>();
+    const results: number[] = [];
+    queue.after = async (x: number) => x < 5;
+    queue.push(async (x: number) => {
+      results.push(x + 1);
+      return true;
+    });
+
+    const status = await queue.run(5);
+    expect(status).to.equal(StatusCode.ABORT);
+    expect(results).to.deep.equal([6]);
+
+
   });
 });
