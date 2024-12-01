@@ -109,4 +109,41 @@ export default class Router<R, S> extends EventEmitter<RouterMap<R, S>> {
   public trace(path: string, action: RouterAction<R, S>, priority?: number) {
     return this.route('TRACE', path, action, priority);
   }
+
+  /**
+   * Allows events from other emitters to apply here
+   */
+  public use(emitter: EventEmitter<RouterMap<R, S>>) {
+    //check if the emitter is a router
+    const router = emitter instanceof Router;
+    //first concat their regexp with this one
+    emitter.regexp.forEach(pattern => this.regexp.add(pattern));
+    //next this listen to what they were listening to
+    //event listeners = event -> Set
+    //loop through the listeners of the emitter
+    for (const event in emitter.listeners) {
+      //get the observers
+      const tasks = emitter.listeners[event];
+      //if no direct observers (shouldn't happen)
+      if (typeof tasks === 'undefined') {
+        //skip
+        continue;
+      }
+      //if the emitter is a router
+      if (router) {
+        //get the route from the emitter
+        const route = emitter.routes.get(event);
+        //set the route
+        if (typeof route !== 'undefined') {
+          this.routes.set(event, route);
+        }
+      }
+      //then loop the tasks
+      for (const { item, priority } of tasks) {
+        //listen to each task one by one
+        this.on(event, item, priority);
+      }
+    }
+    return this;
+  }
 };

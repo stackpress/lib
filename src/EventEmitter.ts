@@ -3,7 +3,8 @@ import type {
   TaskItem,
   Event, 
   EventMap, 
-  EventName, 
+  EventName,
+  EventHook, 
   EventMatch
 } from './types';
 import TaskQueue from './TaskQueue';
@@ -16,13 +17,30 @@ import StatusCode from './StatusCode';
  * right after the event has triggered.
  */
 export default class EventEmitter<M extends EventMap> {
-  //A route map to task queues
-  protected _listeners: { [ K in keyof M ]?: Set<TaskItem<M[K]>> } = {};
   //Event regular expression map
   public readonly regexp = new Set<string>();
-
+  //called after each task
+  protected _after?: EventHook;
+  //called before each task
+  protected _before?: EventHook;
   //Static event data analyzer
   protected _event?: Event<Array<any>>;
+  //A route map to task queues
+  protected _listeners: { [ K in keyof M ]?: Set<TaskItem<M[K]>> } = {};
+
+  /**
+   * Sets the after action
+   */
+  public set after(action: EventHook) {
+    this._after = action;
+  }
+
+  /**
+   * Sets the before action
+   */
+  public set before(action: EventHook) {
+    this._before = action;
+  }
 
   /**
    * Returns the current event match
@@ -35,7 +53,7 @@ export default class EventEmitter<M extends EventMap> {
    * Returns a shallow copy of the listeners
    */
   public get listeners() {
-    return { ...this._listeners };
+    return Object.freeze({ ...this._listeners });
   }
 
   /**
@@ -162,13 +180,26 @@ export default class EventEmitter<M extends EventMap> {
       //then loop the observers
       const tasks = this._listeners[event] as Set<TaskItem<M[N]>>;
       tasks.forEach(task => {
-        const event: Event<M[N]> = { ...match, ...task };
         queue.add(async (...args) => {
           //set the current
-          this._event = event;
+          this._event = { ...match, ...task, args, action: task.item };
+          //before hook
+          if (typeof this._before === 'function' 
+            && await this._before(this._event) === false
+          ) {
+            return false;
+          }
           //if this is the same event, call the 
           //method, if the method returns false
-          return await task.item(...args);
+          if (await task.item(...args) === false) {
+            return false;
+          }
+          //after hook
+          if (typeof this._after === 'function' 
+            && await this._after(this._event) === false
+          ) {
+            return false;
+          }
         }, task.priority);
       });
     }
@@ -194,18 +225,23 @@ export default class EventEmitter<M extends EventMap> {
   /**
    * Allows events from other emitters to apply here
    */
-  use(emitter: EventEmitter<M>) {
+  public use(emitter: EventEmitter<M>) {
     //first concat their regexp with this one
     emitter.regexp.forEach(pattern => this.regexp.add(pattern));
     //next this listen to what they were listening to
-    //event listeners = event -> TaskQueue
+    //event listeners = event -> Set
+    //loop through the listeners of the emitter
     for (const event in emitter.listeners) {
+      //get the observers
       const tasks = emitter.listeners[event];
+      //if no direct observers (shouldn't happen)
       if (typeof tasks === 'undefined') {
+        //skip
         continue;
       }
-
+      //then loop the tasks
       for (const { item, priority } of tasks) {
+        //listen to each task one by one
         this.on(event, item, priority);
       }
     }

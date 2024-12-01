@@ -81,21 +81,27 @@ export type EventName<M extends EventMap> = string & keyof M;
 //export type EventAction<A extends Array<unknown>> = TaskAction<A>;
 export type EventMatch = {
   //The name of the event
-  event: string;
+  event: string,
   //The regexp pattern of the event
-  pattern: string;
+  pattern: string,
   //Parameters extracted from the pattern
-  parameters: string[];
+  parameters: string[],
 }
 
 export interface Event<A extends Array<unknown>> extends TaskItem<A> {
   //The name of the event
-  event: string;
+  event: string,
   //The regexp pattern of the event
-  pattern: string;
+  pattern: string,
   //Parameters extracted from the pattern
-  parameters: string[];
+  parameters: string[],
+  //The arguments passed to the event
+  args: A,
+  //The event hook
+  action: Task<A>
 }
+
+export type EventHook = Task<[Event<Array<any>>]>;
 
 //--------------------------------------------------------------------//
 // Router Types

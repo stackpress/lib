@@ -253,11 +253,9 @@ describe('Event Emitter Tests', () => {
       actual.push(3)
     })
   
-    emitter.emit('async test', 0)
+    await emitter.emit('async test', 0)
   
-    //something unexpected is that even on async the first listener is syncronous
-    //I concluded that this is just how the async/await works
-    expect(actual.length).to.equal(1)
+    expect(actual.length).to.equal(3)
   })
 
   it('Should allow middleware', async() => {
@@ -284,16 +282,12 @@ describe('Event Emitter Tests', () => {
     expect(triggered[1]).to.equal(1)
   })
 
-  /*
-  * ADD UNIT TEST
-  */
-
   it('Should handle clearing a non-existent event gracefully', () => {
     const emitter = new EventEmitter();
     expect(emitter.listeners['non-existent event']).to.be.undefined;
     emitter.clear('non-existent event');
     expect(emitter.listeners['non-existent event']).to.be.undefined;
-  });
+  })
 
   it('Should return empty matches when no patterns match', () => {
     const emitter = new EventEmitter();
@@ -301,9 +295,19 @@ describe('Event Emitter Tests', () => {
     emitter.on(/regexEvent/, async () => {});
     const matches = emitter.match('nonMatchingEvent');
     expect(matches.size).to.equal(0);
-  });
+  })
 
-
-
-
+  it('Should hook', async () => {
+    const emitter = new EventEmitter<{
+      'on something': [number],
+      '/on/': [number],
+    }>;
+    let triggered = 0;
+    emitter.after = event => {triggered++};
+    emitter.before = event => {triggered++};
+    emitter.on('on something', x => {});
+    emitter.on(/on/, y => {});
+    await emitter.emit('on something', 1);
+    expect(triggered).to.equal(4);
+  })
 })
