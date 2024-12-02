@@ -2,19 +2,21 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
 import Router from '../src/Router';
+import { RouterMap } from '../src/types';
+import EventEmitter from '../src/EventEmitter';
 
 type R = { path: string };
 type S = { body?: string };
 
-type method = 'all' 
-  | 'connect' | 'delete'  | 'get' 
-  | 'head'    | 'options' | 'patch' 
-  | 'post'    | 'put'     | 'trace';
+type method = 'all'
+  | 'connect' | 'delete' | 'get'
+  | 'head' | 'options' | 'patch'
+  | 'post' | 'put' | 'trace';
 
 const methods: method[] = [
-  'connect', 'delete',  'get', 
-  'head',    'options', 'patch',  
-  'post',    'put',     'trace'
+  'connect', 'delete', 'get',
+  'head', 'options', 'patch',
+  'post', 'put', 'trace'
 ];
 
 describe('Router Tests', () => {
@@ -97,4 +99,32 @@ describe('Router Tests', () => {
       { method: 'GET', path: '/step/2' }
     );
   })
+
+
+  /*
+  * Add unit test
+  */
+
+  it('Should test that continue statements do not impact nested loops or their iterations', () => {
+    const router = new Router<R, S>();
+    const emitter = new EventEmitter<RouterMap<R, S>>();
+
+    // Add a listener to the emitter
+    emitter.on('test', (req, res) => {
+      res.body = 'test';
+    });
+
+    // Use the emitter in the router
+    router.use(emitter);
+
+    // Verify that the listener from the emitter is now in the router
+    const req: R = { path: '/test' };
+    const res: S = {};
+    router.emit('test', req, res);
+
+    // Check that the listener was executed
+    expect(res.body).to.equal('test');
+  });
+
+
 })
