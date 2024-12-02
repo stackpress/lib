@@ -1,6 +1,8 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import { makeArray, makeObject, map, set, shouldBeAnArray } from '../src/helpers';
+import map from '../src/data/map';
+import set from '../src/data/set';
+import { makeArray, makeObject, shouldBeAnArray } from '../src/data/Nest';
 import { NestedObject } from '../src/types';
 
 

@@ -1,6 +1,6 @@
+//local
 import type { NestedObject, Trace, ErrorResponse } from './types';
-
-import { status } from './StatusCode';
+import { getStatus } from './Status';
 
 /**
  * Exceptions are used to give more information
@@ -137,7 +137,7 @@ export default class Exception extends Error {
     this.name = this.constructor.name;
     this._type = this.constructor.name;
     this._code = code;
-    this._status = status(code)?.status || 'Unknown';
+    this._status = getStatus(code)?.status || 'Unknown';
   }
 
   /**

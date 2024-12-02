@@ -1,5 +1,7 @@
+//common
 import type { Key, UnknownNest } from '../types';
-import Path from './Path';
+//local
+import Path from './ReadonlyPath';
 
 /**
  * Nest easily manipulates object data

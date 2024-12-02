@@ -1,12 +1,13 @@
-import type { Method, Route, RouterMap, RouterAction } from './types';
-
+//common
+import type { Method, Route, RouterMap, RouterAction } from '../types';
+//local
 import EventEmitter from './EventEmitter';
 
 /**
  * Event driven routing system. Bring 
  * your own request and response types.
  */
-export default class Router<R, S> extends EventEmitter<RouterMap<R, S>> {
+export default class EventRouter<R, S> extends EventEmitter<RouterMap<R, S>> {
   //map of event names to routes 
   //^${method}\\s${pattern}/*$ -> { method, path }
   public readonly routes = new Map<string, Route>;
@@ -115,7 +116,7 @@ export default class Router<R, S> extends EventEmitter<RouterMap<R, S>> {
    */
   public use(emitter: EventEmitter<RouterMap<R, S>>) {
     //check if the emitter is a router
-    const router = emitter instanceof Router;
+    const router = emitter instanceof EventRouter;
     //first concat their regexp with this one
     emitter.regexp.forEach(pattern => this.regexp.add(pattern));
     //next this listen to what they were listening to

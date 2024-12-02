@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import FileData from '../src/processors/FileData';
+import FileData from '../src/data/processors/FileData';
 import { FileMeta } from '../src/types';
 
 describe('FileData Tests', () => {

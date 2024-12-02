@@ -1,6 +1,8 @@
+//common
+import Exception from '../../Exception';
+//data
 import type Nest from '../Nest';
-
-import Exception from '../Exception';
+//local
 import FileData from './FileData';
 
 export default class FormData {

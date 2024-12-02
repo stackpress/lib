@@ -1,3 +1,4 @@
+//data
 import type Nest from '../Nest';
 
 export default class QueryString {

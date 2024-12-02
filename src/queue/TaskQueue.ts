@@ -1,7 +1,8 @@
-import type { Task, Status } from './types';
-
+//common
+import type { Task, ResponseStatus } from '../types';
+import Status from '../Status';
+//local
 import ItemQueue from './ItemQueue';
-import StatusCode from './StatusCode';
 
 /**
  * A task queue linearly executes each task
@@ -29,25 +30,25 @@ export default class TaskQueue<A extends Array<unknown>> extends ItemQueue<Task<
   /**
    * Runs the tasks
    */
-  async run(...args: A): Promise<Status> {
+  async run(...args: A): Promise<ResponseStatus> {
     if (!this.queue.length) {
       //report a 404
-      return StatusCode.NOT_FOUND;
+      return Status.NOT_FOUND;
     }
 
     while (this.queue.length) {
       const task = this.consume() as Task<A>;
       if (this._before && await this._before(...args) === false) {
-        return StatusCode.ABORT;
+        return Status.ABORT;
       }
       if (task && await task(...args) === false) {
-        return StatusCode.ABORT;
+        return Status.ABORT;
       }
       if (this._after && await this._after(...args) === false) {
-        return StatusCode.ABORT;
+        return Status.ABORT;
       }
     }
 
-    return StatusCode.OK;
+    return Status.OK;
   }
 }

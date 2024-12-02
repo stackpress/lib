@@ -1,8 +1,8 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import ReadonlyNest from '../src/readonly/Nest';
+import ReadonlyNest from '../src/data/ReadonlyNest';
 import type { CallableNest } from '../src/types';
-import Nest, { nest } from '../src/Nest';
+import Nest, { nest } from '../src/data/Nest';
 
 const body = `--BOUNDARY\r
 Content-Disposition: form-data; name="foo"\r

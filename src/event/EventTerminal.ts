@@ -1,9 +1,11 @@
-import type { Hash } from './types';
-
+//modules
 import { input } from '@inquirer/prompts';
+//common
+import type { Hash } from '../types';
+//local
 import EventEmitter from './EventEmitter';
 
-export default class Terminal extends EventEmitter<Record<string, [Hash]>> {
+export default class EventTerminal extends EventEmitter<Record<string, [Hash]>> {
   // brand to prefix in all logs
   public static brand: string = '';
 
@@ -202,7 +204,7 @@ export default class Terminal extends EventEmitter<Record<string, [Hash]>> {
   //current working directory
   public readonly cwd: string;
   //access to static methods from the instance
-  public readonly terminal: typeof Terminal;
+  public readonly terminal: typeof EventTerminal;
   protected _command: string;
   //cached cli args
   protected _args: string[];
@@ -233,7 +235,7 @@ export default class Terminal extends EventEmitter<Record<string, [Hash]>> {
     super();
     //set current working directory
     this.cwd = cwd;
-    this.terminal = this.constructor as typeof Terminal;
+    this.terminal = this.constructor as typeof EventTerminal;
     //set command
     this._command = args[0] || '';
     //set cli args

@@ -1,4 +1,5 @@
-import type { FileMeta } from '../types';
+//common
+import type { FileMeta } from '../../types';
 
 export default class FileData {
   public data: Buffer|string;

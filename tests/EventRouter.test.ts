@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
-import Router from '../src/Router';
+import Router from '../src/event/EventRouter';
 
 type R = { path: string };
 type S = { body?: string };
@@ -63,6 +63,8 @@ describe('Router Tests', () => {
 
   it('Should use routes', async () => {
     const triggered: string[] = [];
+    const step1 = '/^GET\\s\\/step\\/1\\/*$/gi';
+    const step2 = '/^GET\\s\\/step\\/2\\/*$/gi';
     const router1 = new Router<R, S>();
     router1.on('zero', (req, res) => {
       triggered.push('0');
@@ -77,7 +79,7 @@ describe('Router Tests', () => {
     router2.on('one', (req, res) => {
       triggered.push('2');
     })
-    router2.get('/step/1', async (req, res) => {
+    router2.get('/step/1', async function withName(req, res) {
       triggered.push('b');
       await router2.emit('zero', req, res);
       await router2.emit('one', req, res);
@@ -91,10 +93,16 @@ describe('Router Tests', () => {
     //[ 'a', 'b', '1', '2', 'c' ]
     //NOTE: '0' doesn't trigger because 'zero' was called from router2
     expect(triggered).to.deep.equal(['a', 'b', '1', '2', 'c']);
-    expect(
-      router1.routes.get('/^GET\\s\\/step\\/2\\/*$/gi')
-    ).to.deep.equal(
+    //this test is to make sure routes can be mapped to listeners
+    expect(router1.routes.get(step2)).to.deep.equal(
       { method: 'GET', path: '/step/2' }
     );
+    //this test is to make sure we are adding the correct 
+    //source function, not a wrapper function...
+    const tasks = router1.listeners[step1] as Set<{ 
+      item: Function, 
+      priority: number 
+    }>;
+    expect(Array.from(tasks.values())[1].item.name).to.equal('withName');
   })
 })

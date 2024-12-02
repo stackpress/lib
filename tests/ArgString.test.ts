@@ -1,6 +1,6 @@
 import { describe, it, beforeEach } from 'mocha';
 import { expect } from 'chai';
-import ArgString from '../src/processors/ArgString';
+import ArgString from '../src/data/processors/ArgString';
 
 // Mock Nest class to mimic the nest behavior
 class MockNest {

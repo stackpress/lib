@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import EventEmitter from '../src/EventEmitter';
+import EventEmitter from '../src/event/EventEmitter';
 
 describe('Event Emitter Tests', () => {
   it('Should listen', async () => {
@@ -28,8 +28,8 @@ describe('Event Emitter Tests', () => {
     expect(matches.get('/match (something)/g')?.pattern).to.equal('/match (something)/g')
     expect(matches.get('/match (some)(thing)/i')?.pattern).to.equal('/match (some)(thing)/i')
   
-    expect(matches.get('/match (something)/g')?.parameters.length).to.equal(1)
-    expect(matches.get('/match (some)(thing)/i')?.parameters.length).to.equal(2)
+    expect(matches.get('/match (something)/g')?.data.args.length).to.equal(1)
+    expect(matches.get('/match (some)(thing)/i')?.data.args.length).to.equal(2)
   })
 
   it('Should emit', async () => {
@@ -104,14 +104,14 @@ describe('Event Emitter Tests', () => {
     emitter.on(/^trigger basic (.+)$/, async function something1() {
       expect(emitter.event?.event).to.equal('trigger basic something')
       expect(emitter.event?.pattern).to.equal('/^trigger basic (.+)$/')
-      expect(emitter.event?.parameters[0]).to.equal('something')
+      expect(emitter.event?.data.args[0]).to.equal('something')
       triggered.push(1)
     }, 2)
   
     emitter.on(/trigger (.+) something$/, async function something2() {
       expect(emitter.event?.event).to.equal('trigger basic something')
       expect(emitter.event?.pattern).to.equal('/trigger (.+) something$/')
-      expect(emitter.event?.parameters[0]).to.equal('basic')
+      expect(emitter.event?.data.args[0]).to.equal('basic')
       triggered.push(2)
     }, 1)
   
@@ -135,7 +135,7 @@ describe('Event Emitter Tests', () => {
     emitter.on(/trigger (advance) something/, async x => {
       expect(x).to.equal(1)
       triggered.push(2)
-      expect(emitter.event?.parameters[0]).to.equal('advance')
+      expect(emitter.event?.data.args[0]).to.equal('advance')
     }, 2)
   
     const actual = await emitter.emit('trigger advance something', 1)
@@ -228,7 +228,7 @@ describe('Event Emitter Tests', () => {
     emitter.on(/^GET\s\/components\/(.*)\/*$/, async x => {
       expect(emitter.event?.event).to.equal('GET /components/heyo/beans')
       triggered ++
-      expect(emitter.event?.parameters[0]).to.equal('heyo/beans')
+      expect(emitter.event?.data.args[0]).to.equal('heyo/beans')
     })
   
     await emitter.emit('GET /components/heyo/beans', 1)
@@ -310,4 +310,4 @@ describe('Event Emitter Tests', () => {
     await emitter.emit('on something', 1);
     expect(triggered).to.equal(4);
   })
-})
+});

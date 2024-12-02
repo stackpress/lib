@@ -1,5 +1,6 @@
+//data
 import type Nest from '../Nest';
-import ReadonlyPathString from '../readonly/Path';
+import ReadonlyPathString from '../ReadonlyPath';
 
 
 export default class PathString extends ReadonlyPathString {

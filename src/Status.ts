@@ -1,4 +1,5 @@
-import { Status } from './types';
+//local
+import { ResponseStatus } from './types';
 
 /**
  * Status Codes as return states by the `Emitter`. These codes are 
@@ -11,7 +12,7 @@ import { Status } from './types';
  * 
  * see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
  */
-const statuses: Record<string, Status> = {
+const statuses: Record<string, ResponseStatus> = {
   //------------------------------------------------------------------//
   // 100 Status Codes
 
@@ -237,6 +238,6 @@ export default statuses;
 /**
  * Returns the status given the code
  */
-export function status(code: number) {
+export function getStatus(code: number) {
   return Object.values(statuses).find(status => status.code === code);
 };

@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import ItemQueue from '../src/ItemQueue';
+import ItemQueue from '../src/queue/ItemQueue';
 
 describe('Item Queue Tests', () => {
   it('Should consume items', async () => {

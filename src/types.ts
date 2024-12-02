@@ -1,5 +1,7 @@
-import type { IncomingMessage, ServerResponse } from 'http';
-import type Nest from './Nest';
+//modules
+import type { IncomingMessage, ServerResponse } from 'node:http';
+//data
+import type Nest from './data/Nest';
 
 //--------------------------------------------------------------------//
 // Data Types
@@ -30,7 +32,7 @@ export type CallableNest<M extends UnknownNest = UnknownNest> = (
 //--------------------------------------------------------------------//
 // Status Types
 
-export type Status = {
+export type ResponseStatus = {
   code: number, 
   status: string
 };
@@ -45,7 +47,7 @@ export type Trace = {
   char: number 
 };
 
-export type ErrorResponse = Status & {
+export type ErrorResponse = ResponseStatus & {
   error: string,
   errors?: NestedObject<string>,
   start?: number,
@@ -53,7 +55,7 @@ export type ErrorResponse = Status & {
   stack?: Trace[]
 };
 
-export type SuccessResponse<T = unknown> = Status & {
+export type SuccessResponse<T = unknown> = ResponseStatus & {
   results: T,
   total?: number
 };
@@ -78,30 +80,26 @@ export type TaskItem<A extends Array<unknown>> = Item<Task<A>>;
 //map of event names to their arguments
 export type EventMap = Record<string, Array<unknown>>;
 export type EventName<M extends EventMap> = string & keyof M;
-//export type EventAction<A extends Array<unknown>> = TaskAction<A>;
 export type EventMatch = {
   //The name of the event
   event: string,
   //The regexp pattern of the event
   pattern: string,
   //Parameters extracted from the pattern
-  parameters: string[],
-}
+  data: {
+    args: string[],
+    params: Record<string, string>
+  }
+};
 
-export interface Event<A extends Array<unknown>> extends TaskItem<A> {
-  //The name of the event
-  event: string,
-  //The regexp pattern of the event
-  pattern: string,
-  //Parameters extracted from the pattern
-  parameters: string[],
+export type Event<A extends Array<unknown>> = TaskItem<A> & EventMatch & {
   //The arguments passed to the event
   args: A,
   //The event hook
   action: Task<A>
-}
+};
 
-export type EventHook = Task<[Event<Array<any>>]>;
+export type EventHook<A extends Array<unknown>> = Task<[Event<A>]>;
 
 //--------------------------------------------------------------------//
 // Router Types
@@ -123,4 +121,15 @@ export type FileRecursiveOption = { recursive?: boolean };
 export type FileStat = { isFile(): boolean };
 export type FileStream = { 
   pipe: (res: ServerResponse<IncomingMessage>) => void 
+};
+
+export interface FileSystem {
+  existsSync(path: string): boolean;
+  readFileSync(path: string, encoding: BufferEncoding): string;
+  realpathSync(string: string): string;
+  lstatSync(path: string): FileStat;
+  writeFileSync(path: string, data: string): void;
+  mkdirSync(path: string, options?: FileRecursiveOption): void
+  createReadStream(path: string): FileStream;
+  unlinkSync(path: string): void;
 };

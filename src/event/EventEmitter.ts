@@ -1,3 +1,4 @@
+//common
 import type {
   Task, 
   TaskItem,
@@ -6,9 +7,10 @@ import type {
   EventName,
   EventHook, 
   EventMatch
-} from './types';
-import TaskQueue from './TaskQueue';
-import StatusCode from './StatusCode';
+} from '../types';
+import Status from '../Status';
+//queue
+import TaskQueue from '../queue/TaskQueue';
 
 /**
  * Allows the ability to listen to events made known by another
@@ -20,25 +22,26 @@ export default class EventEmitter<M extends EventMap> {
   //Event regular expression map
   public readonly regexp = new Set<string>();
   //called after each task
-  protected _after?: EventHook;
+  protected _after?: EventHook<M[keyof M]>;
   //called before each task
-  protected _before?: EventHook;
+  protected _before?: EventHook<M[keyof M]>;
   //Static event data analyzer
-  protected _event?: Event<Array<any>>;
+  //TODO: fix 'any' should be relative from the arguments in EventMap
+  protected _event?: Event<M[keyof M]>;
   //A route map to task queues
   protected _listeners: { [ K in keyof M ]?: Set<TaskItem<M[K]>> } = {};
 
   /**
    * Sets the after action
    */
-  public set after(action: EventHook) {
+  public set after(action: EventHook<M[keyof M]>) {
     this._after = action;
   }
 
   /**
    * Sets the before action
    */
-  public set before(action: EventHook) {
+  public set before(action: EventHook<M[keyof M]>) {
     this._before = action;
   }
 
@@ -75,7 +78,7 @@ export default class EventEmitter<M extends EventMap> {
     //if there are no events found
     if (queue.size === 0) {
       //report a 404
-      return StatusCode.NOT_FOUND;
+      return Status.NOT_FOUND;
     }
 
     return await queue.run(...args);
@@ -95,7 +98,8 @@ export default class EventEmitter<M extends EventMap> {
     const matches = new Map<string, EventMatch>();
     //first do the obvious match
     if (typeof this.listeners[event] !== 'undefined') {
-      matches.set(event, { event, pattern: event, parameters: [] });
+      const data: EventMatch['data'] = { args: [], params: {} };
+      matches.set(event, { event, pattern: event, data });
     }
     //next do the calculated matches
     this.regexp.forEach(pattern => {
@@ -112,27 +116,26 @@ export default class EventEmitter<M extends EventMap> {
         )
       );
       //because String.matchAll only works for global flags ...
-      let match, parameters: string[];
+      const data: EventMatch['data'] = { args: [], params: {} };
       if (regexp.flags.indexOf('g') === -1) {
         const match = event.match(regexp);
         if (!match || !match.length) {
           return;
         }
-        parameters = [];
         if (Array.isArray(match)) {
-          parameters = match.slice();
-          parameters.shift();
+          data.args = match.slice();
+          data.args.shift();
         }
       } else {
-        match = Array.from(event.matchAll(regexp));
+        const match = Array.from(event.matchAll(regexp));
         if (!Array.isArray(match[0]) || !match[0].length) {
           return;
         }
 
-        parameters = match[0].slice();
-        parameters.shift();
+        data.args = match[0].slice();
+        data.args.shift();
       }
-      matches.set(pattern, { event, pattern, parameters });
+      matches.set(pattern, { event, pattern, data });
     });
 
     return matches;
@@ -170,7 +173,7 @@ export default class EventEmitter<M extends EventMap> {
    */
   public tasks<N extends EventName<M>>(event: N) {
     const matches = this.match(event);
-    const queue = this.makeQueue<M[N]>();
+    const queue = this.makeQueue<M[keyof M]>();
 
     for (const [ event, match ] of matches) {
       //if no direct observers
@@ -178,7 +181,7 @@ export default class EventEmitter<M extends EventMap> {
         continue;
       }
       //then loop the observers
-      const tasks = this._listeners[event] as Set<TaskItem<M[N]>>;
+      const tasks = this._listeners[event] as Set<TaskItem<M[keyof M]>>;
       tasks.forEach(task => {
         queue.add(async (...args) => {
           //set the current

@@ -1,4 +1,6 @@
-import type { Key } from '../types';
+//common
+import type { Key } from '../../types';
+//data
 import type Nest from '../Nest';
 
 export default class ArgString {

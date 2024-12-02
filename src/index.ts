@@ -1,34 +1,34 @@
-import ArgString from './processors/ArgString';
-import FileData from './processors/FileData';
-import FormData from './processors/FormData';
-import PathString from './processors/PathString';
-import QueryString from './processors/QueryString';
+import ArgString from './data/processors/ArgString';
+import FileData from './data/processors/FileData';
+import FormData from './data/processors/FormData';
+import PathString from './data/processors/PathString';
+import QueryString from './data/processors/QueryString';
 
-import ReadonlyMap from './readonly/Map';
-import ReadonlyNest from './readonly/Nest';
-import ReadonlyPath from './readonly/Path';
-import ReadonlySet from './readonly/Set';
-
-import FileLoader from './filesystem/FileLoader';
-import FileSystem from './filesystem/FileSystem';
-import NodeFS from './filesystem/NodeFS';
-
-import StatusCode, { status } from './StatusCode';
-import ItemQueue from './ItemQueue';
-import TaskQueue from './TaskQueue';
-import EventEmitter from './EventEmitter';
-import Router from './Router';
-import Terminal from './Terminal';
-
-import Nest, { nest } from './Nest';
-import Exception from './Exception';
-import {
-  map,
-  set,
+import ReadonlyMap from './data/ReadonlyMap';
+import ReadonlyNest from './data/ReadonlyNest';
+import ReadonlyPath from './data/ReadonlyPath';
+import ReadonlySet from './data/ReadonlySet';
+import Nest, { 
   makeArray,
   makeObject,
-  shouldBeAnArray
-} from './helpers';
+  shouldBeAnArray,
+  nest 
+} from './data/Nest';
+import map from './data/map';
+import set from './data/set';
+
+import FileLoader from './system/FileLoader';
+import NodeFS from './system/NodeFS';
+
+import ItemQueue from './queue/ItemQueue';
+import TaskQueue from './queue/TaskQueue';
+
+import EventEmitter from './event/EventEmitter';
+import EventRouter from './event/EventRouter';
+import EventTerminal from './event/EventTerminal';
+
+import Exception from './Exception';
+import Status, { getStatus } from './Status';
 
 export type * from './types';
 
@@ -42,21 +42,20 @@ export {
   ReadonlyNest,
   ReadonlyPath,
   ReadonlySet,
+  Nest,
   FileLoader,
-  FileSystem,
   NodeFS,
-  StatusCode,
   ItemQueue,
   TaskQueue,
   EventEmitter,
-  Router,
-  Terminal,
-  Nest,
+  EventRouter,
+  EventTerminal,
   Exception,
+  Status,
   map,
   set,
   nest,
-  status,
+  getStatus,
   makeArray,
   makeObject,
   shouldBeAnArray

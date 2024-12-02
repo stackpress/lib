@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import TaskQueue from '../src/TaskQueue';
-import StatusCode from '../src/StatusCode';
+import TaskQueue from '../src/queue/TaskQueue';
+import StatusCode from '../src/Status';
 
 describe('Task Queue Tests', () => {
   it('Should run tasks', async () => {

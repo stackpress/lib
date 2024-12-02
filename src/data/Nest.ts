@@ -1,17 +1,18 @@
-import type { Key, UnknownNest, CallableNest } from './types';
-
-import Exception from './Exception';
+//common
+import type { 
+  Key, 
+  NestedObject, 
+  UnknownNest, 
+  CallableNest 
+} from '../types';
+import Exception from '../Exception';
+//processors
 import ArgString from './processors/ArgString';
 import PathString from './processors/PathString';
 import QueryString from './processors/QueryString';
 import FormData from './processors/FormData';
-import ReadonlyNest from './readonly/Nest';
-
-import {
-  makeArray,
-  makeObject,
-  shouldBeAnArray
-} from './helpers';
+//local
+import ReadonlyNest from './ReadonlyNest';
 
 /**
  * Nest easily manipulates object data
@@ -156,6 +157,53 @@ export default class Nest<M extends UnknownNest = UnknownNest>
 
     return this;
   }
+}
+
+/**
+ * Transforms an object into an array
+ */
+export function makeArray(object: NestedObject<unknown>): any[] {
+  const array: any[] = [];
+  const keys = Object.keys(object);
+  
+  keys.sort();
+  
+  keys.forEach(function(key) {
+    array.push(object[key]);
+  })
+
+  return array;
+}
+
+/**
+ * Transforms an array into an object
+ */
+export function makeObject(array: any[]): NestedObject<unknown> {
+  return Object.assign({}, array as unknown);
+}
+
+/**
+ * Returns true if object keys is all numbers
+ */
+export function shouldBeAnArray(object: NestedObject<unknown> | null | undefined): boolean {
+  // Check for null, undefined, or non-object types
+  if (!object || typeof object !== 'object') {
+    return false;
+  }
+
+  const length = Object.keys(object).length
+
+  if (!length) {
+    return false;
+  }
+
+  for (let i = 0; i < length; i++) {
+    if (typeof object[i] === 'undefined') {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 export function nest<M extends UnknownNest = UnknownNest>(data?: M): CallableNest<M> {
