@@ -26,7 +26,6 @@ export default class EventEmitter<M extends EventMap> {
   //called before each task
   protected _before?: EventHook<M[keyof M]>;
   //Static event data analyzer
-  //TODO: fix 'any' should be relative from the arguments in EventMap
   protected _event?: Event<M[keyof M]>;
   //A route map to task queues
   protected _listeners: { [ K in keyof M ]?: Set<TaskItem<M[K]>> } = {};

@@ -8,30 +8,6 @@ import { getStatus } from './Status';
  */
 export default class Exception extends Error {
   /**
-   * In house syncronous try catch. Async already has this 
-   */
-  public static try<T = unknown, E = Exception>(callback: () => T) {
-    return {
-      catch: (catcher: (error: E, kind: string) => T) => {
-        try {
-          return callback();
-        } catch (error) {
-          if (error instanceof Exception) {
-            return catcher(error as E, error.type);
-          } else if (error instanceof Error) {
-            const e = Exception.upgrade(error);
-            return catcher(e as E, e.type);
-          } else if (typeof error === 'string') {
-            const e = Exception.for(error);
-            return catcher(e as E, e.type);
-          }
-          return catcher(error as E, 'unknown');
-        }
-      }
-    };
-  }
-
-  /**
    * General use expressive reasons
    */
   public static for(message: string, ...values: unknown[]) {
@@ -66,6 +42,30 @@ export default class Exception extends Error {
 
       throw new this(message);
     }
+  }
+
+  /**
+   * In house syncronous try catch. Async already has this 
+   */
+  public static try<T = unknown, E = Exception>(callback: () => T) {
+    return {
+      catch: (catcher: (error: E, kind: string) => T) => {
+        try {
+          return callback();
+        } catch (error) {
+          if (error instanceof Exception) {
+            return catcher(error as E, error.type);
+          } else if (error instanceof Error) {
+            const e = Exception.upgrade(error);
+            return catcher(e as E, e.type);
+          } else if (typeof error === 'string') {
+            const e = Exception.for(error);
+            return catcher(e as E, e.type);
+          }
+          return catcher(error as E, 'unknown');
+        }
+      }
+    };
   }
 
   /**
