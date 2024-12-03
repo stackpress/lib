@@ -28,6 +28,7 @@ import EventRouter from './event/EventRouter';
 import EventTerminal from './event/EventTerminal';
 
 import Exception from './Exception';
+import Reflection from './Reflection';
 import Status, { getStatus } from './Status';
 
 export type * from './types';
@@ -51,6 +52,7 @@ export {
   EventRouter,
   EventTerminal,
   Exception,
+  Reflection,
   Status,
   map,
   set,

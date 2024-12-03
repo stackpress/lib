@@ -133,3 +133,49 @@ export interface FileSystem {
   createReadStream(path: string): FileStream;
   unlinkSync(path: string): void;
 };
+
+//--------------------------------------------------------------------//
+// Stack Types
+export interface CallSite {
+  //returns the value of this
+  getThis(): unknown;
+  //returns the type of this as a string. This is the name of 
+  //the function stored in the constructor field of this, if 
+  //available, otherwise the object’s [[Class]] internal property.
+  getTypeName(): string;
+  //returns the current function
+  getFunction(): Function;
+  //returns the name of the current function, typically its name 
+  //property. If a name property is not available an attempt is 
+  //made to infer a name from the function’s context.
+  getFunctionName(): string;
+  //returns the name of the property of this or one 
+  //of its prototypes that holds the current function
+  getMethodName(): string;
+  //if this function was defined in a 
+  //script returns the name of the script
+  getFileName(): string;
+  //if this function was defined in a 
+  //script returns the current line number
+  getLineNumber(): number;
+  //if this function was defined in a 
+  //script returns the current column number
+  getColumnNumber(): number;
+  //if this function was created using a call to eval returns 
+  //a string representing the location where eval was called
+  getEvalOrigin(): string;
+  //is this a top-level invocation, that is, is this the global object?
+  isToplevel(): boolean;
+  //does this call take place in code defined by a call to eval?
+  isEval(): boolean;
+  //is this call in native V8 code?
+  isNative(): boolean;
+  //is this a constructor call?
+  isConstructor(): boolean;
+  //is this an async call (i.e. await, Promise.all(), or Promise.any())?
+  isAsync(): boolean;
+  //is this an async call to Promise.all()?
+  isPromiseAll(): boolean;
+  //is this an async call to Promise.any()?
+  getPromiseIndex(): number|null;
+};
