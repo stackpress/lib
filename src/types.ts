@@ -49,7 +49,7 @@ export type Trace = {
 
 export type ErrorResponse = ResponseStatus & {
   error: string,
-  errors?: NestedObject<string>,
+  errors?: NestedObject<string|string[]>,
   start?: number,
   end?: number,
   stack?: Trace[]
@@ -60,7 +60,7 @@ export type SuccessResponse<T = unknown> = ResponseStatus & {
   total?: number
 };
 
-export type StatusResponse<T = unknown> = ErrorResponse|SuccessResponse<T>;
+export type StatusResponse<T = unknown> = ErrorResponse & SuccessResponse<T>;
 
 //--------------------------------------------------------------------//
 // DataQueue Types
