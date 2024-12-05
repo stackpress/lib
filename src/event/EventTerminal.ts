@@ -205,7 +205,8 @@ export default class EventTerminal extends EventEmitter<Record<string, [Hash]>> 
   public readonly cwd: string;
   //access to static methods from the instance
   public readonly terminal: typeof EventTerminal;
-  protected _command: string;
+  //the event command
+  public readonly command: string;
   //cached cli args
   protected _args: string[];
   //cached terminal params (parsed argv)
@@ -225,7 +226,7 @@ export default class EventTerminal extends EventEmitter<Record<string, [Hash]>> 
     if (!this._params) {
       this._params = this.terminal.params(...this._args);
     }
-    return {...this._params };
+    return { ...this._params };
   }
 
   /**
@@ -236,8 +237,8 @@ export default class EventTerminal extends EventEmitter<Record<string, [Hash]>> 
     //set current working directory
     this.cwd = cwd;
     this.terminal = this.constructor as typeof EventTerminal;
-    //set command
-    this._command = args[0] || '';
+    //set event
+    this.command = args[0] || '';
     //set cli args
     this._args = args.slice(1);
   }
@@ -258,6 +259,6 @@ export default class EventTerminal extends EventEmitter<Record<string, [Hash]>> 
    * Runs the command
    */
   public run() {
-    return this.emit(this._command, this.params);
+    return this.emit(this.command, this.params);
   }
 }
