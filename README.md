@@ -2,16 +2,6 @@
 
 This document provides an overview of the common TypeScript types used in the project. It includes descriptions, examples, and usage guidelines to help developers understand and utilize these types effectively.
 
-## Table of Contents
-
-1. [Introduction](#introduction)
-2. [Basic Types](#basic-types)
-3. [Interfaces](#interfaces)
-4. [Type Aliases](#type-aliases)
-5. [Enums](#enums)
-6. [Advanced Types](#advanced-types)
-7. [Conclusion](#conclusion)
-
 ## Introduction
 
 TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale. This document outlines the types used in our project to ensure consistency and clarity.
