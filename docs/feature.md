@@ -1,7 +1,5 @@
 # Features
 
-## Key Features
-
 ### Customizable Type Definitions
 - Predefined types for common use cases.
 - Easily extensible to fit specific project requirements.
@@ -28,22 +26,3 @@
 ### Versioning and Backward Compatibility
 - Semantic versioning for smooth upgrades.
 - Backward-compatible changes to ensure stability in existing projects.
-
----
-
-## Planned Features
-
-### More Built-in Types
-- Expand the library with new type utilities and patterns.
-- Focus on areas like validation schemas, API type management, and more.
-
-### Third-Party Library Integrations
-- Add support for commonly used libraries such as Redux, Axios, and more.
-
-### Performance Benchmarks
-- Include benchmarks comparing type-checking performance with other libraries.
-
-### Community Contributions
-- Encourage community involvement for new features and improvements.
-- Provide clear contribution guidelines and templates.
-
