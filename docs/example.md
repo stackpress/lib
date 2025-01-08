@@ -8,7 +8,7 @@ The `Nest` and `ReadonlyNest` types are useful for creating nested object struct
 
 For `Nest`
 ```typescript
-import { Nest, ReadonlyNest } from '@stackpress/types';
+import { Nest } from '@stackpress/types';
 
 // Using Nest
 const userProfile: Nest<string | number> = {
@@ -26,6 +26,8 @@ const userProfile: Nest<string | number> = {
 
 For `ReadonlyNest`
 ```typescript
+import { ReadonlyNest } from '@stackpress/types';
+
 // Using ReadonlyNest
 const appConfig: ReadonlyNest<string | number> = {
     server: {
