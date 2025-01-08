@@ -14,9 +14,7 @@ $ yarn test
 Please follow the steps below to properly contribute to this repository.
 
 > Do not commit code that is not related to a GitHub issue!
-
 > Please tag all your commits with `[type]/[issue#]`.
-
 > Please include the time it took per commit. ie. `1s` or `1h`.
 
  1. Per issue on Github, you should create a branch. example: `[type]/[issue#]`

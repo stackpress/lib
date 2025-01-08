@@ -1,4 +1,3 @@
-# Types
 
 <div align='center'>
     <h1>Types</h1>
@@ -7,6 +6,8 @@
     <a href='https://github.com/stackpress/types/commits/main/'><img src="https://img.shields.io/github/last-commit/stackpress/types" /></a>
     <a href='https://github.com/stackpress/types/actions'><img src='https://img.shields.io/github/actions/workflow/status/stackpress/types/test.yml' /></a>
     <a href="https://github.com/RheillyAguilar/types/tree/markdown/types/docs/contribute.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" /></a>
+    <br/>
+    <hr/>
 </div>
 
 > Common typescript types
@@ -21,7 +22,7 @@ $ npm install -D @stackpress/types
 
 ## How It Works
 
-1. @stackpress/types provides a collection of commonly used TypeScript types that you can import and use in your projects. Here's a basic overview of how to use this library:
+1. @stackpress/types provides a collection of commonly used TypeScript types that you can import and use in your projects.
 2. Once imported, you can use these types to annotate your variables, function parameters, return types, etc.
 3. TypeScript will now use these imported types to provide better type checking, autocompletion, and other IDE features.
 
