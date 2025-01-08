@@ -48,12 +48,3 @@ data.user.age == 30; // Error: Property 'age' does not exist on type '{ name: st
 
 config.api.url = 'https://newapi.example.com'; // Error: Cannot assign to 'url' because it is a read-only property
 ```
-
-For more detailed information on available types and their usage, refer to the API documentation.
-
-
-This quick start guide provides a basic introduction to using the @stackpress/types package. It covers:
-
-1. How to import types from the package
-2. Examples of using some common types like `Nest`, `ReadonlyNest`, and `EventEmitter`
-3. Demonstrates the benefits of TypeScript's type checking with these types
