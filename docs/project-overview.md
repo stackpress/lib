@@ -9,7 +9,7 @@ Contains the main source code for the project, organized into several components
 - **`Reflection.ts`**: Provides reflection-related functionality.
 - **`Status.ts`**: Defines status-related types and enums.
 - **`types.ts`**: Contains general type definitions.
-- **`data.ts`**:  Includes data processing and manipulation utilities.
-- **`event.ts`**: Contains event handling related code.
-- **`queue.ts`**: Provides queue management utilities.
-- **`system.ts`**: Includes system-level functionality.
+- **`src/data`**:  Includes data processing and manipulation utilities.
+- **`src/event`**: Contains event handling related code.
+- **`src/queue`**: Provides queue management utilities.
+- **`src/system`**: Includes system-level functionality.
