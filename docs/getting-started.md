@@ -44,7 +44,41 @@ emitter.emit('message', 'Hello, world!');
 ```javascript
 // TypeScript will catch type errors
 data.user.age == 30; // Error: Property 'age' does not exist on type '{ name: string; email: string; }'
-// ReadonlyNest prevents modifications
 
+// ReadonlyNest prevents modifications
 config.api.url = 'https://newapi.example.com'; // Error: Cannot assign to 'url' because it is a read-only property
 ```
+
+## Project Setup
+
+1. Initialize
+
+```bash
+mkdir my-ingest-app
+cd my-ingest-app
+yarn init -y
+```
+
+2. Install dependencies:
+
+```bash
+yarn add @stackpress/ingest
+```
+
+## Development Mode
+
+To run your application in development mode:
+
+```bash
+yarn dev
+```
+
+## Building for Production
+
+To build your application for production:
+
+```bash
+yarn build
+```
+
+
