@@ -5,7 +5,7 @@
     <a href='https://github.com/stackpress/types/blob/main/LICENSE'><img  src='https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat' /></a>
     <a href='https://github.com/stackpress/types/commits/main/'><img src="https://img.shields.io/github/last-commit/stackpress/types" /></a>
     <a href='https://github.com/stackpress/types/actions'><img src='https://img.shields.io/github/actions/workflow/status/stackpress/types/test.yml' /></a>
-    <a href="https://github.com/RheillyAguilar/types/tree/markdown/types/docs/contribute.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" /></a>
+    <a href="https://github.com/stackpress/types/blob/main/docs/contribute.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" /></a>
     <br/>
     <hr/>
 </div>
