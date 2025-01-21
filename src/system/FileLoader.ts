@@ -70,7 +70,7 @@ export default class FileLoader {
     if (cwd === '/') {
       throw Exception.for('Cannot find node_modules');
     }
-    if (this._fs.existsSync(path.resolve(cwd, 'node_modules', '@stackpress', 'types'))) {
+    if (this._fs.existsSync(path.resolve(cwd, 'node_modules', '@stackpress', 'lib'))) {
       return path.resolve(cwd, 'node_modules');
     }
     return this.modules(path.dirname(cwd));

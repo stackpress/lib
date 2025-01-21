@@ -4,7 +4,7 @@ import type { Item } from '../types';
 /**
  * An item queue that consumes in order of priority and FIFO
  */
-export default class TaskQueue<I> {
+export default class ItemQueue<I> {
   //The in memory task queue. Dont use 
   //Set because we will be sorting constantly
   public readonly queue: Item<I>[] = [];
