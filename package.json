@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "nyc ts-mocha tests/*.test.ts",
+    "test": "nyc -r text -r html ts-mocha tests/*.test.ts",
     "coverage": "nyc report -r text-lcov"
   },
   "dependencies": {
