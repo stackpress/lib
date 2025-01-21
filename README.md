@@ -374,3 +374,65 @@ reflection[0].method //--> <none>
 reflection[0].self //--> undefined
 reflection[0].toObject()
 ```
+
+<a name="status"></a>
+
+## Status Codes
+
+Status codes inherit from http status codes and can be used to report 
+statuses after major actions within your app has been executed.
+
+```js
+import { Status, getStatus } from '@stackpress/lib';
+
+getStatus(200) //--> { code: 200, status: 'OK' }
+
+Status.CONTINUE //--> { code: 100, status: 'Continue' }
+Status.PROCESSING //--> { code: 102, status: 'Processing' }
+Status.OK //--> { code: 200, status: 'OK' }
+Status.CREATED //--> { code: 201, status: 'Created' }
+Status.ACCEPTED //--> { code: 202, status: 'Accepted' }
+Status.EMPTY //--> { code: 204, status: 'No Content' }
+Status.RESET //--> { code: 205, status: 'Reset Content' }
+Status.PARTIAL //--> { code: 206, status: 'Partial Content' }
+Status.MOVED //--> { code: 301, status: 'Moved Permanently' }
+Status.FOUND //--> { code: 302, status: 'Found' }
+Status.REDIRECT //--> { code: 303, status: 'See Other' }
+Status.CACHE //--> { code: 304, status: 'Not Modified' }
+Status.TEMPORARY //--> { code: 307, status: 'Temporary Redirect' }
+Status.PERMANENT //--> { code: 308, status: 'Permanent Redirect' }
+Status.ABORT //--> { code: 309, status: 'Aborted' }
+Status.BAD_REQUEST //--> { code: 400, status: 'Bad Request' }
+Status.UNAUTHORIZED //--> { code: 401, status: 'Unauthorized' }
+Status.FORBIDDEN //--> { code: 403, status: 'Forbidden' }
+Status.NOT_FOUND //--> { code: 404, status: 'Not Found' }
+Status.BAD_METHOD //--> { code: 405, status: 'Method Not Allowed' }
+Status.NOT_ACCEPTABLE //--> { code: 406, status: 'Not Acceptable' }
+Status.REQUEST_TIMEOUT //--> { code: 408, status: 'Request Timeout' }
+Status.CONFLICT //--> { code: 409, status: 'Conflict' }
+Status.GONE //--> { code: 410, status: 'Gone' }
+Status.LENGTH_REQUIRED //--> { code: 411, status: 'Length Required' }
+Status.TOO_LARGE //--> { code: 413, status: 'Payload Too Large' }
+Status.TOO_LONG //--> { code: 414, status: 'URI Too Long' }
+Status.UNSUPPORTED_TYPE //--> { code: 415, status: 'Unsupported Media Type' }
+Status.BAD_RANGE //--> { code: 416, status: 'Range Not Satisfiable' }
+Status.BAD_EXPECTATION //--> { code: 417, status: 'Expectation Failed' }
+Status.MISDIRECTED //--> { code: 421, status: 'Misdirected Request' }
+Status.UNPROCESSABLE //--> { code: 422, status: 'Unprocessable Content' }
+Status.LOCKED //--> { code: 423, status: 'Locked' }
+Status.BAD_DEPENDENCY //--> { code: 424, status: 'Failed Dependency' }
+Status.UPGRADE_REQUIRED //--> { code: 426, status: 'Upgrade Required' }
+Status.BAD_PRECONDITION //--> { code: 428, status: 'Precondition Required' }
+Status.TOO_MANY //--> { code: 429, status: 'Too Many Requests' }
+Status.HEADER_TOO_LARGE //--> { code: 431, status: 'Request Header Fields Too Large' }
+Status.LEGAL_REASONS //--> { code: 451, status: 'Unavailable For Legal Reasons' }
+Status.ERROR //--> { code: 500, status: 'Internal Server Error' }
+Status.NOT_IMPLEMENTED //--> { code: 501, status: 'Not Implemented' }
+Status.BAD_GATEWAY //--> { code: 502, status: 'Bad Gateway' }
+Status.UNAVAILABLE //--> { code: 503, status: 'Service Unavailable' }
+Status.RESPONSE_TIMEOUT //--> { code: 504, status: 'Gateway Timeout' }
+Status.BAD_VERSION //--> { code: 505, status: 'HTTP Version Not Supported' }
+Status.INSUFFICIENT_STORAGE //--> { code: 507, status: 'Insufficient Storage' }
+Status.INFINITE_LOOP //--> { code: 508, status: 'Loop Detected' }
+Status.NETWORK_AUTHENTICATION_REQUIRED //--> { code: 511, status: 'Network Authentication Required' }
+```
