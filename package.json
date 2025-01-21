@@ -1,12 +1,12 @@
 {
-  "name": "@stackpress/types",
-  "version": "0.3.17",
+  "name": "@stackpress/lib",
+  "version": "0.3.19",
   "license": "Apache-2.0",
-  "description": "Common types in typescript",
+  "description": "Shared library used across stackpress projects",
   "author": "Chris <chris@incept.asia>",
-  "homepage": "https://github.com/stackpress/types",
-  "bugs": "https://github.com/stackpress/types/issues",
-  "repository": "stackpress/types",
+  "homepage": "https://github.com/stackpress/lib",
+  "bugs": "https://github.com/stackpress/lib/issues",
+  "repository": "stackpress/lib",
   "main": "index.js",
   "files": [
     "dist",
@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "nyc ts-mocha tests/*.test.ts"
+    "test": "nyc  -r text -r json-summary ts-mocha tests/*.test.ts"
   },
   "dependencies": {
     "@inquirer/prompts": "7.1.0"
