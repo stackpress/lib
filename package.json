@@ -18,7 +18,7 @@
   "scripts": {
     "build": "tsc",
     "test": "nyc -r text -r html ts-mocha tests/*.test.ts",
-    "coverage": "nyc report --reporter=text-lcov"
+    "report": "nyc report -r text-lcov | node ./node_modules/coveralls/bin/coveralls.js"
   },
   "dependencies": {
     "@inquirer/prompts": "7.1.0"
