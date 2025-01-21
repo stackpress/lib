@@ -15,5 +15,9 @@ jobs:
         run: yarn build
       - name: Run Tests
         run: yarn test
-      - name: Make Coverage Report
+      - name: Make Report
         run: yarn report
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
