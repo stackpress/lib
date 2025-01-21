@@ -1,4 +1,4 @@
-# Stackpress Library
+# 📖 Stackpress Library
 
 [![NPM Package](https://img.shields.io/npm/v/@stackpress/lib.svg?style=flat)](https://www.npmjs.com/package/@stackpress/lib)
 [![Tests Status](https://img.shields.io/github/actions/workflow/status/stackpress/lib/test.yml)](https://github.com/stackpress/lib/actions)
