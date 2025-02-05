@@ -51,9 +51,14 @@ export default class FileLoader {
     //if the pathname does not start with /, 
     //the path should start with modules
     if (!pathname.startsWith('/') && !pathname.startsWith('\\')) {
-      //NOTE: This resolves to a file in the node_modules directory
-      //where as absolute() should resolve to a file or directory
-      //require.resolve(pathname, { paths: [ modules ] });
+      let cwd = pwd;
+      do {
+        const module = path.resolve(cwd, 'node_modules', pathname);
+        if (this._fs.existsSync(module)) {
+          return module;
+        }
+        cwd = path.dirname(cwd);
+      } while (cwd !== '/');
       pathname = path.resolve(this.modules(this._cwd), pathname);
     }
     if (exists && !this._fs.existsSync(pathname)) {
