@@ -48,7 +48,7 @@ export default class FileLoader {
       //get the absolute path
       pathname = path.resolve(pwd, pathname);
     }
-    //check if path is not already absolute
+    //check if path is not already absolute on all os
     if (!path.isAbsolute(pathname)) {
       let cwd = pwd;
       do {
