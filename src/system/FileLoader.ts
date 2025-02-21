@@ -48,8 +48,9 @@ export default class FileLoader {
       //get the absolute path
       pathname = path.resolve(pwd, pathname);
     }
-    //check if path is not already absolute on all os
-    if (!path.isAbsolute(pathname)) {
+     //if the pathname is not already absolute,
+     //the path should start with modules
+     if (!path.isAbsolute(pathname)) {
       let cwd = pwd;
       do {
         const module = path.resolve(cwd, 'node_modules', pathname);
