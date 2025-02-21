@@ -48,17 +48,22 @@ export default class FileLoader {
       //get the absolute path
       pathname = path.resolve(pwd, pathname);
     }
-    //if the pathname does not start with /, 
-    //the path should start with modules
-    if (!pathname.startsWith('/') && !pathname.startsWith('\\')) {
+     //if the pathname is not already absolute,
+     //the path should start with modules
+     if (!path.isAbsolute(pathname)) {
       let cwd = pwd;
       do {
         const module = path.resolve(cwd, 'node_modules', pathname);
         if (this._fs.existsSync(module)) {
           return module;
         }
-        cwd = path.dirname(cwd);
-      } while (cwd !== '/');
+        const parent = path.dirname(cwd);
+            //stops at root dir (C:\ or /)
+            if (parent === cwd) { 
+                break;
+            }
+            cwd = parent;
+        } while (true);
       pathname = path.resolve(this.modules(this._cwd), pathname);
     }
     if (exists && !this._fs.existsSync(pathname)) {
