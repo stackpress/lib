@@ -1,6 +1,6 @@
 {
   "name": "@stackpress/lib",
-  "version": "0.3.31",
+  "version": "0.3.32",
   "license": "Apache-2.0",
   "description": "Shared library used across stackpress projects",
   "author": "Chris <chris@incept.asia>",
