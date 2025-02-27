@@ -77,6 +77,8 @@ describe('Nest Store Tests', () => {
     store.withPath.forEach('foo.zoo', (value, index) => {
       expect(value).to.equal(['foo', 'bar', 'zoo'][index]);
     });
+    const actual = store.path<string>('foo.zoo.1', 'zoo');
+    expect(actual).to.equal('bar');
   });
 
   it('Should set with query string', async () => {

@@ -71,7 +71,7 @@ export default class ReadonlyNest<M extends UnknownNest = UnknownNest>  {
   }
 
   /**
-   * Retrieves the data hashd specified by the path
+   * Retrieves the data hashed specified by the path
    */
   public get<T extends UnknownNest = M>(): T;
   public get<T = any>(...path: Key[]): T;
@@ -127,6 +127,13 @@ export default class ReadonlyNest<M extends UnknownNest = UnknownNest>  {
    */
   public keys() {
     return Object.keys(this._data);
+  }
+
+  /**
+   * Retrieves the data hashed specified by the dot path
+   */
+  public path<T = any>(path: string, defaults: T): T {
+    return this.withPath.get(path, '.') || defaults;
   }
 
   /**
