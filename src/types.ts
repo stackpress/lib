@@ -112,7 +112,8 @@ export type Method = 'ALL'
 export type Route = { method: Method, path: string };
 
 export type RouterMap<R, S> = Record<string, [ R, S ]>;
-export type RouterAction<R, S> = (req: R, res: S) => void | boolean | Promise<void|boolean>;
+export type RouterActionResults = void|boolean|undefined|Promise<void|boolean|undefined>;
+export type RouterAction<R, S> = (req: R, res: S) => RouterActionResults;
 
 //--------------------------------------------------------------------//
 // Filesystem Types
