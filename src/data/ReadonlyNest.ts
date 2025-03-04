@@ -132,8 +132,8 @@ export default class ReadonlyNest<M extends UnknownNest = UnknownNest>  {
   /**
    * Retrieves the data hashed specified by the dot path
    */
-  public path<T = any>(path: string, defaults: T): T {
-    return this.withPath.get(path, '.') || defaults;
+  public path<T = any>(path: string, defaults?: T|undefined): T {
+    return (this.withPath.get(path, '.') || defaults) as T;
   }
 
   /**

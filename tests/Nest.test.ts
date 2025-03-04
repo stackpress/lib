@@ -77,8 +77,15 @@ describe('Nest Store Tests', () => {
     store.withPath.forEach('foo.zoo', (value, index) => {
       expect(value).to.equal(['foo', 'bar', 'zoo'][index]);
     });
+    //can have a default
     const actual = store.path<string>('foo.zoo.1', 'zoo');
     expect(actual).to.equal('bar');
+    //can have no default
+    const actual2 = store.path<string>('foo.zoo.1');
+    expect(actual2).to.equal('bar');
+    //doesn't need a generic
+    const actual3 = store.path('foo.zoo.1');
+    expect(actual3).to.equal('bar');
   });
 
   it('Should set with query string', async () => {
@@ -276,11 +283,6 @@ describe('Nest Store Tests', () => {
     expect(store.get('key', '0')).to.equal('value');
   });
 
-
-  /*  
-  * ADD MORE UNIT TEST
-  */
-
   it('Should clear all data', async () => {
     const store = nest();
     store.set('foo', 'bar');
@@ -336,10 +338,6 @@ describe('Nest Store Tests', () => {
     expect(store.toString()).to.include('bar');
   });
 });
-
-/*
-* READONLY NEST TESTING
-*/
 
 describe('ReadonlyNest Tests', () => {
   it('Should initialize with empty data', () => {
@@ -420,7 +418,6 @@ describe('ReadonlyNest Tests', () => {
     const nest = new ReadonlyNest(data);
     expect(nest.toString(false)).to.equal('{"foo":{"bar":"baz"}}');
   });
-
 
   it('Should correctly handle nested objects', async () => {
     const data = { user: { name: 'John Doe', address: { city: 'New York', zipcode: '10001' } } };
