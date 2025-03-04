@@ -197,6 +197,9 @@ describe('Nest Store Tests', () => {
     const actual = JSON.stringify(store());
 
     expect(actual).to.equal(expected);
+    expect(store.path<string>('product.title')).to.equal('test');
+    expect(store.path('product.price', 100)).to.equal(1000);
+    expect(store.path('product.srp', 100)).to.equal(100);
   });
 
   /*

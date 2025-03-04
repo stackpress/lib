@@ -1,6 +1,7 @@
 //common
 import type { 
   Key, 
+  TypeOf,
   NestedObject, 
   UnknownNest, 
   CallableNest 
@@ -218,6 +219,7 @@ export function nest<M extends UnknownNest = UnknownNest>(data?: M): CallableNes
       get: <T = any>(...path: Key[]) => store.get<T>(...path),
       has: (...path: Key[]) => store.has(...path),
       keys: () => store.keys(),
+      path: <T = any>(path: string, defaults?: TypeOf<T>) => store.path<T>(path, defaults),
       set: (...path: any[]) => store.set(...path),
       toString: () => store.toString(),
       values: () => store.values(),
