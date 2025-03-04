@@ -6,6 +6,18 @@ import type Nest from './data/Nest';
 //--------------------------------------------------------------------//
 // Data Types
 
+export type TypeOf<T> = T extends number
+  ? number
+  : T extends string
+  ? string
+  : T extends boolean
+  ? boolean
+  : T extends undefined
+  ? any
+  : T extends null
+  ? unknown
+  : T;
+
 export type Key = string|number;
 export interface NestedObject<V = unknown> {
   [ key: Key ]: V|NestedObject<V>;

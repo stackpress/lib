@@ -1,5 +1,5 @@
 //common
-import type { Key, UnknownNest } from '../types';
+import type { Key, UnknownNest, TypeOf } from '../types';
 //local
 import Path from './ReadonlyPath';
 
@@ -132,8 +132,8 @@ export default class ReadonlyNest<M extends UnknownNest = UnknownNest>  {
   /**
    * Retrieves the data hashed specified by the dot path
    */
-  public path<T = any>(path: string, defaults?: T|undefined): T {
-    return (this.withPath.get(path, '.') || defaults) as T;
+  public path<T = any>(path: string, defaults?: TypeOf<T>): TypeOf<T> {
+    return (this.withPath.get(path, '.') ?? defaults) as TypeOf<T>;
   }
 
   /**

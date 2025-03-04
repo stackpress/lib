@@ -80,12 +80,15 @@ describe('Nest Store Tests', () => {
     //can have a default
     const actual = store.path<string>('foo.zoo.1', 'zoo');
     expect(actual).to.equal('bar');
-    //can have no default
-    const actual2 = store.path<string>('foo.zoo.1');
+    //can have a default with no generic
+    const actual2 = store.path('foo.zoo.1', 'zoo');
     expect(actual2).to.equal('bar');
-    //doesn't need a generic
-    const actual3 = store.path('foo.zoo.1');
+    //can have no default
+    const actual3 = store.path<string>('foo.zoo.1');
     expect(actual3).to.equal('bar');
+    //doesn't need a generic
+    const actual4 = store.path('foo.zoo.1');
+    expect(actual4).to.equal('bar');
   });
 
   it('Should set with query string', async () => {
