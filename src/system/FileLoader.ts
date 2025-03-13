@@ -1,5 +1,5 @@
 //modules
-import path from 'node:path';
+import * as path from 'node:path';
 //common
 import type { FileSystem } from '../types';
 import Exception from '../Exception';

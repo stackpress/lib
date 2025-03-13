@@ -1,5 +1,5 @@
 //modules
-import fs from 'node:fs';
+import * as fs from 'node:fs';
 //common
 import type { FileSystem, FileRecursiveOption } from '../types';
 

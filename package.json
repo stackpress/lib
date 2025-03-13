@@ -17,17 +17,24 @@
     "file system",
     "stackpress"
   ],
-  "main": "index.js",
-  "types": "index.d.ts",
+  "type": "module",
+  "main": "cjs/index.js",
+  "types": "cjs/index.d.ts",
+  "exports": {
+    "require": "./cjs/index.js",
+    "import": "./esm/index.js"
+  },
   "files": [
-    "dist",
-    "index.js",
-    "index.d.ts",
+    "cjs",
+    "esm",
     "LICENSE",
     "README.md"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "npm run build:tsc && npm run build:esm && npm run build:cjs",
+    "build:tsc": "tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json",
+    "build:esm": "echo '{\"type\": \"module\"}' > esm/package.json",
+    "build:cjs": "echo '{\"type\": \"commonjs\"}' > cjs/package.json",
     "test": "nyc ts-mocha tests/*.test.ts",
     "report": "nyc report -r lcov"
   },
