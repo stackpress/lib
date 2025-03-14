@@ -7,7 +7,7 @@
     "target": "ES2022",
     //bundling
     "declaration": true,
-    //"esModuleInterop": true,
+    "esModuleInterop": true,
     "isolatedModules": true,
     "removeComments": true,
     "sourceMap": false,
