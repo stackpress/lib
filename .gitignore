@@ -131,3 +131,6 @@ dist
 
 # coveralls
 .coveralls.yml
+
+esm/
+cjs/
