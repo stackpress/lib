@@ -77,7 +77,7 @@ export default class EventEmitter<M extends EventMap> {
     //if there are no events found
     if (queue.size === 0) {
       //report a 404
-      return Status.NOT_FOUND;
+      return Status.codes.NOT_FOUND;
     }
 
     return await queue.run(...args);

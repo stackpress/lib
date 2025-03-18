@@ -33,22 +33,22 @@ export default class TaskQueue<A extends Array<unknown>> extends ItemQueue<Task<
   async run(...args: A): Promise<ResponseStatus> {
     if (!this.queue.length) {
       //report a 404
-      return Status.NOT_FOUND;
+      return Status.codes.NOT_FOUND;
     }
 
     while (this.queue.length) {
       const task = this.consume() as Task<A>;
       if (this._before && await this._before(...args) === false) {
-        return Status.ABORT;
+        return Status.codes.ABORT;
       }
       if (task && await task(...args) === false) {
-        return Status.ABORT;
+        return Status.codes.ABORT;
       }
       if (this._after && await this._after(...args) === false) {
-        return Status.ABORT;
+        return Status.codes.ABORT;
       }
     }
 
-    return Status.OK;
+    return Status.codes.OK;
   }
 }

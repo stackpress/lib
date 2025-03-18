@@ -83,7 +83,7 @@ describe('Task Queue Tests', () => {
   it("should return NOT_FOUND when the queue is empty", async () => {
     const queue = new TaskQueue<[]>();
     const status = await queue.run();
-    expect(status).to.equal(StatusCode.NOT_FOUND);
+    expect(status).to.equal(StatusCode.codes.NOT_FOUND);
   });
 
   it("should execute tasks in sequence and return OK", async () => {
@@ -101,7 +101,7 @@ describe('Task Queue Tests', () => {
 
     const status = await queue.run(5);
 
-    expect(status).to.equal(StatusCode.OK);
+    expect(status).to.equal(StatusCode.codes.OK);
     expect(results).to.deep.equal([6, 7]);
   });
 
@@ -121,7 +121,7 @@ describe('Task Queue Tests', () => {
       return true;
     });
     const status = await queue.run(5);
-    expect(status).to.equal(StatusCode.ABORT);
+    expect(status).to.equal(StatusCode.codes.ABORT);
     expect(results).to.deep.equal([6, 7]);
   });
 
@@ -134,7 +134,7 @@ describe('Task Queue Tests', () => {
       return true;
     });
     const status = await queue.run(5);
-    expect(status).to.equal(StatusCode.ABORT);
+    expect(status).to.equal(StatusCode.codes.ABORT);
     expect(results).to.deep.equal([]);
   });
 
@@ -148,7 +148,7 @@ describe('Task Queue Tests', () => {
     });
 
     const status = await queue.run(5);
-    expect(status).to.equal(StatusCode.ABORT);
+    expect(status).to.equal(StatusCode.codes.ABORT);
     expect(results).to.deep.equal([6]);
 
 

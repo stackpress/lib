@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@stackpress/lib",
-  "version": "0.4.10",
+  "version": "0.5.1",
   "license": "Apache-2.0",
   "description": "Shared library used across stackpress projects",
   "author": "Chris <chris@incept.asia>",
@@ -24,93 +24,75 @@
   "exports": {
     ".": {
       "require": "./cjs/index.js",
-      "import": "./esm/index.js",
-      "types": "./esm/index.d.ts"
+      "import": "./esm/index.js"
     },
     "./types": {
       "require": "./cjs/types.js",
-      "import": "./esm/types.js",
-      "types": "./esm/types.d.ts"
+      "import": "./esm/types.js"
     },
     "./Exception": {
       "require": "./cjs/Exception.js",
-      "import": "./esm/Exception.js",
-      "types": "./esm/Exception.d.ts"
+      "import": "./esm/Exception.js"
     },
     "./Reflection": {
       "require": "./cjs/Reflection.js",
-      "import": "./esm/Reflection.js",
-      "types": "./esm/Reflection.d.ts"
+      "import": "./esm/Reflection.js"
     },
     "./Status": {
       "require": "./cjs/Status.js",
-      "import": "./esm/Status.js",
-      "types": "./esm/Status.d.ts"
+      "import": "./esm/Status.js"
     },
     "./map": {
       "require": "./cjs/data/map.js",
-      "import": "./esm/data/map.js",
-      "types": "./esm/data/map.d.ts"
+      "import": "./esm/data/map.js"
     },
     "./set": {
       "require": "./cjs/data/set.js",
-      "import": "./esm/data/set.js",
-      "types": "./esm/data/set.d.ts"
+      "import": "./esm/data/set.js"
     },
     "./Nest": {
       "require": "./cjs/data/Nest.js",
-      "import": "./esm/data/Nest.js",
-      "types": "./esm/data/Nest.d.ts"
+      "import": "./esm/data/Nest.js"
     },
     "./ReadonlyMap": {
       "require": "./cjs/data/ReadonlyMap.js",
-      "import": "./esm/data/ReadonlyMap.js",
-      "types": "./esm/data/ReadonlyMap.d.ts"
+      "import": "./esm/data/ReadonlyMap.js"
     },
     "./ReadonlyNest": {
       "require": "./cjs/data/ReadonlyNest.js",
-      "import": "./esm/data/ReadonlyNest.js",
-      "types": "./esm/data/ReadonlyNest.d.ts"
+      "import": "./esm/data/ReadonlyNest.js"
     },
     "./ReadonlySet": {
       "require": "./cjs/data/ReadonlySet.js",
-      "import": "./esm/data/ReadonlySet.js",
-      "types": "./esm/data/ReadonlySet.d.ts"
+      "import": "./esm/data/ReadonlySet.js"
     },
     "./EventEmitter": {
       "require": "./cjs/event/EventEmitter.js",
-      "import": "./esm/event/EventEmitter.js",
-      "types": "./esm/event/EventEmitter.d.ts"
+      "import": "./esm/event/EventEmitter.js"
     },
     "./EventRouter": {
       "require": "./cjs/event/EventRouter.js",
-      "import": "./esm/event/EventRouter.js",
-      "types": "./esm/event/EventRouter.d.ts"
+      "import": "./esm/event/EventRouter.js"
     },
     "./EventTerminal": {
       "require": "./cjs/event/EventTerminal.js",
-      "import": "./esm/event/EventTerminal.js",
-      "types": "./esm/event/EventTerminal.d.ts"
+      "import": "./esm/event/EventTerminal.js"
     },
     "./ItemQueue": {
       "require": "./cjs/queue/ItemQueue.js",
-      "import": "./esm/queue/ItemQueue.js",
-      "types": "./esm/queue/ItemQueue.d.ts"
+      "import": "./esm/queue/ItemQueue.js"
     },
     "./TaskQueue": {
       "require": "./cjs/queue/TaskQueue.js",
-      "import": "./esm/queue/TaskQueue.js",
-      "types": "./esm/queue/TaskQueue.d.ts"
+      "import": "./esm/queue/TaskQueue.js"
     },
     "./FileLoader": {
       "require": "./cjs/system/FileLoader.js",
-      "import": "./esm/system/FileLoader.js",
-      "types": "./esm/system/FileLoader.d.ts"
+      "import": "./esm/system/FileLoader.js"
     },
     "./NodeFS": {
       "require": "./cjs/system/NodeFS.js",
-      "import": "./esm/system/NodeFS.js",
-      "types": "./esm/system/NodeFS.d.ts"
+      "import": "./esm/system/NodeFS.js"
     },
     "./tsconfig/cjs": "./tsconfig/cjs.json",
     "./tsconfig/esm": "./tsconfig/esm.json"

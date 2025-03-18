@@ -12,7 +12,7 @@ import { ResponseStatus } from './types';
  * 
  * see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
  */
-const statuses: Record<string, ResponseStatus> = {
+const codes: Record<string, ResponseStatus> = {
   //------------------------------------------------------------------//
   // 100 Status Codes
 
@@ -233,11 +233,16 @@ const statuses: Record<string, ResponseStatus> = {
   NETWORK_AUTHENTICATION_REQUIRED: { code: 511, status: 'Network Authentication Required' }
 };
 
-export default statuses;
-
-/**
- * Returns the status given the code
- */
-export function getStatus(code: number) {
-  return Object.values(statuses).find(status => status.code === code);
-};
+export default class Status {
+  static codes = codes;
+  static find(status: string) {
+    return Object.values(codes).find(
+      response => response.status === status
+    );
+  }
+  static get(code: number) {
+    return Object.values(codes).find(
+      response => response.code === code
+    );
+  }
+}

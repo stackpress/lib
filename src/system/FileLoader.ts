@@ -36,54 +36,92 @@ export default class FileLoader {
   }
   
   /**
-   * Returns the absolute path to the file
+   * Returns the absolute path to the pathname given
+   * NOTE: This is not a resolver, it just returns the path
    */
-  public absolute(source: string, pwd = this._cwd, exists = false) {
-    let pathname = source;
+  public async absolute(pathname: string, pwd = this._cwd) {
     //ex. @/path/to/file.ext
     if (pathname.startsWith('@/')) {
-      pathname = path.resolve(this._cwd, pathname.substring(2));
-    //if the pathname starts with ./ or ../
+      return path.resolve(this._cwd, pathname.substring(2));
+    //if the source starts with ./ or ../
     } else if (/^\.{1,2}(\/|\\)/.test(pathname)) {
       //get the absolute path
-      pathname = path.resolve(pwd, pathname);
+      return path.resolve(pwd, pathname);
     }
-    //if the pathname is not already absolute,
+    //if the source is not already absolute,
     //the path should start with modules
     if (!path.isAbsolute(pathname)) {
-      let cwd = pwd;
-      do {
-        const module = path.resolve(cwd, 'node_modules', pathname);
-        if (this._fs.existsSync(module)) {
-          return module;
+      try { //to resolve the path from node_modules
+        return await this.modules(pathname, pwd);
+      } catch(e) {
+        //set pathname relative to the lib
+        const lib = await this.lib(this._cwd);
+        const libname = path.resolve(lib, pathname);
+        if (await this._fs.exists(libname)) {
+          return libname;
         }
-        const parent = path.dirname(cwd);
-        //stops at root dir (C:\ or /)
-        if (parent === cwd) { 
-          break;
-        }
-        cwd = parent;
-      } while (true);
-      pathname = path.resolve(this.modules(this._cwd), pathname);
+      }
     }
-    if (exists && !this._fs.existsSync(pathname)) {
-      throw Exception.for(`Cannot find '${source}'`);
+    //force pwd + source
+    return path
+      .resolve(pwd, pathname)
+      .replaceAll(path.sep + path.sep, path.sep);
+  }
+
+  /**
+   * Removes the extname from the pathname
+   */
+  public basepath(pathname: string) {
+    const extname = path.extname(pathname);
+    if (extname.length) {
+      return pathname.substring(0, pathname.length - extname.length);
     }
     return pathname;
   }
 
   /**
    * Should locate the node_modules directory 
-   * where ink is actually installed
+   * where @stackpress/lib is actually installed
    */
-  public modules(cwd = this._cwd): string {
-    if (cwd === '/') {
-      throw Exception.for('Cannot find node_modules');
+  public async lib(pwd = this._cwd): Promise<string> {
+    return this.modules(path.join('@stackpress', 'lib'), pwd);
+  }
+
+  /**
+   * Should locate the node_modules directory where the source is installed
+   */
+  public async modules(source: string, pwd = this._cwd): Promise<string> {
+    const module = path.resolve(pwd, 'node_modules', source);
+    if (await this._fs.exists(module)) {
+      return path.resolve(pwd, 'node_modules');
     }
-    if (this._fs.existsSync(path.resolve(cwd, 'node_modules', '@stackpress', 'lib'))) {
-      return path.resolve(cwd, 'node_modules');
+    const parent = path.dirname(pwd);
+    //stops at root dir (C:\ or /)
+    if (parent === pwd) { 
+      throw Exception.for('Cannot find %s in any node_modules', source);
     }
-    return this.modules(path.dirname(cwd));
+    return await this.modules(source, parent);
+  }
+
+  /**
+   * import() json/js/mjs/cjs file
+   */
+  public async import<T = any>(source: string, getDefault = false) {
+    const absolute = await this.absolute(source);
+    //if JSON, safely require it
+    if (path.extname(absolute) === '.json') {
+      const contents = await this._fs.readFile(absolute, 'utf8');
+      try {
+        return JSON.parse(contents) || {};
+      } catch(e) {}
+      return {};
+    }
+    
+    const imports = await import(absolute);
+    if (getDefault) {
+      return imports.default as T;
+    }
+    return imports as T;
   }
 
   /**
@@ -108,58 +146,55 @@ export default class FileLoader {
   }
 
   /**
-   * require() should be monitored separately from the code
+   * Resolves a pathname (file or directory)
    */
-  public require(source: string) {
-    //if JSON, safely require it
-    if (path.extname(source) === '.json') {
-      const contents = this._fs.readFileSync(source, 'utf8');
-      try {
-        return JSON.parse(contents) || {};
-      } catch(e) {}
-      return {};
-    }
-    
-    return require(source);
-  }
-
-  /**
-   * Resolves the path name to a path that can be required
-   */
-  public resolve(
+  public async resolve(
     pathname: string, 
     pwd = this._cwd, 
-    extnames = [ '.js', '.json' ], 
     exists = false
   ) {
     //get the absolute path
-    const absolute = this.absolute(pathname, pwd);
+    const absolute = await this.absolute(pathname, pwd);
+    //if absolute exists
+    if (await this._fs.exists(absolute)) {
+      return absolute;
+    //if exists check
+    } else if (exists) {
+      //throw an exception
+      throw Exception.for(`Cannot resolve '${pathname}'`);
+    }
+    return null;
+  }
+
+  /**
+   * Resolves a pathname (file)
+   */
+  public async resolveFile(
+    pathname: string, 
+    extnames = [ '.js', '.json' ], 
+    pwd = this._cwd, 
+    exists = false
+  ) {
+    //get the absolute path
+    const absolute = await this.absolute(pathname, pwd);
     //ex. /plugin/foo
     //it's already absolute...
     //Check if pathname is literally a file
-    if (this._fileExists(absolute)) {
+    if (await this._fileExists(absolute)) {
       return absolute;
     }
     //we want to try resolving manually using the extnames
     //as prefrenced first...
     for (const extname of extnames) {
       let file = absolute + extname;
-      if (this._fileExists(file)) {
+      if (await this._fileExists(file)) {
         return file;
       }
       file = path.resolve(absolute, 'index' + extname);
-      if (this._fileExists(file)) {
+      if (await this._fileExists(file)) {
         return file;
       }
     }
-
-    try { //to resolve using require.resolve last...
-      const resolved = require.resolve(pathname);
-      //if resolved is an absolute path
-      if (resolved.startsWith('/') || resolved.startsWith('\\')) {
-        return resolved;
-      }
-    } catch(e) {}
 
     if (exists) {
       throw Exception.for(`Cannot resolve '${pathname}'`);
@@ -169,22 +204,13 @@ export default class FileLoader {
   }
 
   /**
-   * Returns the absolute path to the file given the source route
-   * NOTE: source should be the source file (not source directory)
-   */
-  public route(source: string, destination: string) {
-    const dirname = path.dirname(source);
-    return path.resolve(dirname, destination);
-  }
-
-  /**
    * Returns true if the file exists
    */
-  protected _fileExists(source: string) {
-    if (!this._fs.existsSync(source)) {
+  protected async _fileExists(pathname: string) {
+    if (!(await this._fs.exists(pathname))) {
       return false;
     }
-    const stats = this._fs.lstatSync(source);
+    const stats = await this._fs.stat(pathname);
     return stats && stats.isFile();
   }
 }

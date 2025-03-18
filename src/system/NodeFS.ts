@@ -11,28 +11,30 @@ export default class NodeFS implements FileSystem {
   constructor(filesystem?: typeof fs) {
     this._fs = filesystem || fs;
   }
-  existsSync(path: string) {
-    return this._fs.existsSync(path);
+  async exists(path: string) {
+    return await this._fs.promises.access(path)
+      .then(() => true)
+      .catch(() => false);
   }
-  readFileSync(path: string, encoding: BufferEncoding) {
-    return this._fs.readFileSync(path, encoding);
+  readFile(path: string, encoding: BufferEncoding) {
+    return this._fs.promises.readFile(path, encoding);
   }
-  realpathSync(path: string) {
-    return this._fs.realpathSync(path);
+  realpath(path: string) {
+    return this._fs.promises.realpath(path);
   }
-  lstatSync(path: string) {
-    return this._fs.lstatSync(path);
+  stat(path: string) {
+    return this._fs.promises.lstat(path);
   }
-  writeFileSync(path: string, data: string) {
-    this._fs.writeFileSync(path, data);
+  writeFile(path: string, data: string) {
+    return this._fs.promises.writeFile(path, data);
   }
-  mkdirSync(path: string, options?: FileRecursiveOption) {
-    this._fs.mkdirSync(path, options);
+  async mkdir(path: string, options?: FileRecursiveOption) {
+    await this._fs.promises.mkdir(path, options);
   }
   createReadStream(path: string) {
     return this._fs.createReadStream(path);
   }
-  unlinkSync(path: string): void {
-    this._fs.unlinkSync(path);
+  unlink(path: string) {
+    return this._fs.promises.unlink(path);
   }
 }

@@ -137,14 +137,14 @@ export type FileStream = {
 };
 
 export interface FileSystem {
-  existsSync(path: string): boolean;
-  readFileSync(path: string, encoding: BufferEncoding): string;
-  realpathSync(string: string): string;
-  lstatSync(path: string): FileStat;
-  writeFileSync(path: string, data: string): void;
-  mkdirSync(path: string, options?: FileRecursiveOption): void
+  exists(path: string): Promise<boolean>;
+  readFile(path: string, encoding: BufferEncoding): Promise<string>;
+  realpath(string: string): Promise<string>;
+  stat(path: string): Promise<FileStat>;
+  writeFile(path: string, data: string): Promise<void>;
+  mkdir(path: string, options?: FileRecursiveOption): Promise<void>
   createReadStream(path: string): FileStream;
-  unlinkSync(path: string): void;
+  unlink(path: string): void;
 };
 
 //--------------------------------------------------------------------//
