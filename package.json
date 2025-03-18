@@ -1,6 +1,7 @@
 {
+  "type": "module",
   "name": "@stackpress/lib",
-  "version": "0.4.6",
+  "version": "0.4.10",
   "license": "Apache-2.0",
   "description": "Shared library used across stackpress projects",
   "author": "Chris <chris@incept.asia>",
@@ -17,18 +18,141 @@
     "file system",
     "stackpress"
   ],
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "./cjs/index.js",
+  "module": "./esm/index.js",
+  "types": "./cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./cjs/index.js",
+      "import": "./esm/index.js",
+      "types": "./esm/index.d.ts"
+    },
+    "./types": {
+      "require": "./cjs/types.js",
+      "import": "./esm/types.js",
+      "types": "./esm/types.d.ts"
+    },
+    "./Exception": {
+      "require": "./cjs/Exception.js",
+      "import": "./esm/Exception.js",
+      "types": "./esm/Exception.d.ts"
+    },
+    "./Reflection": {
+      "require": "./cjs/Reflection.js",
+      "import": "./esm/Reflection.js",
+      "types": "./esm/Reflection.d.ts"
+    },
+    "./Status": {
+      "require": "./cjs/Status.js",
+      "import": "./esm/Status.js",
+      "types": "./esm/Status.d.ts"
+    },
+    "./map": {
+      "require": "./cjs/data/map.js",
+      "import": "./esm/data/map.js",
+      "types": "./esm/data/map.d.ts"
+    },
+    "./set": {
+      "require": "./cjs/data/set.js",
+      "import": "./esm/data/set.js",
+      "types": "./esm/data/set.d.ts"
+    },
+    "./Nest": {
+      "require": "./cjs/data/Nest.js",
+      "import": "./esm/data/Nest.js",
+      "types": "./esm/data/Nest.d.ts"
+    },
+    "./ReadonlyMap": {
+      "require": "./cjs/data/ReadonlyMap.js",
+      "import": "./esm/data/ReadonlyMap.js",
+      "types": "./esm/data/ReadonlyMap.d.ts"
+    },
+    "./ReadonlyNest": {
+      "require": "./cjs/data/ReadonlyNest.js",
+      "import": "./esm/data/ReadonlyNest.js",
+      "types": "./esm/data/ReadonlyNest.d.ts"
+    },
+    "./ReadonlySet": {
+      "require": "./cjs/data/ReadonlySet.js",
+      "import": "./esm/data/ReadonlySet.js",
+      "types": "./esm/data/ReadonlySet.d.ts"
+    },
+    "./EventEmitter": {
+      "require": "./cjs/event/EventEmitter.js",
+      "import": "./esm/event/EventEmitter.js",
+      "types": "./esm/event/EventEmitter.d.ts"
+    },
+    "./EventRouter": {
+      "require": "./cjs/event/EventRouter.js",
+      "import": "./esm/event/EventRouter.js",
+      "types": "./esm/event/EventRouter.d.ts"
+    },
+    "./EventTerminal": {
+      "require": "./cjs/event/EventTerminal.js",
+      "import": "./esm/event/EventTerminal.js",
+      "types": "./esm/event/EventTerminal.d.ts"
+    },
+    "./ItemQueue": {
+      "require": "./cjs/queue/ItemQueue.js",
+      "import": "./esm/queue/ItemQueue.js",
+      "types": "./esm/queue/ItemQueue.d.ts"
+    },
+    "./TaskQueue": {
+      "require": "./cjs/queue/TaskQueue.js",
+      "import": "./esm/queue/TaskQueue.js",
+      "types": "./esm/queue/TaskQueue.d.ts"
+    },
+    "./FileLoader": {
+      "require": "./cjs/system/FileLoader.js",
+      "import": "./esm/system/FileLoader.js",
+      "types": "./esm/system/FileLoader.d.ts"
+    },
+    "./NodeFS": {
+      "require": "./cjs/system/NodeFS.js",
+      "import": "./esm/system/NodeFS.js",
+      "types": "./esm/system/NodeFS.d.ts"
+    },
+    "./tsconfig/cjs": "./tsconfig/cjs.json",
+    "./tsconfig/esm": "./tsconfig/esm.json"
+  },
+  "typesVersions": {
+    "*": {
+      "index": ["./cjs/index.d.ts"],
+      "types": [ "./cjs/types.d.ts" ],
+      "Exception": [ "./cjs/Exception.d.ts" ],
+      "Reflection": [ "./cjs/Reflection.d.ts" ],
+      "Status": [ "./cjs/Status.d.ts" ],
+      "map": [ "./cjs/data/map.d.ts" ],
+      "set": [ "./cjs/data/set.d.ts" ],
+      "Nest": [ "./cjs/data/Nest.d.ts" ],
+      "ReadonlyMap": [ "./cjs/data/ReadonlyMap.d.ts" ],
+      "ReadonlyNest": [ "./cjs/data/ReadonlyNest.d.ts" ],
+      "ReadonlySet": [ "./cjs/data/ReadonlySet.d.ts" ],
+      "EventEmitter": [ "./cjs/event/EventEmitter.d.ts" ],
+      "EventRouter": [ "./cjs/event/EventRouter.d.ts" ],
+      "EventTerminal": [ "./cjs/event/EventTerminal.d.ts" ],
+      "ItemQueue": [ "./cjs/queue/ItemQueue.d.ts" ],
+      "TaskQueue": [ "./cjs/queue/TaskQueue.d.ts" ],
+      "FileLoader": [ "./cjs/system/FileLoader.d.ts" ],
+      "NodeFS": [ "./cjs/system/NodeFS.d.ts" ]
+    }
+  },
   "files": [
-    "dist",
-    "index.js",
-    "index.d.ts",
+    "cjs",
+    "esm",
     "LICENSE",
-    "README.md"
+    "README.md",
+    "tsconfig"
   ],
   "scripts": {
-    "build": "tsc",
-    "test": "nyc ts-mocha tests/*.test.ts",
+    "build": "yarn build:tsc && yarn build:pkg",
+    "build:pkg": "yarn build:pkg:cjs && yarn build:pkg:esm",
+    "build:pkg:cjs": "echo '{\"type\": \"commonjs\"}' > cjs/package.json",
+    "build:pkg:esm": "echo '{\"type\": \"module\"}' > esm/package.json",
+    "build:tsc": "yarn build:tsc:cjs && yarn build:tsc:esm",
+    "build:tsc:cjs": "tsc -p ./tsconfig.cjs.json",
+    "build:tsc:esm": "tsc -p ./tsconfig.esm.json",
+    "test": "nyc ts-mocha -p ./tsconfig.cjs.json tests/*.test.ts",
     "report": "nyc report -r lcov"
   },
   "dependencies": {

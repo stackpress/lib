@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig/cjs.json",
+  "compilerOptions": {
+    "outDir": "cjs/"
+  },
+  "include": [ "src/**/*.ts" ],
+  "exclude": [ "esm", "cjs", "docs", "node_modules", "tests" ]
+}
