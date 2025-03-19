@@ -52,7 +52,8 @@ export default class FileLoader {
     //the path should start with modules
     if (!path.isAbsolute(pathname)) {
       try { //to resolve the path from node_modules
-        return await this.modules(pathname, pwd);
+        const modules = await this.modules(pathname, pwd);
+        return path.resolve(modules, pathname);
       } catch(e) {
         //set pathname relative to the lib
         const lib = await this.lib(this._cwd);
@@ -90,27 +91,27 @@ export default class FileLoader {
   /**
    * Should locate the node_modules directory where the source is installed
    */
-  public async modules(source: string, pwd = this._cwd): Promise<string> {
-    const module = path.resolve(pwd, 'node_modules', source);
+  public async modules(pathname: string, pwd = this._cwd): Promise<string> {
+    const module = path.resolve(pwd, 'node_modules', pathname);
     if (await this._fs.exists(module)) {
       return path.resolve(pwd, 'node_modules');
     }
     const parent = path.dirname(pwd);
     //stops at root dir (C:\ or /)
     if (parent === pwd) { 
-      throw Exception.for('Cannot find %s in any node_modules', source);
+      throw Exception.for('Cannot find %s in any node_modules', pathname);
     }
-    return await this.modules(source, parent);
+    return await this.modules(pathname, parent);
   }
 
   /**
    * import() json/js/mjs/cjs file
    */
   public async import<T = any>(
-    source: string, 
+    pathname: string, 
     getDefault = false
   ): Promise<T> {
-    const absolute = await this.absolute(source);
+    const absolute = await this.absolute(pathname);
     //if JSON, safely require it
     if (path.extname(absolute) === '.json') {
       const contents = await this._fs.readFile(absolute, 'utf8');
@@ -131,7 +132,7 @@ export default class FileLoader {
    * Returns the relative path from the source file to the required file
    * Note: This works better if using absolute paths from Loader.aboslute()
    */
-  public relative(source: string, require: string, withExtname = false) {
+  public relative(pathname: string, require: string, withExtname = false) {
     //if dont include extname
     if (!withExtname) {
       //check for extname
@@ -143,7 +144,7 @@ export default class FileLoader {
       }
     }
     //get the relative path
-    const relative = path.relative(path.dirname(source), require);
+    const relative = path.relative(path.dirname(pathname), require);
     //if the relative path is not relative, make it relative
     return relative.startsWith('.') ? relative: `./${relative}`;
   }
@@ -189,11 +190,12 @@ export default class FileLoader {
     //we want to try resolving manually using the extnames
     //as prefrenced first...
     for (const extname of extnames) {
-      let file = absolute + extname;
+      let file = await this.absolute(pathname + extname, pwd);
       if (await this._fileExists(file)) {
         return file;
       }
-      file = path.resolve(absolute, 'index' + extname);
+      const index = path.resolve(pathname, 'index' + extname);
+      file = await this.absolute(index, pwd);
       if (await this._fileExists(file)) {
         return file;
       }
