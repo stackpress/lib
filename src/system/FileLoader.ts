@@ -106,7 +106,10 @@ export default class FileLoader {
   /**
    * import() json/js/mjs/cjs file
    */
-  public async import<T = any>(source: string, getDefault = false) {
+  public async import<T = any>(
+    source: string, 
+    getDefault = false
+  ): Promise<T> {
     const absolute = await this.absolute(source);
     //if JSON, safely require it
     if (path.extname(absolute) === '.json') {
@@ -114,7 +117,7 @@ export default class FileLoader {
       try {
         return JSON.parse(contents) || {};
       } catch(e) {}
-      return {};
+      return {} as T;
     }
     
     const imports = await import(absolute);
