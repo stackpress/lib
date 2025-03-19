@@ -17,6 +17,19 @@ export default class EventTerminal extends EventEmitter<Record<string, [Hash]>> 
   }
 
   /**
+   * Retrieves the first value found from the given flag/s in cli
+   */
+  public static expect<T>(args: string[], flags: string[], defaults: T) {
+    const params = this.params(args);
+    for (const flag of flags) {
+      if (params[flag]) {
+        return params[flag] as T;
+      }
+    }
+    return defaults;
+  }
+
+  /**
    * Outputs an colorful (blue) log 
    */
   public static info(message: string, variables: string[] = []) {
@@ -61,7 +74,7 @@ export default class EventTerminal extends EventEmitter<Record<string, [Hash]>> 
    * Creates the name space given the space
    * and sets the value to that name space
    */
-  public static params(...args: string[]) {
+  public static params(args: string[]) {
     const params: Record<string, any> = {};
 
     const format = (
@@ -224,7 +237,7 @@ export default class EventTerminal extends EventEmitter<Record<string, [Hash]>> 
    */
   public get params() {
     if (!this._params) {
-      this._params = this.terminal.params(...this._args);
+      this._params = this.terminal.params(this._args);
     }
     return { ...this._params };
   }
