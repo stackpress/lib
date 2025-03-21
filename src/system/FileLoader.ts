@@ -40,33 +40,32 @@ export default class FileLoader {
    * NOTE: This is not a resolver, it just returns the path
    */
   public async absolute(pathname: string, pwd = this._cwd) {
+    //force pwd + source by default
+    let absolute = path
+      .resolve(pwd, pathname)
+      .replaceAll(path.sep + path.sep, path.sep);
     //ex. @/path/to/file.ext
     if (pathname.startsWith('@/')) {
-      return path.resolve(this._cwd, pathname.substring(2));
+      absolute = path.resolve(this._cwd, pathname.substring(2));
     //if the source starts with ./ or ../
     } else if (/^\.{1,2}(\/|\\)/.test(pathname)) {
       //get the absolute path
-      return path.resolve(pwd, pathname);
-    }
+      absolute = path.resolve(pwd, pathname);
     //if the source is not already absolute,
     //the path should start with modules
-    if (!path.isAbsolute(pathname)) {
+    } else if (!path.isAbsolute(pathname)) {
       try { //to resolve the path from node_modules
         const modules = await this.modules(pathname, pwd);
-        return path.resolve(modules, pathname);
+        absolute = path.resolve(modules, pathname);
       } catch(e) {
-        //set pathname relative to the lib
-        const lib = await this.lib(this._cwd);
-        const libname = path.resolve(lib, pathname);
-        if (await this._fs.exists(libname)) {
-          return libname;
-        }
+        //onwards...
       }
     }
-    //force pwd + source
-    return path
-      .resolve(pwd, pathname)
-      .replaceAll(path.sep + path.sep, path.sep);
+    try { //to follow symlinks
+      return await this._fs.realpath(absolute);
+    } catch(e) {
+      return absolute;
+    }
   }
 
   /**
@@ -91,17 +90,58 @@ export default class FileLoader {
   /**
    * Should locate the node_modules directory where the source is installed
    */
-  public async modules(pathname: string, pwd = this._cwd): Promise<string> {
+  public async modules(
+    pathname: string, 
+    pwd = this._cwd, 
+    meta = true
+  ): Promise<string> {
+    if (meta) {
+      try {
+        //@ts-ignore - require supported in all node versions
+        const absolute = require.resolve(pathname);
+        if (absolute.includes('/node_modules/')) {
+          //get the last index of node_modules
+          const end = absolute.lastIndexOf('/node_modules/') + 13;
+          //ie. /real/path/to/node_modules
+          return absolute.substring(0, end);
+        }
+      } catch(e) {
+        //if resolution fails, try import.meta.resolve
+      }
+      //@ts-ignore - meta supported after node 20
+      if (typeof globalThis.import !== 'undefined') {
+        try {
+          //@ts-ignore - meta supported after node 20
+          //ie. file:///home/user/node_modules/foo/bar.js
+          const url = globalThis.import.meta.resolve(pathname, `file://${pwd}/`);
+          //ie. /home/user/node_modules/foo/bar.js
+          const resolved = (new URL(url)).pathname;
+          //resolve symlinks
+          //ie. /real/path/to/node_modules/foo/bar.js
+          const absolute = await this._fs.realpath(resolved);
+          if (absolute.includes('/node_modules/')) {
+            //get the last index of node_modules
+            const end = absolute.lastIndexOf('/node_modules/') + 13;
+            //ie. /real/path/to/node_modules
+            return absolute.substring(0, end);
+          }
+        } catch(e) {
+          //if resolution fails, fallback to manual traversal
+        }
+      }
+    }
+    //fallback: Manually look for node_modules
     const module = path.resolve(pwd, 'node_modules', pathname);
     if (await this._fs.exists(module)) {
       return path.resolve(pwd, 'node_modules');
     }
+    //traverse up until we reach the root directory
     const parent = path.dirname(pwd);
     //stops at root dir (C:\ or /)
     if (parent === pwd) { 
       throw Exception.for('Cannot find %s in any node_modules', pathname);
     }
-    return await this.modules(pathname, parent);
+    return await this.modules(pathname, parent, false);
   }
 
   /**
