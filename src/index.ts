@@ -9,8 +9,14 @@ import ReadonlyNest from './data/ReadonlyNest';
 import ReadonlyPath from './data/ReadonlyPath';
 import ReadonlySet from './data/ReadonlySet';
 import Nest, { 
+  formDataToObject,
+  isObject,
   makeArray,
   makeObject,
+  objectFromArgs,
+  objectFromJson,
+  objectFromQuery,
+  objectFromFormData,
   shouldBeAnArray,
   nest 
 } from './data/Nest';
@@ -23,9 +29,16 @@ import NodeFS from './system/NodeFS';
 import ItemQueue from './queue/ItemQueue';
 import TaskQueue from './queue/TaskQueue';
 
-import EventEmitter from './event/EventEmitter';
-import EventRouter from './event/EventRouter';
-import EventTerminal from './event/EventTerminal';
+import EventEmitter from './emitter/EventEmitter';
+import ExpressEmitter from './emitter/ExpressEmitter';
+import HttpEmitter from './emitter/HttpEmitter';
+import RouteEmitter from './emitter/RouteEmitter';
+
+import Request, { withUnknownHost } from './router/Request';
+import Response from './router/Response';
+import Router from './router/Router';
+import HttpRouter from './router/HttpRouter';
+import Terminal, { terminalControls } from './router/Terminal';
 
 import Exception from './Exception';
 import Reflection from './Reflection';
@@ -49,15 +62,29 @@ export {
   ItemQueue,
   TaskQueue,
   EventEmitter,
-  EventRouter,
-  EventTerminal,
+  ExpressEmitter,
+  HttpEmitter,
+  RouteEmitter,
+  Request,
+  Response,
+  Router,
+  HttpRouter,
+  Terminal,
   Exception,
   Reflection,
   Status,
   map,
   set,
   nest,
+  formDataToObject,
+  isObject,
   makeArray,
   makeObject,
-  shouldBeAnArray
+  objectFromArgs,
+  objectFromJson,
+  objectFromQuery,
+  objectFromFormData,
+  shouldBeAnArray,
+  terminalControls,
+  withUnknownHost
 };

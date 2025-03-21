@@ -67,16 +67,20 @@
       "import": "./esm/data/ReadonlySet.js"
     },
     "./EventEmitter": {
-      "require": "./cjs/event/EventEmitter.js",
-      "import": "./esm/event/EventEmitter.js"
+      "require": "./cjs/emitter/EventEmitter.js",
+      "import": "./esm/emitter/EventEmitter.js"
     },
-    "./EventRouter": {
-      "require": "./cjs/event/EventRouter.js",
-      "import": "./esm/event/EventRouter.js"
+    "./ExpressEmitter": {
+      "require": "./cjs/emitter/ExpressEmitter.js",
+      "import": "./esm/emitter/ExpressEmitter.js"
     },
-    "./EventTerminal": {
-      "require": "./cjs/event/EventTerminal.js",
-      "import": "./esm/event/EventTerminal.js"
+    "./HttpEmitter": {
+      "require": "./cjs/emitter/HttpEmitter.js",
+      "import": "./esm/emitter/HttpEmitter.js"
+    },
+    "./RouteEmitter": {
+      "require": "./cjs/emitter/RouteEmitter.js",
+      "import": "./esm/emitter/RouteEmitter.js"
     },
     "./ItemQueue": {
       "require": "./cjs/queue/ItemQueue.js",
@@ -85,6 +89,30 @@
     "./TaskQueue": {
       "require": "./cjs/queue/TaskQueue.js",
       "import": "./esm/queue/TaskQueue.js"
+    },
+    "./HttpRouter": {
+      "require": "./cjs/router/HttpRouter.js",
+      "import": "./esm/router/HttpRouter.js"
+    },
+    "./Request": {
+      "require": "./cjs/router/Request.js",
+      "import": "./esm/router/Request.js"
+    },
+    "./Response": {
+      "require": "./cjs/router/Response.js",
+      "import": "./esm/router/Response.js"
+    },
+    "./Router": {
+      "require": "./cjs/router/Router.js",
+      "import": "./esm/router/Router.js"
+    },
+    "./Session": {
+      "require": "./cjs/router/Session.js",
+      "import": "./esm/router/Session.js"
+    },
+    "./Terminal": {
+      "require": "./cjs/router/Terminal.js",
+      "import": "./esm/router/Terminal.js"
     },
     "./FileLoader": {
       "require": "./cjs/system/FileLoader.js",
@@ -110,11 +138,18 @@
       "ReadonlyMap": [ "./cjs/data/ReadonlyMap.d.ts" ],
       "ReadonlyNest": [ "./cjs/data/ReadonlyNest.d.ts" ],
       "ReadonlySet": [ "./cjs/data/ReadonlySet.d.ts" ],
-      "EventEmitter": [ "./cjs/event/EventEmitter.d.ts" ],
-      "EventRouter": [ "./cjs/event/EventRouter.d.ts" ],
-      "EventTerminal": [ "./cjs/event/EventTerminal.d.ts" ],
+      "EventEmitter": [ "./cjs/emitter/EventEmitter.d.ts" ],
+      "ExpressEmitter": [ "./cjs/emitter/ExpressEmitter.d.ts" ],
+      "HttpEmitter": [ "./cjs/emitter/HttpEmitter.d.ts" ],
+      "RouteEmitter": [ "./cjs/emitter/RouteEmitter.d.ts" ],
       "ItemQueue": [ "./cjs/queue/ItemQueue.d.ts" ],
       "TaskQueue": [ "./cjs/queue/TaskQueue.d.ts" ],
+      "HttpRouter": [ "./cjs/router/HttpRouter.d.ts" ],
+      "Request": [ "./cjs/router/Request.d.ts" ],
+      "Response": [ "./cjs/router/Response.d.ts" ],
+      "Router": [ "./cjs/router/Router.d.ts" ],
+      "Session": [ "./cjs/router/Session.d.ts" ],
+      "Terminal": [ "./cjs/router/Terminal.d.ts" ],
       "FileLoader": [ "./cjs/system/FileLoader.d.ts" ],
       "NodeFS": [ "./cjs/system/NodeFS.d.ts" ]
     }
@@ -138,7 +173,8 @@
     "report": "nyc report -r lcov"
   },
   "dependencies": {
-    "@inquirer/prompts": "7.1.0"
+    "@inquirer/prompts": "7.1.0",
+    "cookie": "1.0.2"
   },
   "devDependencies": {
     "@types/chai": "4.3.20",

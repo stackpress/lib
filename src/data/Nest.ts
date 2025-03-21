@@ -161,6 +161,26 @@ export default class Nest<M extends UnknownNest = UnknownNest>
 }
 
 /**
+ * Returns the parsed form data from the request body (if any)
+ */
+export function formDataToObject(type: string, body: string) {
+  return type.endsWith('/json') 
+    ? objectFromJson(body)
+    : type.endsWith('/x-www-form-urlencoded')
+    ? objectFromQuery(body)
+    : type.startsWith('multipart/form-data')
+    ? objectFromFormData(body)
+    : {} as Record<string, unknown>;
+};
+
+/**
+ * Returns true if the value is a native JS object
+ */
+export function isObject(value: unknown) {
+  return typeof value === 'object' && value?.constructor?.name === 'Object';
+};
+
+/**
  * Transforms an object into an array
  */
 export function makeArray(object: NestedObject<unknown>): any[] {
@@ -182,6 +202,60 @@ export function makeArray(object: NestedObject<unknown>): any[] {
 export function makeObject(array: any[]): NestedObject<unknown> {
   return Object.assign({}, array as unknown);
 }
+
+/**
+ * Returns the parsed data from the given cli arguments
+ */
+export function objectFromArgs(args: string) {
+  if (args) {
+    const nest = new Nest();
+    nest.withArgs.set(args);
+    return nest.get();
+  }
+  return {};
+}
+
+/**
+ * Transform JSON string into object
+ * This is usually from body application/json
+ * or text/json
+ */
+export function objectFromJson(json: string) {
+  if (json.startsWith('{')) {
+    return JSON.parse(json) as Record<string, unknown>;
+  }
+  return {} as Record<string, unknown>;
+};
+
+/**
+ * Transform query string into object
+ * This is usually from URL.search or 
+ * body application/x-www-form-urlencoded
+ */
+export function objectFromQuery(query: string) {
+  if (query.startsWith('?')) {
+    query = query.substring(1);
+  }
+  if (query) {
+    const nest = new Nest();
+    nest.withQuery.set(query);
+    return nest.get();
+  }
+  return {};
+};
+
+/**
+ * Transform form data into object
+ * This is usually from body multipart/form-data
+ */
+export function objectFromFormData(data: string) {
+  if (data) {
+    const nest = new Nest();
+    nest.withFormData.set(data);
+    return nest.get();
+  }
+  return {};
+};
 
 /**
  * Returns true if object keys is all numbers

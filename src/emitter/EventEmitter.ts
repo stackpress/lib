@@ -4,6 +4,7 @@ import type {
   TaskItem,
   Event, 
   EventMap, 
+  EventData,
   EventName,
   EventHook, 
   EventMatch
@@ -19,8 +20,6 @@ import TaskQueue from '../queue/TaskQueue';
  * right after the event has triggered.
  */
 export default class EventEmitter<M extends EventMap> {
-  //Event regular expression map
-  public readonly regexp = new Set<string>();
   //called after each task
   protected _after?: EventHook<M[keyof M]>;
   //called before each task
@@ -28,6 +27,7 @@ export default class EventEmitter<M extends EventMap> {
   //Static event data analyzer
   protected _event?: Event<M[keyof M]>;
   //A route map to task queues
+  //ie. { event -> [ ...{ item, priority } ] }
   protected _listeners: { [ K in keyof M ]?: Set<TaskItem<M[K]>> } = {};
 
   /**
@@ -95,48 +95,13 @@ export default class EventEmitter<M extends EventMap> {
    */
   public match(event: string) {
     const matches = new Map<string, EventMatch>();
-    //first do the obvious match
+    //exact match
     if (typeof this.listeners[event] !== 'undefined') {
-      const data: EventMatch['data'] = { args: [], params: {} };
+      //this is a placeholder for class extensions...
+      const data: EventData = { args: [], params: {} };
       matches.set(event, { event, pattern: event, data });
     }
-    //next do the calculated matches
-    this.regexp.forEach(pattern => {
-      //make regexp so we can compare against the trigger
-      const regexp = new RegExp(
-        // pattern,
-        pattern.substring(
-          pattern.indexOf('/') + 1,
-          pattern.lastIndexOf('/')
-        ),
-        // flag
-        pattern.substring(
-          pattern.lastIndexOf('/') + 1
-        )
-      );
-      //because String.matchAll only works for global flags ...
-      const data: EventMatch['data'] = { args: [], params: {} };
-      if (regexp.flags.indexOf('g') === -1) {
-        const match = event.match(regexp);
-        if (!match || !match.length) {
-          return;
-        }
-        if (Array.isArray(match)) {
-          data.args = match.slice();
-          data.args.shift();
-        }
-      } else {
-        const match = Array.from(event.matchAll(regexp));
-        if (!Array.isArray(match[0]) || !match[0].length) {
-          return;
-        }
-
-        data.args = match[0].slice();
-        data.args.shift();
-      }
-      matches.set(pattern, { event, pattern, data });
-    });
-
+    //return all the matches
     return matches;
   }
   
@@ -144,19 +109,10 @@ export default class EventEmitter<M extends EventMap> {
    * Adds a callback to the given event listener
    */
   public on<N extends EventName<M>>(
-    event: N|RegExp, 
+    event: N, 
     action: Task<M[N]>,
     priority = 0
   ) {
-    //if it is a regexp object
-    if (event instanceof RegExp) {
-      //make it into a string
-      event = event.toString() as N;
-      //go ahead and add the pattern
-      //set guarantees uniqueness
-      this.regexp.add(event);
-    }
-
     //add the event to the listeners
     if (typeof this._listeners[event] === 'undefined') {
       this._listeners[event] = new Set<TaskItem<M[N]>>();
@@ -182,27 +138,7 @@ export default class EventEmitter<M extends EventMap> {
       //then loop the observers
       const tasks = this._listeners[event] as Set<TaskItem<M[keyof M]>>;
       tasks.forEach(task => {
-        queue.add(async (...args) => {
-          //set the current
-          this._event = { ...match, ...task, args, action: task.item };
-          //before hook
-          if (typeof this._before === 'function' 
-            && await this._before(this._event) === false
-          ) {
-            return false;
-          }
-          //if this is the same event, call the 
-          //method, if the method returns false
-          if (await task.item(...args) === false) {
-            return false;
-          }
-          //after hook
-          if (typeof this._after === 'function' 
-            && await this._after(this._event) === false
-          ) {
-            return false;
-          }
-        }, task.priority);
+        queue.add(this._task(match, task), task.priority);
       });
     }
 
@@ -228,8 +164,6 @@ export default class EventEmitter<M extends EventMap> {
    * Allows events from other emitters to apply here
    */
   public use(emitter: EventEmitter<M>) {
-    //first concat their regexp with this one
-    emitter.regexp.forEach(pattern => this.regexp.add(pattern));
     //next this listen to what they were listening to
     //event listeners = event -> Set
     //loop through the listeners of the emitter
@@ -248,5 +182,33 @@ export default class EventEmitter<M extends EventMap> {
       }
     }
     return this;
+  }
+
+  /**
+   * Returns a task for the given event and task
+   * Allows for class extensions to overload this method
+   */
+  protected _task(match: EventMatch, task: TaskItem<M[keyof M]>) {
+    return async (...args: M[keyof M]) => {
+      //set the current
+      this._event = { ...match, ...task, args, action: task.item };
+      //before hook
+      if (typeof this._before === 'function' 
+        && await this._before(this._event) === false
+      ) {
+        return false;
+      }
+      //if this is the same event, call the 
+      //method, if the method returns false
+      if (await task.item(...args) === false) {
+        return false;
+      }
+      //after hook
+      if (typeof this._after === 'function' 
+        && await this._after(this._event) === false
+      ) {
+        return false;
+      }
+    };
   }
 }

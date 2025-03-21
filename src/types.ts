@@ -1,7 +1,13 @@
 //modules
+import type { Readable } from 'node:stream';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 //data
 import type Nest from './data/Nest';
+//router
+import type { WriteSession } from './router/Session';
+import type Request from './router/Request';
+import type Response from './router/Response';
+import type Router from './router/Router';
 
 //--------------------------------------------------------------------//
 // Data Types
@@ -49,9 +55,6 @@ export type ResponseStatus = {
   status: string
 };
 
-//--------------------------------------------------------------------//
-// Response Types
-
 export type Trace = { 
   method: string, 
   file: string, 
@@ -92,16 +95,17 @@ export type TaskItem<A extends Array<unknown>> = Item<Task<A>>;
 //map of event names to their arguments
 export type EventMap = Record<string, Array<unknown>>;
 export type EventName<M extends EventMap> = string & keyof M;
+export type EventData = {
+  args: string[],
+  params: Record<string, string>
+};
 export type EventMatch = {
   //The name of the event
   event: string,
   //The regexp pattern of the event
   pattern: string,
   //Parameters extracted from the pattern
-  data: {
-    args: string[],
-    params: Record<string, string>
-  }
+  data: EventData
 };
 
 export type Event<A extends Array<unknown>> = TaskItem<A> & EventMatch & {
@@ -112,6 +116,75 @@ export type Event<A extends Array<unknown>> = TaskItem<A> & EventMatch & {
 };
 
 export type EventHook<A extends Array<unknown>> = Task<[Event<A>]>;
+export type EventExpression = { pattern: string, regexp: RegExp };
+
+export type Body = string | Buffer | Uint8Array | Readable | ReadableStream
+  | Record<string, unknown> | Array<unknown>;
+
+//--------------------------------------------------------------------//
+// Response Types
+
+export type ResponseDispatcher<S = unknown> = (res: Response<S>) => Promise<S>;
+
+export type ResponseOptions<S = unknown> = { 
+  body?: Body,
+  headers?: Headers,
+  mimetype?: string,
+  data?: Data,
+  resource?: S
+};
+
+//--------------------------------------------------------------------//
+// Request Types
+
+export type Headers = Record<string, string|string[]> 
+  | Map<string, string|string[]>;
+export type Data = Map<string, any> | NestedObject;
+export type Query = string | Map<string, any> | NestedObject;
+export type Session = Record<string, string> | Map<string, string>;
+export type Post = Record<string, unknown> | Map<string, any>;
+export type LoaderResults = { body?: Body, post?: Post };
+export type RequestLoader<R = unknown, X = unknown> = (
+  req: Request<R, X>
+) => Promise<LoaderResults|undefined>;
+
+export type CallableSession = (
+  (name: string) => string|string[]|undefined
+) & WriteSession;
+
+export type RequestOptions<R = unknown, X = unknown> = {
+  resource: R,
+  body?: Body,
+  context?: X,
+  headers?: Headers,
+  mimetype?: string,
+  data?: Data,
+  method?: Method,
+  query?: Query,
+  post?: Post,
+  session?: Session,
+  url?: string|URL
+};
+
+//--------------------------------------------------------------------//
+// Session Types
+
+//this is a revision entry
+export type Revision = {
+  action: 'set'|'remove',
+  value?: string|string[]
+};
+
+export type CookieOptions = {
+  domain?: string;
+  expires?: Date;
+  httpOnly?: boolean;
+  maxAge?: number;
+  path?: string;
+  priority?: 'low'|'medium'|'high';
+  sameSite?: boolean|'lax'|'strict'|'none';
+  secure?: boolean;
+};
 
 //--------------------------------------------------------------------//
 // Router Types
@@ -121,11 +194,36 @@ export type Method = 'ALL'
   | 'HEAD'    | 'OPTIONS' | 'PATCH' 
   | 'POST'    | 'PUT'     | 'TRACE';
 
-export type Route = { method: Method, path: string };
+export type Route = { method: string, path: string };
 
-export type RouterMap<R, S> = Record<string, [ R, S ]>;
-export type RouterActionResults = void|boolean|undefined|Promise<void|boolean|undefined>;
-export type RouterAction<R, S> = (req: R, res: S) => RouterActionResults;
+export type RouteActionResults = void 
+  | Promise<void | boolean | undefined>
+  | boolean 
+  | undefined;
+
+export type RouteMap<R = unknown, S = unknown> = Record<string, [ R, S ]>;
+
+export type RouteAction<
+  R = unknown, 
+  S = unknown
+> = (
+  req: R, 
+  res: S
+) => RouteActionResults;
+
+export type RouterMap<
+  R = unknown, 
+  S = unknown
+> = Record<string, [ Request<R>, Response<S>, Router<R, S> ]>;
+
+export type RouterAction<
+  R = unknown, 
+  S = unknown
+> = (
+  req: Request<R>, 
+  res: Response<S>, 
+  ctx: Router<R, S>
+) => RouteActionResults;
 
 //--------------------------------------------------------------------//
 // Filesystem Types
