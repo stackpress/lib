@@ -1,6 +1,6 @@
 //common
 import type { 
-  Task, 
+  TaskAction, 
   EventMap, 
   EventName,
   EventData,
@@ -55,23 +55,12 @@ export default class ExpressEmitter<M extends EventMap>
    */
   public on<N extends EventName<M>>(
     event: N|RegExp, 
-    action: Task<M[N]>,
+    action: TaskAction<M[N]>,
     priority = 0
   ) {
-    //if it is a regexp object
-    if (event instanceof RegExp) {
-      //listen to the regular expression event
-      return this._onRegExp(event, '', action, priority);
-    }
-    //make event into a regular expression fragment
-    const fragment = this._toFragment(event);
-    //if the fragment is different from the original event
-    if (fragment !== event) {
-      //listen to the expression event
-      return this._onExpression(`^${fragment}$`, event, action, priority);
-    }
+    event = this._eventName(event);
     //listen to the literal event
-    return this._onLiteral(event, action, priority);
+    return this._listen(event, action, priority);
   }
 
   /**
@@ -88,6 +77,66 @@ export default class ExpressEmitter<M extends EventMap>
     //next merge the listeners
     super.use(emitter);
     return this;
+  }
+
+  /**
+   * Determines the event name from the given event
+   * This also sets the expression in the expressions map.
+   * Allows for class extensions to overload this method.
+   */
+  protected _eventName<N extends EventName<M>>(event: N|RegExp) {
+    //if it is a regexp object
+    if (event instanceof RegExp) {
+      return this._eventNameFromRegExp(event, '') as N;
+    } else {
+      //make event into a regular expression fragment
+      const fragment = this._toFragment(event);
+      //if the fragment is different from the original event
+      if (fragment !== event) {
+        return this._eventNameFromExpression(`^${fragment}$`, event) as N;
+      }
+    }
+    return event as N;
+  }
+
+  /**
+   * Adds a callback to the given expression.
+   * This also sets the expression in the expressions map.
+   * Allows for class extensions to overload this method.
+   */
+  protected _eventNameFromExpression(expression: string, pattern: string) {
+    const regexp = new RegExp(expression, 'g');
+    const event = regexp.toString();
+    //add the expression
+    this.expressions.set(event, { pattern, regexp });
+    return event;
+  }
+
+  /**
+   * Adds a callback to the given regular expression
+   * This also sets the expression in the expressions map.
+   * Allows for class extensions to overload this method.
+   */
+  protected _eventNameFromRegExp(regexp: RegExp, pattern: string) {
+    //event key is the stringified regexp
+    const event = regexp.toString();
+    //add the expression
+    //set pattern to empty
+    this.expressions.set(event, { pattern, regexp });
+    return event;
+  }
+
+  /**
+   * Listens to the literal event
+   * Allows for class extensions to overload this method.
+   */
+  protected _listen<N extends EventName<M>>(
+    event: N, 
+    action: TaskAction<M[N]>,
+    priority = 0
+  ) {
+    //listen to the literal event
+    return super.on(event, action, priority);
   }
   
   /**
@@ -165,59 +214,6 @@ export default class ExpressEmitter<M extends EventMap>
     });
     //if we are here, then the event matches the pattern
     return { event, pattern, data } as EventMatch;
-  }
-
-  /**
-   * Adds a callback to the given expression
-   * Allows for class extensions to overload this method.
-   */
-  protected _onExpression<N extends EventName<M>>(
-    expression: string,
-    pattern: string,
-    action: Task<M[N]>,
-    priority = 0
-  ) {
-    const regexp = new RegExp(expression, 'g');
-    const event = regexp.toString();
-    //add the expression
-    this.expressions.set(event, { pattern, regexp });
-    //add the listener
-    super.on(event as N, action, priority);
-    return this;
-  }
-
-  /**
-   * Adds a callback to the given expression
-   * Allows for class extensions to overload this method.
-   */
-  protected _onLiteral<N extends EventName<M>>(
-    event: string,
-    action: Task<M[N]>,
-    priority = 0
-  ) {
-    //add the listener
-    super.on(event as N, action, priority);
-    return this;
-  }
-
-  /**
-   * Adds a callback to the given regular expression
-   * Allows for class extensions to overload this method.
-   */
-  protected _onRegExp<N extends EventName<M>>(
-    regexp: RegExp, 
-    pattern: string,
-    action: Task<M[N]>,
-    priority = 0
-  ) {
-    //event key is the stringified regexp
-    const event = regexp.toString();
-    //add the expression
-    //set pattern to empty
-    this.expressions.set(event, { pattern, regexp });
-    //add the listener
-    super.on(event as N, action, priority);
-    return this;
   }
 
   /**

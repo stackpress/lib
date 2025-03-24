@@ -31,18 +31,16 @@ import TaskQueue from './queue/TaskQueue';
 
 import EventEmitter from './emitter/EventEmitter';
 import ExpressEmitter from './emitter/ExpressEmitter';
-import HttpEmitter from './emitter/HttpEmitter';
 import RouteEmitter from './emitter/RouteEmitter';
 
 import Request, { withUnknownHost } from './router/Request';
 import Response from './router/Response';
 import Router from './router/Router';
-import HttpRouter from './router/HttpRouter';
 import Terminal, { terminalControls } from './router/Terminal';
 
 import Exception from './Exception';
 import Reflection from './Reflection';
-import Status from './Status';
+import Status, { codes } from './Status';
 
 export type * from './types';
 
@@ -63,16 +61,15 @@ export {
   TaskQueue,
   EventEmitter,
   ExpressEmitter,
-  HttpEmitter,
   RouteEmitter,
   Request,
   Response,
   Router,
-  HttpRouter,
   Terminal,
   Exception,
   Reflection,
   Status,
+  codes,
   map,
   set,
   nest,

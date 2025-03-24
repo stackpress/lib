@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import Request from '../src/router/Request';
+import Request, { withUnknownHost } from '../src/router/Request';
 
 describe('Request Tests', () => {
   it('Should be empty', () => {
@@ -152,5 +152,23 @@ describe('Request Tests', () => {
     expect(request.data('q')).to.equal('search');
     expect(request.data('sort')).to.equal('desc');
     expect(request.data('filter')).to.equal('active');
+  });
+});
+
+
+/**
+ * Tests for withUnknownHost function
+ * Ensures proper handling of URLs with missing or invalid hosts
+ */
+describe('withUnknownHost', () => {
+  it('should add unknown host to URL without protocol', () => {
+    const result = withUnknownHost('example.com/path');
+    expect(result).to.equal('http://unknownhost/example.com/path');
+  });
+
+  it('should add unknown host to URL with protocol', () => {
+    const result = withUnknownHost('https://example.com/path');
+    expect(result).to.equal
+    ('http://unknownhost/https://example.com/path');
   });
 });

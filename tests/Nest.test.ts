@@ -2,7 +2,13 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import ReadonlyNest from '../src/data/ReadonlyNest';
 import type { CallableNest } from '../src/types';
-import Nest, { nest } from '../src/data/Nest';
+import Nest, { 
+  nest, 
+  isObject,
+  objectFromQuery,
+  objectFromFormData,
+  objectFromJson
+} from '../src/data/Nest';
 
 const body = `--BOUNDARY\r
 Content-Disposition: form-data; name="foo"\r
@@ -446,5 +452,85 @@ describe('ReadonlyNest Tests', () => {
       return false;
     });
     expect(result).to.equal(false);
+  });
+});
+
+describe('isObject', () => {
+  /**
+   * Tests that isObject correctly identifies plain objects
+   * Verifies both empty objects and objects with properties
+   */
+
+  it('should return true for plain objects', () => {
+    expect(isObject({})).to.be.true;
+    expect(isObject({ foo: 'bar' })).to.be.true;
+  });
+
+  /**
+   * Tests that isObject correctly rejects non-object values
+   * Checks various primitive types and special values
+   */
+
+  it('should return false for non-objects', () => {
+    expect(isObject(null)).to.be.false;
+    expect(isObject(undefined)).to.be.false;
+    expect(isObject('string')).to.be.false;
+    expect(isObject(123)).to.be.false;
+    expect(isObject([])).to.be.false;
+    expect(isObject(new Date())).to.be.false;
+  });
+});
+
+/**
+   * Tests for objectFromQuery function
+   * Ensures proper parsing of URL query strings to objects
+   */
+
+describe('objectFromQuery', () => {
+  it('should parse query string with leading ?', () => {
+    const result = objectFromQuery('?foo=bar&baz=qux');
+    expect(result).to.deep.equal({ foo: 'bar', baz: 'qux' });
+  });
+
+  it('should parse query string without leading ?', () => {
+    const result = objectFromQuery('foo=bar&baz=qux');
+    expect(result).to.deep.equal({ foo: 'bar', baz: 'qux' });
+  });
+
+  it('should return empty object for empty query', () => {
+    expect(objectFromQuery('')).to.deep.equal({});
+  });
+});
+
+ /**
+ * Tests for objectFromFormData function
+ * Verifies form data string parsing to objects
+ */
+
+describe('objectFromFormData', () => {
+  it('should parse form data string', () => {
+    const formData = 
+   '--boundary\r\nContent-Disposition: form-data; name="field1"\r\n\r\nvalue1\r\n--boundary--';
+    const result = objectFromFormData(formData);
+    expect(result).to.deep.equal({ field1: 'value1' });
+  });
+
+  it('should return empty object for empty data', () => {
+    expect(objectFromFormData('')).to.deep.equal({});
+  });
+});
+
+/**
+ * Tests for objectFromJson function
+ * Validates JSON string parsing to objects
+ */
+describe('objectFromJson', () => {
+  it('should parse valid JSON object', () => {
+    const result = objectFromJson('{"name":"test","value":123}');
+    expect(result).to.deep.equal({ name: 'test', value: 123 });
+  });
+
+  it('should return empty object for invalid JSON', () => {
+    expect(objectFromJson('invalid')).to.deep.equal({});
   });
 });

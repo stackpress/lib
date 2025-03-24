@@ -9,24 +9,24 @@ import NodeFS from '../src/system/NodeFS';
 describe('FileLoader Tests', () => {
   it('Instantiate File Loader', () => {
     const fs = new NodeFS();
-    const loader = new FileLoader(fs, __dirname);
+    const loader = new FileLoader(fs, import.meta.dirname);
 
     expect(fs).to.be.instanceOf(NodeFS);
     expect(loader).to.be.instanceOf(FileLoader);
     expect(loader.fs).to.be.instanceOf(NodeFS);
-    expect(loader.cwd).to.equal(__dirname);
+    expect(loader.cwd).to.equal(import.meta.dirname);
   });
 
   it('Should get absolute path', async () => {
     const fs = new NodeFS();
-    const loader = new FileLoader(fs, __dirname);
+    const loader = new FileLoader(fs, import.meta.dirname);
 
     const actual1 = await loader.absolute('@/foo/bar');
-    const expected1 = path.join(__dirname, 'foo/bar');
+    const expected1 = path.join(import.meta.dirname, 'foo/bar');
     expect(actual1).to.equal(expected1);
 
     const actual2 = await loader.absolute('@/foo/bar.ts');
-    const expected2 = path.join(__dirname, 'foo/bar.ts');
+    const expected2 = path.join(import.meta.dirname, 'foo/bar.ts');
     expect(actual2).to.equal(expected2);
 
     const actual3 = await loader.absolute('/foo/bar');
@@ -41,13 +41,13 @@ describe('FileLoader Tests', () => {
     expect(actual5).to.contain('node_modules');
 
     const actual6 = await loader.absolute('not/sure');
-    const expected6 = path.join(__dirname, 'not/sure');
+    const expected6 = path.join(import.meta.dirname, 'not/sure');
     expect(actual6).to.equal(expected6);
   });
 
   it('Should get base path', () => {
     const fs = new NodeFS();
-    const loader = new FileLoader(fs, __dirname);
+    const loader = new FileLoader(fs, import.meta.dirname);
 
     const actual = loader.basepath('/foo/bar/zoo.txt');
     expect(actual).to.equal('/foo/bar/zoo');
@@ -55,7 +55,7 @@ describe('FileLoader Tests', () => {
 
   it('Should get lib', async () => {
     const fs = new NodeFS();
-    const loader = new FileLoader(fs, __dirname);
+    const loader = new FileLoader(fs, import.meta.dirname);
 
     const actual = await loader.lib();
     expect(actual).to.contain('node_modules');
@@ -63,7 +63,7 @@ describe('FileLoader Tests', () => {
 
   it('Should get modules', async () => {
     const fs = new NodeFS();
-    const loader = new FileLoader(fs, __dirname);
+    const loader = new FileLoader(fs, import.meta.dirname);
 
     const actual = await loader.modules('@types/node');
     expect(actual).to.contain('node_modules');
@@ -71,12 +71,12 @@ describe('FileLoader Tests', () => {
 
   it('Should import', () => {
     const fs = new NodeFS();
-    const loader = new FileLoader(fs, __dirname);
+    const loader = new FileLoader(fs, import.meta.dirname);
   });
 
   it('Should get relative path', () => {
     const fs = new NodeFS();
-    const loader = new FileLoader(fs, __dirname);
+    const loader = new FileLoader(fs, import.meta.dirname);
 
     const actual = loader.relative('/foo/bar/zoo.js', '/foo/zoo/bar.js', true);
     expect(actual).to.equal('../zoo/bar.js')
@@ -84,34 +84,38 @@ describe('FileLoader Tests', () => {
 
   it('Should get resolve file/folder', async () => {
     const fs = new NodeFS();
-    const loader = new FileLoader(fs, __dirname);
+    const loader = new FileLoader(fs, import.meta.dirname);
 
     const actual1 = await loader.resolve('@/fixtures/file.txt');
-    const expected1 = path.join(__dirname, 'fixtures/file.txt');
+    const expected1 = path.join(import.meta.dirname, 'fixtures/file.txt');
     expect(actual1).to.equal(expected1);
 
     const actual2 = await loader.resolve('@/fixtures');
-    const expected2 = path.join(__dirname, 'fixtures');
+    const expected2 = path.join(import.meta.dirname, 'fixtures');
     expect(actual2).to.equal(expected2);
 
-    const actual3 = await loader.resolve(path.join(__dirname, 'fixtures/file.txt'));
-    const expected3 = path.join(__dirname, 'fixtures/file.txt');
+    const actual3 = await loader.resolve(path.join(import.meta.dirname, 'fixtures/file.txt'));
+    const expected3 = path.join(import.meta.dirname, 'fixtures/file.txt');
     expect(actual3).to.equal(expected3);
 
-    const actual4 = await loader.resolve(path.join(__dirname, 'fixtures'));
-    const expected4 = path.join(__dirname, 'fixtures');
+    const actual4 = await loader.resolve(path.join(import.meta.dirname, 'fixtures'));
+    const expected4 = path.join(import.meta.dirname, 'fixtures');
     expect(actual4).to.equal(expected4);
 
     const actual5 = await loader.resolve('@types/node');
     expect(actual5).to.contain('node_modules');
+
+    const actual6 = await loader.resolve('not/sure');
+    const expected6 = path.join(import.meta.dirname, 'not/sure');
+    expect(actual6).to.be.null;
   });
 
   it('Should get resolve file', async () => {
     const fs = new NodeFS();
-    const loader = new FileLoader(fs, __dirname);
+    const loader = new FileLoader(fs, import.meta.dirname);
 
     const actual1 = await loader.resolveFile('@/fixtures/file', ['.txt']);
-    const expected1 = path.join(__dirname, 'fixtures/file.txt');
+    const expected1 = path.join(import.meta.dirname, 'fixtures/file.txt');
     expect(actual1).to.equal(expected1);
 
     const actual2 = await loader.resolveFile('@/fixtures/file', ['.foobar']);

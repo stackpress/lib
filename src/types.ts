@@ -75,7 +75,7 @@ export type SuccessResponse<T = unknown> = ResponseStatus & {
   total?: number
 };
 
-export type StatusResponse<T = unknown> = ErrorResponse & SuccessResponse<T>;
+export type StatusResponse<T = unknown> = Partial<ErrorResponse & SuccessResponse<T>>;
 
 //--------------------------------------------------------------------//
 // DataQueue Types
@@ -85,9 +85,12 @@ export interface Item<I> { item: I, priority: number };
 //--------------------------------------------------------------------//
 // TaskQueue Types
 
-export type TaskResult = boolean|void|Promise<boolean|void>;
-export type Task<A extends Array<unknown>> = (...args: A) => TaskResult;
-export type TaskItem<A extends Array<unknown>> = Item<Task<A>>;
+export type TaskResult = boolean
+  | undefined
+  | void
+  | Promise<boolean | undefined | void>;
+export type TaskAction<A extends Array<unknown>> = (...args: A) => TaskResult;
+export type TaskItem<A extends Array<unknown>> = Item<TaskAction<A>>;
 
 //--------------------------------------------------------------------//
 // EventEmitter Types
@@ -112,17 +115,17 @@ export type Event<A extends Array<unknown>> = TaskItem<A> & EventMatch & {
   //The arguments passed to the event
   args: A,
   //The event hook
-  action: Task<A>
+  action: TaskAction<A>
 };
 
-export type EventHook<A extends Array<unknown>> = Task<[Event<A>]>;
+export type EventHook<A extends Array<unknown>> = TaskAction<[Event<A>]>;
 export type EventExpression = { pattern: string, regexp: RegExp };
-
-export type Body = string | Buffer | Uint8Array | Readable | ReadableStream
-  | Record<string, unknown> | Array<unknown>;
 
 //--------------------------------------------------------------------//
 // Response Types
+
+export type Body = string | Buffer | Uint8Array | Readable | ReadableStream
+  | Record<string, unknown> | Array<unknown>;
 
 export type ResponseDispatcher<S = unknown> = (res: Response<S>) => Promise<S>;
 
@@ -144,18 +147,17 @@ export type Query = string | Map<string, any> | NestedObject;
 export type Session = Record<string, string> | Map<string, string>;
 export type Post = Record<string, unknown> | Map<string, any>;
 export type LoaderResults = { body?: Body, post?: Post };
-export type RequestLoader<R = unknown, X = unknown> = (
-  req: Request<R, X>
+export type RequestLoader<R = unknown> = (
+  req: Request<R>
 ) => Promise<LoaderResults|undefined>;
 
 export type CallableSession = (
   (name: string) => string|string[]|undefined
 ) & WriteSession;
 
-export type RequestOptions<R = unknown, X = unknown> = {
+export type RequestOptions<R = unknown> = {
   resource: R,
   body?: Body,
-  context?: X,
   headers?: Headers,
   mimetype?: string,
   data?: Data,
@@ -196,34 +198,26 @@ export type Method = 'ALL'
 
 export type Route = { method: string, path: string };
 
-export type RouteActionResults = void 
-  | Promise<void | boolean | undefined>
-  | boolean 
-  | undefined;
-
 export type RouteMap<R = unknown, S = unknown> = Record<string, [ R, S ]>;
+export type RouteAction<R = unknown, S = unknown> = TaskAction<[ R, S ]>;
 
-export type RouteAction<
-  R = unknown, 
-  S = unknown
-> = (
-  req: R, 
-  res: S
-) => RouteActionResults;
-
+export type RouterContext<R, S, X> = X extends undefined ? Router<R, S>: X;
+export type RouterArgs<R, S, X> = [ 
+  Request<R>, 
+  Response<S>, 
+  RouterContext<R, S, X> 
+];
 export type RouterMap<
   R = unknown, 
-  S = unknown
-> = Record<string, [ Request<R>, Response<S>, Router<R, S> ]>;
+  S = unknown,
+  X = undefined
+> = Record<string, RouterArgs<R, S, X>>;
 
 export type RouterAction<
   R = unknown, 
-  S = unknown
-> = (
-  req: Request<R>, 
-  res: Response<S>, 
-  ctx: Router<R, S>
-) => RouteActionResults;
+  S = unknown,
+  X = undefined
+> = TaskAction<RouterArgs<R, S, X>>;
 
 //--------------------------------------------------------------------//
 // Filesystem Types

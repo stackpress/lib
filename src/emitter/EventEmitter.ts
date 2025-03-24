@@ -1,6 +1,6 @@
 //common
 import type {
-  Task, 
+  TaskAction, 
   TaskItem,
   Event, 
   EventMap, 
@@ -77,7 +77,7 @@ export default class EventEmitter<M extends EventMap> {
     //if there are no events found
     if (queue.size === 0) {
       //report a 404
-      return Status.codes.NOT_FOUND;
+      return Status.NOT_FOUND;
     }
 
     return await queue.run(...args);
@@ -110,14 +110,13 @@ export default class EventEmitter<M extends EventMap> {
    */
   public on<N extends EventName<M>>(
     event: N, 
-    action: Task<M[N]>,
+    action: TaskAction<M[N]>,
     priority = 0
   ) {
     //add the event to the listeners
     if (typeof this._listeners[event] === 'undefined') {
       this._listeners[event] = new Set<TaskItem<M[N]>>();
     }
-
     const listeners = this._listeners[event] as Set<TaskItem<M[N]>>;
     listeners.add({ item: action, priority });
     return this;
@@ -148,7 +147,10 @@ export default class EventEmitter<M extends EventMap> {
   /**
    * Stops listening to an event
    */
-  public unbind<N extends EventName<M>>(event: N, action: Task<M[N]>) {
+  public unbind<N extends EventName<M>>(
+    event: N, 
+    action: TaskAction<M[N]>
+  ) {
     const set = this._listeners[event];
     if (set) {
       set.forEach(task => {

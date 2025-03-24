@@ -2,7 +2,9 @@
 import type { 
   Route,
   RouterMap, 
+  RouterArgs,
   RouterAction,
+  RouterContext,
   RequestOptions, 
   ResponseOptions,
   StatusResponse,
@@ -23,8 +25,8 @@ import Response from './Response';
  * Event driven routing system. Bring 
  * your own request and response types.
  */
-export default class Router<R = unknown, S = unknown> 
-  extends ExpressEmitter<RouterMap<R, S>> 
+export default class Router<R = unknown, S = unknown, X = undefined> 
+  extends ExpressEmitter<RouterMap<R, S, X>> 
 {
   //map of event names to routes 
   //event -> { method, path }
@@ -46,10 +48,10 @@ export default class Router<R = unknown, S = unknown>
     //if there are no events found
     if (queue.size === 0) {
       //report a 404
-      return Status.codes.NOT_FOUND;
+      return Status.NOT_FOUND;
     }
 
-    return await queue.run(req, res, this);
+    return await queue.run(req, res, this as unknown as RouterContext<R, S, X>);
   }
 
   /**
@@ -119,47 +121,18 @@ export default class Router<R = unknown, S = unknown>
   public route(
     method: string, 
     path: string, 
-    action: RouterAction<R, S>, 
+    action: RouterAction<R, S, X>, 
     priority = 0
   ) {
-    //make regexp fragment from path
-    const fragment = this._toFragment(path);
-    //if any method
-    if (method === '*') {
-      //determine pattern
-      const pattern = fragment !== path ? path: '';
-      //complete the expression
-      const expression = `^[A-Z]+ ${fragment}${this.separator}*$`;
-      //listen to expression
-      this._onExpression(expression, pattern, action, priority);
-      //set the route (pattern should be in expressions ?)
-      this.routes.set(`/${expression}/g`, { method, path });
-      return this;
-    }
-    //make sure the method is uppercase
-    method = method.toUpperCase();
-    //determine the event key
-    const event = `${method} ${path}`;
-    //if the pattern is different
-    if (fragment !== path) {
-      //complete the expression
-      const expression = `^${method} ${fragment}${this.separator}*$`;
-      //listen to expression
-      this._onExpression(expression, event, action, priority);
-      //set the route (pattern should be in expressions ?)
-      this.routes.set(`/${expression}/g`, { method, path });
-      return this;
-    }
-    this._onLiteral(event, action, priority);
-    //set the route (pattern should be in expressions ?)
-    this.routes.set(event, { method, path });
+    const event = this._eventNameFromRoute(method, path);
+    this._listen(event, action, priority);
     return this;
   }
 
   /**
    * Allows events from other emitters to apply here
    */
-  public use(emitter: EventEmitter<RouterMap<R, S>>) {
+  public use(emitter: EventEmitter<RouterMap<R, S, X>>) {
     //check if the emitter is a router
     if (emitter instanceof Router) {
       //first concat their routes with this one
@@ -174,7 +147,46 @@ export default class Router<R = unknown, S = unknown>
   }
 
   /**
+   * Determines the event name given a method and path
+   * This also sets the route in the routes map. 
+   */
+  protected _eventNameFromRoute(method: string, path: string) {
+    //make regexp fragment from path
+    const fragment = this._toFragment(path);
+    //if any method
+    if (method === '*') {
+      //determine pattern
+      const pattern = fragment !== path ? path: '';
+      //complete the expression
+      const expression = `^[A-Z]+ ${fragment}${this.separator}*$`;
+      //listen to expression
+      const event = this._eventNameFromExpression(expression, pattern);
+      //set the route (pattern should be in expressions ?)
+      this.routes.set(event, { method, path });
+      return event;
+    }
+    //make sure the method is uppercase
+    method = method.toUpperCase();
+    //determine the event key
+    let event = `${method} ${path}`;
+    //if the pattern is different
+    if (fragment !== path) {
+      //complete the expression
+      const expression = `^${method} ${fragment}${this.separator}*$`;
+      //listen to expression
+      event = this._eventNameFromExpression(expression, event);
+      //set the route (pattern should be in expressions ?)
+      this.routes.set(event, { method, path });
+      return event;
+    }
+    //set the route (pattern should be in expressions ?)
+    this.routes.set(event, { method, path });
+    return event;
+  }
+
+  /**
    * Emits an event and returns the response
+   * (helper for resolve)
    */
   protected async _resolveEvent<T = unknown>(
     event: string, 
@@ -195,6 +207,7 @@ export default class Router<R = unknown, S = unknown>
 
   /**
    * Routes to another route and returns the response
+   * (helper for resolve)
    */
   protected async _resolveRoute<T = unknown>(
     method: string, 
@@ -211,12 +224,12 @@ export default class Router<R = unknown, S = unknown>
    */
   protected _task(
     match: EventMatch, 
-    task: TaskItem<[ Request<R>, Response<S>, Router<R, S> ]>
+    task: TaskItem<RouterArgs<R, S, X>>
   ) {
     return async (
       req: Request<R>, 
       res: Response<S>, 
-      ctx: Router<R, S>
+      ctx: RouterContext<R, S, X>
     ) => {
       //set the current
       this._event = { 
@@ -240,7 +253,7 @@ export default class Router<R = unknown, S = unknown>
       }
       //if this is the same event, call the 
       //method, if the method returns false
-      if (await task.item(req, res, this) === false) {
+      if (await task.item(req, res, ctx) === false) {
         return false;
       }
       //after hook

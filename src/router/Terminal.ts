@@ -86,7 +86,7 @@ export function terminalControls(brand = '') {
 }
 
 export default class Terminal<R = unknown, S = unknown> 
-  extends Router<R, S> 
+  extends Router<R, S, Terminal<R, S>> 
 {
   //the event command
   public readonly command: string;

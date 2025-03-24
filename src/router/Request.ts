@@ -22,9 +22,8 @@ import { session } from './Session';
  * 
  * - native body reader using loader()
  * - access to original request resource
- * - attach a context (like a server/app class)
  */
-export default class Request<R = unknown, X = unknown> {
+export default class Request<R = unknown> {
   //data controller
   public readonly data: CallableNest;
   //head controller
@@ -41,14 +40,12 @@ export default class Request<R = unknown, X = unknown> {
   public readonly method: Method;
   //payload body
   protected _body: Body|null;
-  //the server or route
-  protected _context?: X;
   //body mimetype
   protected _mimetype: string;
   //whether if the body was loaded
   protected _loaded = false;
   //body loader
-  protected _loader?: RequestLoader<R, X>;
+  protected _loader?: RequestLoader<R>;
   //original request resource
   protected _resource?: R;
 
@@ -57,13 +54,6 @@ export default class Request<R = unknown, X = unknown> {
    */
   public get body() {
     return typeof this._body !== 'undefined' ? this._body : null;
-  }
-
-  /**
-   * Returns the context
-   */
-  public get context() {
-    return this._context as X;
   }
 
   /**
@@ -111,14 +101,14 @@ export default class Request<R = unknown, X = unknown> {
   /**
    * Sets Loader
    */
-  public set loader(loader: RequestLoader<R, X>) {
+  public set loader(loader: RequestLoader<R>) {
     this._loader = loader;
   }
 
   /**
    * Sets request defaults
    */
-  public constructor(init: Partial<RequestOptions<R, X>> = {}) {
+  public constructor(init: Partial<RequestOptions<R>> = {}) {
     this.data = nest();
     this.url = init.url instanceof URL ? init.url
       : typeof init.url === 'string' ? new URL(init.url)
@@ -164,7 +154,6 @@ export default class Request<R = unknown, X = unknown> {
 
     this.method = init.method || 'GET';
     this._body = init.body || null;
-    this._context = init.context;
     this._mimetype = init.mimetype || 'text/plain';
     this._resource = init.resource;
     

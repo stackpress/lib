@@ -35,38 +35,8 @@ export default class RouteEmitter<R = unknown, S = unknown>
     action: RouteAction<R, S>, 
     priority = 0
   ) {
-    //make regexp fragment from path
-    const fragment = this._toFragment(path);
-    //if any method
-    if (method === '*') {
-      //determine pattern
-      const pattern = fragment !== path ? path: '';
-      //complete the expression
-      const expression = `^[A-Z]+ ${fragment}${this.separator}*$`;
-      //listen to expression
-      this._onExpression(expression, pattern, action, priority);
-      //set the route (pattern should be in expressions ?)
-      this.routes.set(`/${expression}/g`, { method, path });
-      return this;
-    }
-    //make sure the method is uppercase
-    method = method.toUpperCase();
-    //determine the event key
-    const event = `${method} ${path}`;
-    //if the pattern is different
-    if (fragment !== path) {
-      //complete the expression
-      const expression = `^${method} ${fragment}${this.separator}*$`;
-      //listen to expression
-      this._onExpression(expression, event, action, priority);
-      //set the route (pattern should be in expressions ?)
-      this.routes.set(`/${expression}/g`, { method, path });
-      return this;
-    }
-    this._onLiteral(event, action, priority);
-    //set the route (pattern should be in expressions ?)
-    this.routes.set(event, { method, path });
-    return this;
+    const event = this._eventNameFromRoute(method, path);
+    return this._listen(event, action, priority);
   }
 
   /**
@@ -84,5 +54,43 @@ export default class RouteEmitter<R = unknown, S = unknown>
     //next merge the listeners
     super.use(emitter);
     return this;
+  }
+
+  /**
+   * Determines the event name given a method and path
+   * This also sets the route in the routes map. 
+   */
+  protected _eventNameFromRoute(method: string, path: string) {
+    //make regexp fragment from path
+    const fragment = this._toFragment(path);
+    //if any method
+    if (method === '*') {
+      //determine pattern
+      const pattern = fragment !== path ? path: '';
+      //complete the expression
+      const expression = `^[A-Z]+ ${fragment}${this.separator}*$`;
+      //listen to expression
+      const event = this._eventNameFromExpression(expression, pattern);
+      //set the route (pattern should be in expressions ?)
+      this.routes.set(event, { method, path });
+      return event;
+    }
+    //make sure the method is uppercase
+    method = method.toUpperCase();
+    //determine the event key
+    let event = `${method} ${path}`;
+    //if the pattern is different
+    if (fragment !== path) {
+      //complete the expression
+      const expression = `^${method} ${fragment}${this.separator}*$`;
+      //listen to expression
+      event = this._eventNameFromExpression(expression, event);
+      //set the route (pattern should be in expressions ?)
+      this.routes.set(event, { method, path });
+      return event;
+    }
+    //set the route (pattern should be in expressions ?)
+    this.routes.set(event, { method, path });
+    return event;
   }
 };

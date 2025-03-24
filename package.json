@@ -74,10 +74,6 @@
       "require": "./cjs/emitter/ExpressEmitter.js",
       "import": "./esm/emitter/ExpressEmitter.js"
     },
-    "./HttpEmitter": {
-      "require": "./cjs/emitter/HttpEmitter.js",
-      "import": "./esm/emitter/HttpEmitter.js"
-    },
     "./RouteEmitter": {
       "require": "./cjs/emitter/RouteEmitter.js",
       "import": "./esm/emitter/RouteEmitter.js"
@@ -89,10 +85,6 @@
     "./TaskQueue": {
       "require": "./cjs/queue/TaskQueue.js",
       "import": "./esm/queue/TaskQueue.js"
-    },
-    "./HttpRouter": {
-      "require": "./cjs/router/HttpRouter.js",
-      "import": "./esm/router/HttpRouter.js"
     },
     "./Request": {
       "require": "./cjs/router/Request.js",
@@ -140,11 +132,9 @@
       "ReadonlySet": [ "./cjs/data/ReadonlySet.d.ts" ],
       "EventEmitter": [ "./cjs/emitter/EventEmitter.d.ts" ],
       "ExpressEmitter": [ "./cjs/emitter/ExpressEmitter.d.ts" ],
-      "HttpEmitter": [ "./cjs/emitter/HttpEmitter.d.ts" ],
       "RouteEmitter": [ "./cjs/emitter/RouteEmitter.d.ts" ],
       "ItemQueue": [ "./cjs/queue/ItemQueue.d.ts" ],
       "TaskQueue": [ "./cjs/queue/TaskQueue.d.ts" ],
-      "HttpRouter": [ "./cjs/router/HttpRouter.d.ts" ],
       "Request": [ "./cjs/router/Request.d.ts" ],
       "Response": [ "./cjs/router/Response.d.ts" ],
       "Router": [ "./cjs/router/Router.d.ts" ],
@@ -169,7 +159,7 @@
     "build:tsc": "yarn build:tsc:cjs && yarn build:tsc:esm",
     "build:tsc:cjs": "tsc -p ./tsconfig.cjs.json",
     "build:tsc:esm": "tsc -p ./tsconfig.esm.json",
-    "test": "nyc ts-mocha -p ./tsconfig.cjs.json tests/*.test.ts",
+    "test": "nyc ts-mocha -r tsx tests/*.test.ts",
     "report": "nyc report -r lcov"
   },
   "dependencies": {
@@ -186,6 +176,7 @@
     "nyc": "17.1.0",
     "ts-mocha": "10.0.0",
     "ts-node": "10.9.2",
+    "tsx": "4.19.3",
     "typescript": "5.7.2"
   }
 }
