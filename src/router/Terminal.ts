@@ -90,6 +90,8 @@ export default class Terminal<R = unknown, S = unknown>
 {
   //the event command
   public readonly command: string;
+  //input and output controls
+  protected _controls: ReturnType<typeof terminalControls>;
   //cached cli args
   protected _args: string[];
   //cached terminal params (parsed argv)
@@ -100,6 +102,13 @@ export default class Terminal<R = unknown, S = unknown>
    */
   public get args() {
     return [ ...this._args ];
+  }
+
+  /**
+   * Returns the terminal controls
+   */
+  public get controls() {
+    return Object.freeze(this._controls);
   }
 
   /**
@@ -115,12 +124,14 @@ export default class Terminal<R = unknown, S = unknown>
   /**
    * Preloads the input and output settings
    */
-  constructor(args: string[]) {
+  constructor(args: string[], brand = '') {
     super();
     //set event
     this.command = args[0] || '';
     //set cli args
     this._args = args.slice(1);
+    //set controls
+    this._controls = terminalControls(brand);
   }
 
   /**
