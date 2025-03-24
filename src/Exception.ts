@@ -1,5 +1,10 @@
 //local
-import type { NestedObject, Trace, ErrorResponse } from './types';
+import type { 
+  Trace, 
+  NestedObject, 
+  ErrorResponse, 
+  StatusResponse 
+} from './types';
 import Status from './Status';
 
 /**
@@ -16,6 +21,18 @@ export default class Exception extends Error {
     });
 
     return new this(message);
+  }
+
+  /**
+   * Expressive error report
+   */
+  public static forResponse(
+    response: Partial<StatusResponse>, 
+    message = ''
+  ) {
+    const exception = new this(response.error || message, response.code);
+    exception.withErrors(response.errors || {});
+    return exception;
   }
 
   /**
@@ -88,7 +105,7 @@ export default class Exception extends Error {
   //error code
   protected _type: string;
   //itemized errors
-  protected _errors: NestedObject<string> = {};
+  protected _errors: NestedObject<string|string[]> = {};
   //starting index
   protected _start = 0;
   //ending index
@@ -211,13 +228,14 @@ export default class Exception extends Error {
    */
   public withCode(code: number) {
     this._code = code;
+    this._status = Status.get(code)?.status || 'Unknown';
     return this;
   }
   
   /**
    * Adds error list
    */
-  public withErrors(errors: NestedObject<string>) {
+  public withErrors(errors: NestedObject<string|string[]>) {
     this._errors = errors;
     return this;
   }
