@@ -12,7 +12,7 @@ import { ResponseStatus } from './types';
  * 
  * see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
  */
-const codes: Record<string, ResponseStatus> = {
+export const codes: Record<string, ResponseStatus> = {
   //------------------------------------------------------------------//
   // 100 Status Codes
 
@@ -233,16 +233,85 @@ const codes: Record<string, ResponseStatus> = {
   NETWORK_AUTHENTICATION_REQUIRED: { code: 511, status: 'Network Authentication Required' }
 };
 
-export default class Status {
-  static codes = codes;
-  static find(status: string) {
+const Status = {
+  //------------------------------------------------------------------//
+  // 100 Status Codes
+
+  CONTINUE: codes.CONTINUE,
+  PROCESSING: codes.PROCESSING,
+
+  //------------------------------------------------------------------//
+  // 200 Status Codes
+
+  OK: codes.OK,
+  CREATED: codes.CREATED,
+  ACCEPTED: codes.ACCEPTED,
+  EMPTY: codes.EMPTY,
+  RESET: codes.RESET,
+  PARTIAL: codes.PARTIAL,
+
+  //------------------------------------------------------------------//
+  // 300 Status Codes
+
+  MOVED: codes.MOVED,
+  FOUND: codes.FOUND,
+  REDIRECT: codes.REDIRECT,
+  CACHE: codes.CACHE,
+  TEMPORARY: codes.TEMPORARY,
+  PERMANENT: codes.PERMANENT,
+  ABORT: codes.ABORT,
+
+  //------------------------------------------------------------------//
+  // 400 Status Codes
+
+  BAD_REQUEST: codes.BAD_REQUEST,
+  UNAUTHORIZED: codes.UNAUTHORIZED,
+  FORBIDDEN: codes.FORBIDDEN,
+  NOT_FOUND: codes.NOT_FOUND,
+  BAD_METHOD: codes.BAD_METHOD,
+  NOT_ACCEPTABLE: codes.NOT_ACCEPTABLE,
+  REQUEST_TIMEOUT: codes.REQUEST_TIMEOUT,
+  CONFLICT: codes.CONFLICT,
+  GONE: codes.GONE,
+  LENGTH_REQUIRED: codes.LENGTH_REQUIRED,
+  TOO_LARGE: codes.TOO_LARGE,
+  TOO_LONG: codes.TOO_LONG,
+  UNSUPPORTED_TYPE: codes.UNSUPPORTED_TYPE,
+  BAD_RANGE: codes.BAD_RANGE,
+  BAD_EXPECTATION: codes.BAD_EXPECTATION,
+  MISDIRECTED: codes.MISDIRECTED,
+  UNPROCESSABLE: codes.UNPROCESSABLE,
+  LOCKED: codes.LOCKED,
+  BAD_DEPENDENCY: codes.BAD_DEPENDENCY,
+  UPGRADE_REQUIRED: codes.UPGRADE_REQUIRED,
+  BAD_PRECONDITION: codes.BAD_PRECONDITION,
+  TOO_MANY: codes.TOO_MANY,
+  HEADER_TOO_LARGE: codes.HEADER_TOO_LARGE,
+  LEGAL_REASONS: codes.LEGAL_REASONS,
+
+  //------------------------------------------------------------------//
+  // 500 Status Codes
+
+  ERROR: codes.ERROR,
+  NOT_IMPLEMENTED: codes.NOT_IMPLEMENTED,
+  BAD_GATEWAY: codes.BAD_GATEWAY,
+  UNAVAILABLE: codes.UNAVAILABLE,
+  RESPONSE_TIMEOUT: codes.RESPONSE_TIMEOUT,
+  BAD_VERSION: codes.BAD_VERSION,
+  INSUFFICIENT_STORAGE: codes.INSUFFICIENT_STORAGE,
+  INFINITE_LOOP: codes.INFINITE_LOOP,
+  NETWORK_AUTHENTICATION_REQUIRED: codes.NETWORK_AUTHENTICATION_REQUIRED,
+
+  find(status: string) {
     return Object.values(codes).find(
-      response => response.status === status
+      response => typeof response !== 'function' && response.status === status
+    );
+  },
+  get(code: number) {
+    return Object.values(codes).find(
+      response => typeof response !== 'function' && response.code === code
     );
   }
-  static get(code: number) {
-    return Object.values(codes).find(
-      response => response.code === code
-    );
-  }
-}
+};
+
+export default Status;
