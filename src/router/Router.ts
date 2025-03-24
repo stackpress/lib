@@ -151,10 +151,12 @@ export default class Router<R = unknown, S = unknown, X = undefined>
    * This also sets the route in the routes map. 
    */
   protected _eventNameFromRoute(method: string, path: string) {
+    //make sure the method is uppercase
+    method = method.toUpperCase();
     //make regexp fragment from path
     const fragment = this._toFragment(path);
     //if any method
-    if (method === '*') {
+    if (method === 'ANY') {
       //determine pattern
       const pattern = fragment !== path ? path: '';
       //complete the expression
@@ -165,8 +167,6 @@ export default class Router<R = unknown, S = unknown, X = undefined>
       this.routes.set(event, { method, path });
       return event;
     }
-    //make sure the method is uppercase
-    method = method.toUpperCase();
     //determine the event key
     let event = `${method} ${path}`;
     //if the pattern is different
