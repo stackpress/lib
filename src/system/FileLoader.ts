@@ -63,9 +63,8 @@ export default class FileLoader {
     }
     try { //to follow symlinks
       return await this._fs.realpath(absolute);
-    } catch(e) {
-      return absolute;
-    }
+    } catch(e) {}
+    return absolute;
   }
 
   /**
