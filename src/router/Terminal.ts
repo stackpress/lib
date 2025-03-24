@@ -105,6 +105,13 @@ export default class Terminal<R = unknown, S = unknown>
   }
 
   /**
+   * Returns the terminal brand
+   */
+  public get brand() {
+    return this._controls.brand;
+  }
+
+  /**
    * Returns the terminal controls
    */
   public get controls() {
