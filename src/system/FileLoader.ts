@@ -233,7 +233,7 @@ export default class FileLoader {
       if (await this._fileExists(file)) {
         return file;
       }
-      const index = path.resolve(pathname, 'index' + extname);
+      const index = path.join(pathname, 'index' + extname);
       file = await this.absolute(index, pwd);
       if (await this._fileExists(file)) {
         return file;
