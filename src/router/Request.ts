@@ -11,7 +11,7 @@ import type {
   RequestOptions
 } from '../types';
 //data
-import map from '../data//map';
+import map from '../data/map';
 import { nest, isObject, objectFromQuery } from '../data/Nest';
 //local
 import { session } from './Session';
