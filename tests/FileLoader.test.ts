@@ -3,8 +3,10 @@ import { expect } from 'chai';
 
 import path from 'node:path';
 
-import FileLoader from '../src/system/FileLoader.js';
-import NodeFS from '../src/system/NodeFS.js';
+//NOTE: no extensions in tests because it's excluded in tsconfig.json
+//and we are testing in a typescript environment via ts-mocha
+import FileLoader from '../src/system/FileLoader';
+import NodeFS from '../src/system/NodeFS';
 
 describe('FileLoader Tests', () => {
   it('Instantiate File Loader', () => {

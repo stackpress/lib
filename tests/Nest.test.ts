@@ -1,14 +1,16 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import ReadonlyNest from '../src/data/ReadonlyNest.js';
-import type { CallableNest } from '../src/types.js';
+//NOTE: no extensions in tests because it's excluded in tsconfig.json
+//and we are testing in a typescript environment via ts-mocha
+import ReadonlyNest from '../src/data/ReadonlyNest';
+import type { CallableNest } from '../src/types';
 import Nest, { 
   nest, 
   isObject,
   objectFromQuery,
   objectFromFormData,
   objectFromJson
-} from '../src/data/Nest.js';
+} from '../src/data/Nest';
 
 const body = `--BOUNDARY\r
 Content-Disposition: form-data; name="foo"\r

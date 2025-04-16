@@ -1,6 +1,8 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import Response from '../src/router/Response.js';
+//NOTE: no extensions in tests because it's excluded in tsconfig.json
+//and we are testing in a typescript environment via ts-mocha
+import Response from '../src/router/Response';
 
 describe('Response Tests', () => {
   it('Should be empty', () => {

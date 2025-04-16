@@ -1,9 +1,11 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
-import type { CallableMap, CallableSet } from '../src/types.js';
-import map from '../src/data/map.js';
-import set from '../src/data/set.js';
+//NOTE: no extensions in tests because it's excluded in tsconfig.json
+//and we are testing in a typescript environment via ts-mocha
+import type { CallableMap, CallableSet } from '../src/types';
+import map from '../src/data/map';
+import set from '../src/data/set';
 
 describe('map() Tests', () => {
   it('Should be callable', async () => {

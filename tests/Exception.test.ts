@@ -1,6 +1,8 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import Exception from '../src/Exception.js';
+//NOTE: no extensions in tests because it's excluded in tsconfig.json
+//and we are testing in a typescript environment via ts-mocha
+import Exception from '../src/Exception';
 
 function func1(x: number) {
   func2(x + 1);

@@ -1,7 +1,8 @@
 import { describe, it, beforeEach } from 'mocha';
 import { expect } from 'chai';
-
-import Router from '../src/router/Router.js';
+//NOTE: no extensions in tests because it's excluded in tsconfig.json
+//and we are testing in a typescript environment via ts-mocha
+import Router from '../src/router/Router';
 
 class Server extends Router<unknown, unknown, Server> {
   public increment(i: number) {

@@ -1,7 +1,9 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import TaskQueue from '../src/queue/TaskQueue.js';
-import StatusCode from '../src/Status.js';
+//NOTE: no extensions in tests because it's excluded in tsconfig.json
+//and we are testing in a typescript environment via ts-mocha
+import TaskQueue from '../src/queue/TaskQueue';
+import StatusCode from '../src/Status';
 
 describe('Task Queue Tests', () => {
   it('Should run tasks', async () => {

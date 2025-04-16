@@ -1,6 +1,8 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import Reflection from '../src/Reflection.js';
+//NOTE: no extensions in tests because it's excluded in tsconfig.json
+//and we are testing in a typescript environment via ts-mocha
+import Reflection from '../src/Reflection';
 
 function func1(x: number) {
   return func2(x + 1);

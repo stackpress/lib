@@ -1,6 +1,8 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import Request, { withUnknownHost } from '../src/router/Request.js';
+//NOTE: no extensions in tests because it's excluded in tsconfig.json
+//and we are testing in a typescript environment via ts-mocha
+import Request, { withUnknownHost } from '../src/router/Request';
 
 describe('Request Tests', () => {
   it('Should be empty', () => {

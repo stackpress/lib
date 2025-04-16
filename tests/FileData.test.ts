@@ -1,7 +1,9 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import FileData from '../src/data/processors/FileData.js';
-import { FileMeta } from '../src/types.js';
+//NOTE: no extensions in tests because it's excluded in tsconfig.json
+//and we are testing in a typescript environment via ts-mocha
+import FileData from '../src/data/processors/FileData';
+import { FileMeta } from '../src/types';
 
 describe('FileData Tests', () => {
   it('Should correctly instantiate with FileMeta', () => {

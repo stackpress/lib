@@ -1,6 +1,8 @@
 import { describe, it, beforeEach } from 'mocha';
 import { expect } from 'chai';
-import QueryString from '../src/data/processors/QueryString.js';
+//NOTE: no extensions in tests because it's excluded in tsconfig.json
+//and we are testing in a typescript environment via ts-mocha
+import QueryString from '../src/data/processors/QueryString';
 
 // Mock Nest class to mimic the nest behavior
 class MockNest {

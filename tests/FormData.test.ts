@@ -1,6 +1,8 @@
 import { describe, it, beforeEach } from 'mocha';
 import { expect } from 'chai';
-import FormData from '../src/data/processors/FormData.js';
+//NOTE: no extensions in tests because it's excluded in tsconfig.json
+//and we are testing in a typescript environment via ts-mocha
+import FormData from '../src/data/processors/FormData';
 
 // Mock Nest class to mimic the behavior of the real Nest class
 class MockNest {
