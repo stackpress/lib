@@ -6,9 +6,9 @@ import type {
   EventData,
   EventMatch,
   EventExpression
-} from '../types';
+} from '../types.js';
 //local
-import EventEmitter from './EventEmitter';
+import EventEmitter from './EventEmitter.js';
 
 export const VARIABLE_NAME = /(\:[a-zA-Z0-9\-_]+)/g;
 export const EVENT_PATTERNS = /(\:[a-zA-Z0-9\-_]+)|(\*\*)|(\*)/g;

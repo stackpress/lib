@@ -1,5 +1,5 @@
 //common
-import type { FileMeta } from '../../types';
+import type { FileMeta } from '../../types.js';
 
 export default class FileData {
   public data: Buffer|string;

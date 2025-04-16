@@ -1,7 +1,7 @@
 import { describe, it, beforeEach } from 'mocha';
 import { expect } from 'chai';
 
-import Router from '../src/router/Router';
+import Router from '../src/router/Router.js';
 
 class Server extends Router<unknown, unknown, Server> {
   public increment(i: number) {

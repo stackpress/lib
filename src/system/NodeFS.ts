@@ -1,7 +1,7 @@
 //modules
 import * as fs from 'node:fs';
 //common
-import type { FileSystem, FileRecursiveOption } from '../types';
+import type { FileSystem, FileRecursiveOption } from '../types.js';
 
 export default class NodeFS implements FileSystem {
   protected _fs: typeof fs;

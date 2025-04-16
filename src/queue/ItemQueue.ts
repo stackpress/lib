@@ -1,5 +1,5 @@
 //common
-import type { Item } from '../types';
+import type { Item } from '../types.js';
 
 /**
  * An item queue that consumes in order of priority and FIFO

@@ -1,4 +1,4 @@
-import { CallSite } from './types';
+import { CallSite } from './types.js';
 
 export default class Reflection {
   public static stack() {

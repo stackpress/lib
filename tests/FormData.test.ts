@@ -1,6 +1,6 @@
 import { describe, it, beforeEach } from 'mocha';
 import { expect } from 'chai';
-import FormData from '../src/data/processors/FormData';
+import FormData from '../src/data/processors/FormData.js';
 
 // Mock Nest class to mimic the behavior of the real Nest class
 class MockNest {

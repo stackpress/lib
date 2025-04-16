@@ -1,5 +1,5 @@
 //local
-import type { CallableMap } from '../types';
+import type { CallableMap } from '../types.js';
 
 export default function map<K = any, V = any> (data?: [K, V][]): CallableMap<K, V> {
   const store = new Map<K, V>(data);

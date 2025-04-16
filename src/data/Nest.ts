@@ -5,15 +5,15 @@ import type {
   NestedObject, 
   UnknownNest, 
   CallableNest 
-} from '../types';
-import Exception from '../Exception';
+} from '../types.js';
+import Exception from '../Exception.js';
 //processors
-import ArgString from './processors/ArgString';
-import PathString from './processors/PathString';
-import QueryString from './processors/QueryString';
-import FormData from './processors/FormData';
+import ArgString from './processors/ArgString.js';
+import PathString from './processors/PathString.js';
+import QueryString from './processors/QueryString.js';
+import FormData from './processors/FormData.js';
 //local
-import ReadonlyNest from './ReadonlyNest';
+import ReadonlyNest from './ReadonlyNest.js';
 
 /**
  * Nest easily manipulates object data

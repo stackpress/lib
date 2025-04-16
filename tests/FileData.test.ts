@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import FileData from '../src/data/processors/FileData';
-import { FileMeta } from '../src/types';
+import FileData from '../src/data/processors/FileData.js';
+import { FileMeta } from '../src/types.js';
 
 describe('FileData Tests', () => {
   it('Should correctly instantiate with FileMeta', () => {

@@ -1,8 +1,8 @@
 //modules
 import * as path from 'node:path';
 //common
-import type { FileSystem } from '../types';
-import Exception from '../Exception';
+import type { FileSystem } from '../types.js';
+import Exception from '../Exception.js';
 
 /**
  * Loader

@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import Reflection from '../src/Reflection';
+import Reflection from '../src/Reflection.js';
 
 function func1(x: number) {
   return func2(x + 1);

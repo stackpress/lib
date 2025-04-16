@@ -1,5 +1,5 @@
 //local
-import { ResponseStatus } from './types';
+import { ResponseStatus } from './types.js';
 
 /**
  * Status Codes as return states by the `Emitter`. These codes are 

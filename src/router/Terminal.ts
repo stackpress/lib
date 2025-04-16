@@ -1,9 +1,9 @@
 //modules
 import { input } from '@inquirer/prompts';
 //data
-import { objectFromArgs } from '../data/Nest';
+import { objectFromArgs } from '../data/Nest.js';
 //local
-import Router from './Router';
+import Router from './Router.js';
 
 /**
  * Returns a list of control methods for the terminal

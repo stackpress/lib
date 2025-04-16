@@ -1,8 +1,8 @@
 //common
-import type { TaskAction, ResponseStatus } from '../types';
-import Status from '../Status';
+import type { TaskAction, ResponseStatus } from '../types.js';
+import Status from '../Status.js';
 //local
-import ItemQueue from './ItemQueue';
+import ItemQueue from './ItemQueue.js';
 
 /**
  * A task queue linearly executes each task

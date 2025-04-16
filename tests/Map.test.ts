@@ -1,9 +1,9 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
-import type { CallableMap, CallableSet } from '../src/types';
-import map from '../src/data/map';
-import set from '../src/data/set';
+import type { CallableMap, CallableSet } from '../src/types.js';
+import map from '../src/data/map.js';
+import set from '../src/data/set.js';
 
 describe('map() Tests', () => {
   it('Should be callable', async () => {

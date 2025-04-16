@@ -1,7 +1,7 @@
-//stackprss
-import ReadonlyMap from '../data/ReadonlyMap';
+//data
+import ReadonlyMap from '../data/ReadonlyMap.js';
 //local
-import type { Revision, CallableSession } from '../types';
+import type { Revision, CallableSession } from '../types.js';
 
 /**
  * Readonly session controller

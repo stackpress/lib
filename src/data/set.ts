@@ -1,5 +1,5 @@
 //local
-import type { CallableSet } from '../types';
+import type { CallableSet } from '../types.js';
 
 export default function set<V = any> (data?: V[]): CallableSet<V> {
   const store = new Set<V>(data);

@@ -8,10 +8,10 @@ import type {
   EventName,
   EventHook, 
   EventMatch
-} from '../types';
-import Status from '../Status';
+} from '../types.js';
+import Status from '../Status.js';
 //queue
-import TaskQueue from '../queue/TaskQueue';
+import TaskQueue from '../queue/TaskQueue.js';
 
 /**
  * Allows the ability to listen to events made known by another

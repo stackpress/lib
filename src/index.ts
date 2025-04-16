@@ -53,18 +53,18 @@ export type {
   FileStream,
   FileSystem,
   CallSite
-} from './types';
+} from './types.js';
 
-import ArgString from './data/processors/ArgString';
-import FileData from './data/processors/FileData';
-import FormData from './data/processors/FormData';
-import PathString from './data/processors/PathString';
-import QueryString from './data/processors/QueryString';
+import ArgString from './data/processors/ArgString.js';
+import FileData from './data/processors/FileData.js';
+import FormData from './data/processors/FormData.js';
+import PathString from './data/processors/PathString.js';
+import QueryString from './data/processors/QueryString.js';
 
-import ReadonlyMap from './data/ReadonlyMap';
-import ReadonlyNest from './data/ReadonlyNest';
-import ReadonlyPath from './data/ReadonlyPath';
-import ReadonlySet from './data/ReadonlySet';
+import ReadonlyMap from './data/ReadonlyMap.js';
+import ReadonlyNest from './data/ReadonlyNest.js';
+import ReadonlyPath from './data/ReadonlyPath.js';
+import ReadonlySet from './data/ReadonlySet.js';
 import Nest, { 
   formDataToObject,
   isObject,
@@ -76,28 +76,28 @@ import Nest, {
   objectFromFormData,
   shouldBeAnArray,
   nest 
-} from './data/Nest';
-import map from './data/map';
-import set from './data/set';
+} from './data/Nest.js';
+import map from './data/map.js';
+import set from './data/set.js';
 
-import FileLoader from './system/FileLoader';
-import NodeFS from './system/NodeFS';
+import FileLoader from './system/FileLoader.js';
+import NodeFS from './system/NodeFS.js';
 
-import ItemQueue from './queue/ItemQueue';
-import TaskQueue from './queue/TaskQueue';
+import ItemQueue from './queue/ItemQueue.js';
+import TaskQueue from './queue/TaskQueue.js';
 
-import EventEmitter from './emitter/EventEmitter';
-import ExpressEmitter from './emitter/ExpressEmitter';
-import RouteEmitter from './emitter/RouteEmitter';
+import EventEmitter from './emitter/EventEmitter.js';
+import ExpressEmitter from './emitter/ExpressEmitter.js';
+import RouteEmitter from './emitter/RouteEmitter.js';
 
-import Request, { withUnknownHost } from './router/Request';
-import Response from './router/Response';
-import Router from './router/Router';
-import Terminal, { terminalControls } from './router/Terminal';
+import Request, { withUnknownHost } from './router/Request.js';
+import Response from './router/Response.js';
+import Router from './router/Router.js';
+import Terminal, { terminalControls } from './router/Terminal.js';
 
-import Exception from './Exception';
-import Reflection from './Reflection';
-import Status, { codes } from './Status';
+import Exception from './Exception.js';
+import Reflection from './Reflection.js';
+import Status, { codes } from './Status.js';
 
 export {
   ArgString,

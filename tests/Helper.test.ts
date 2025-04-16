@@ -1,9 +1,9 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import map from '../src/data/map';
-import set from '../src/data/set';
-import { makeArray, makeObject, shouldBeAnArray } from '../src/data/Nest';
-import { NestedObject } from '../src/types';
+import map from '../src/data/map.js';
+import set from '../src/data/set.js';
+import { makeArray, makeObject, shouldBeAnArray } from '../src/data/Nest.js';
+import { NestedObject } from '../src/types.js';
 
 
 describe('Helper Tests', () => {

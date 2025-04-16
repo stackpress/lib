@@ -2,12 +2,12 @@
 import type { Readable } from 'node:stream';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 //data
-import type Nest from './data/Nest';
+import type Nest from './data/Nest.js';
 //router
-import type { WriteSession } from './router/Session';
-import type Request from './router/Request';
-import type Response from './router/Response';
-import type Router from './router/Router';
+import type { WriteSession } from './router/Session.js';
+import type Request from './router/Request.js';
+import type Response from './router/Response.js';
+import type Router from './router/Router.js';
 
 //--------------------------------------------------------------------//
 // Data Types

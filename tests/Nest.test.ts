@@ -1,14 +1,14 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import ReadonlyNest from '../src/data/ReadonlyNest';
-import type { CallableNest } from '../src/types';
+import ReadonlyNest from '../src/data/ReadonlyNest.js';
+import type { CallableNest } from '../src/types.js';
 import Nest, { 
   nest, 
   isObject,
   objectFromQuery,
   objectFromFormData,
   objectFromJson
-} from '../src/data/Nest';
+} from '../src/data/Nest.js';
 
 const body = `--BOUNDARY\r
 Content-Disposition: form-data; name="foo"\r

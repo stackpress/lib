@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
 import crypto from 'node:crypto';
-import Router from '../src/router/Router';
+import Router from '../src/router/Router.js';
 
 type R = { path: string };
 type S = { body?: string };

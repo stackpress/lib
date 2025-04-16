@@ -1,5 +1,5 @@
 //local
-import type ReadonlyNest from './ReadonlyNest';
+import type ReadonlyNest from './ReadonlyNest.js';
 
 export default class ReadonlyPath {
   /**

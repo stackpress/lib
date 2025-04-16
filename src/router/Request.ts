@@ -9,12 +9,12 @@ import type {
   CallableSession,
   RequestLoader,
   RequestOptions
-} from '../types';
+} from '../types.js';
 //data
-import map from '../data/map';
-import { nest, isObject, objectFromQuery } from '../data/Nest';
+import map from '../data/map.js';
+import { nest, isObject, objectFromQuery } from '../data/Nest.js';
 //local
-import { session } from './Session';
+import { session } from './Session.js';
 
 /**
  * Generic request wrapper that works with

@@ -4,8 +4,8 @@ import type {
   NestedObject, 
   ErrorResponse, 
   StatusResponse 
-} from './types';
-import Status from './Status';
+} from './types.js';
+import Status from './Status.js';
 
 /**
  * Exceptions are used to give more information

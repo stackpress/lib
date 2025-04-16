@@ -3,10 +3,10 @@ import type {
   Route, 
   RouteMap, 
   RouteAction
-} from '../types';
+} from '../types.js';
 //local
-import type EventEmitter from './EventEmitter';
-import ExpressEmitter from './ExpressEmitter';
+import type EventEmitter from './EventEmitter.js';
+import ExpressEmitter from './ExpressEmitter.js';
 
 /**
  * Event driven routing system. Bring 

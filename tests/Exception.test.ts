@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import Exception from '../src/Exception';
+import Exception from '../src/Exception.js';
 
 function func1(x: number) {
   func2(x + 1);

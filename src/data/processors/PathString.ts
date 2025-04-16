@@ -1,6 +1,6 @@
 //data
-import type Nest from '../Nest';
-import ReadonlyPathString from '../ReadonlyPath';
+import type Nest from '../Nest.js';
+import ReadonlyPathString from '../ReadonlyPath.js';
 
 
 export default class PathString extends ReadonlyPathString {

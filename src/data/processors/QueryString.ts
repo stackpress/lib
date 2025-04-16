@@ -1,5 +1,5 @@
 //data
-import type Nest from '../Nest';
+import type Nest from '../Nest.js';
 
 export default class QueryString {
   /**

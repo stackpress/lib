@@ -11,14 +11,14 @@ import type {
   CallableSession,
   ResponseDispatcher,
   ResponseOptions
-} from '../types';
-import Status from '../Status';
-import Exception from '../Exception';
+} from '../types.js';
+import Status from '../Status.js';
+import Exception from '../Exception.js';
 //data
-import map from '../data/map';
-import { nest, isObject } from '../data/Nest';
+import map from '../data/map.js';
+import { nest, isObject } from '../data/Nest.js';
 //local
-import { session } from './Session';
+import { session } from './Session.js';
 
 /**
  * Generic response wrapper that works with 

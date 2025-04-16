@@ -1,5 +1,5 @@
-import { ReadSession, WriteSession, session } from '../src/router/Session';
 import { expect } from 'chai';
+import { ReadSession, WriteSession, session } from '../src/router/Session.js';
 
 describe('ReadSession', () => {
   let readSession: ReadSession;

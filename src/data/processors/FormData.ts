@@ -1,9 +1,9 @@
 //common
-import Exception from '../../Exception';
+import Exception from '../../Exception.js';
 //data
-import type Nest from '../Nest';
+import type Nest from '../Nest.js';
 //local
-import FileData from './FileData';
+import FileData from './FileData.js';
 
 export default class FormData {
   /**

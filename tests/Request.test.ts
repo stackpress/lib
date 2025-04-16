@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import Request, { withUnknownHost } from '../src/router/Request';
+import Request, { withUnknownHost } from '../src/router/Request.js';
 
 describe('Request Tests', () => {
   it('Should be empty', () => {

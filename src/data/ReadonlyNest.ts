@@ -1,7 +1,7 @@
 //common
-import type { Key, UnknownNest, TypeOf } from '../types';
+import type { Key, UnknownNest, TypeOf } from '../types.js';
 //local
-import Path from './ReadonlyPath';
+import Path from './ReadonlyPath.js';
 
 /**
  * Nest easily manipulates object data

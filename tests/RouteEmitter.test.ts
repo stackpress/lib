@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
-import Router from '../src/emitter/RouteEmitter';
+import Router from '../src/emitter/RouteEmitter.js';
 
 type R = { path: string };
 type S = { body?: string };

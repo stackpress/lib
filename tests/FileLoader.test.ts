@@ -3,8 +3,8 @@ import { expect } from 'chai';
 
 import path from 'node:path';
 
-import FileLoader from '../src/system/FileLoader';
-import NodeFS from '../src/system/NodeFS';
+import FileLoader from '../src/system/FileLoader.js';
+import NodeFS from '../src/system/NodeFS.js';
 
 describe('FileLoader Tests', () => {
   it('Instantiate File Loader', () => {

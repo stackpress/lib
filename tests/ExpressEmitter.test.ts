@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import ExpressEmitter from '../src/emitter/ExpressEmitter';
+import ExpressEmitter from '../src/emitter/ExpressEmitter.js';
 
 describe('Expression Emitter Tests', () => {
   it('Should listen', async () => {
