@@ -1,9 +1,8 @@
+import crypto from 'node:crypto';
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-
-import crypto from 'node:crypto';
-//NOTE: no extensions in tests because it's excluded in tsconfig.json
-//and we are testing in a typescript environment via ts-mocha
+//NOTE: no extensions in tests because it's excluded in tsconfig.json and
+//we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
 import Router from '../src/router/Router';
 
 type R = { path: string };

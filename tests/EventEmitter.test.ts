@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-//NOTE: no extensions in tests because it's excluded in tsconfig.json
-//and we are testing in a typescript environment via ts-mocha
+//NOTE: no extensions in tests because it's excluded in tsconfig.json and
+//we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
 import EventEmitter from '../src/emitter/EventEmitter';
 
 describe('Event Emitter Tests', () => {
