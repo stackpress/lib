@@ -3,6 +3,7 @@ import * as path from 'node:path';
 //common
 import type { FileSystem } from '../types.js';
 import Exception from '../Exception.js';
+import { pathToFileURL } from 'node:url';
 
 /**
  * Loader
@@ -159,8 +160,7 @@ export default class FileLoader {
       } catch(e) {}
       return {} as T;
     }
-    
-    const imports = await import(absolute);
+    const imports = await import(pathToFileURL(absolute).href);
     if (getDefault) {
       return imports.default as T;
     }

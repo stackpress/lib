@@ -6,6 +6,10 @@ import { expect } from 'chai';
 import FileLoader from '../src/system/FileLoader';
 import NodeFS from '../src/system/NodeFS';
 
+function normalize(path: string) {
+  return path.replaceAll('\\', '/').replace(/^[A-Za-z]:/, '');
+}
+
 describe('FileLoader Tests', () => {
   it('Instantiate File Loader', () => {
     const fs = new NodeFS();
@@ -29,11 +33,11 @@ describe('FileLoader Tests', () => {
     const expected2 = path.join(import.meta.dirname, 'foo/bar.ts');
     expect(actual2).to.equal(expected2);
 
-    const actual3 = await loader.absolute('/foo/bar');
+    const actual3 = normalize(await loader.absolute('/foo/bar'));
     const expected3 = '/foo/bar';
     expect(actual3).to.equal(expected3);
 
-    const actual4 = await loader.absolute('/foo/bar.ts');
+    const actual4 = normalize(await loader.absolute('/foo/bar.ts'));
     const expected4 = '/foo/bar.ts';
     expect(actual4).to.equal(expected4);
 
@@ -79,7 +83,8 @@ describe('FileLoader Tests', () => {
     const loader = new FileLoader(fs, import.meta.dirname);
 
     const actual = loader.relative('/foo/bar/zoo.js', '/foo/zoo/bar.js', true);
-    expect(actual).to.equal('../zoo/bar.js')
+    const normalized = normalize(actual);
+    expect(normalized).to.equal('../zoo/bar.js')
   });
 
   it('Should get resolve file/folder', async () => {
