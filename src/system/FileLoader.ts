@@ -1,9 +1,9 @@
 //modules
 import * as path from 'node:path';
+import { pathToFileURL } from 'node:url';
 //common
 import type { FileSystem } from '../types.js';
 import Exception from '../Exception.js';
-import { pathToFileURL } from 'node:url';
 
 /**
  * Loader
