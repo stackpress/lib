@@ -44,6 +44,10 @@
       "require": "./cjs/Status.js",
       "import": "./esm/Status.js"
     },
+    "./cookie": {
+      "require": "./cjs/data/cookie.js",
+      "import": "./esm/data/cookie.js"
+    },
     "./map": {
       "require": "./cjs/data/map.js",
       "import": "./esm/data/map.js"
@@ -121,11 +125,12 @@
   },
   "typesVersions": {
     "*": {
-      "index": ["./cjs/index.d.ts"],
+      "index": [ "./cjs/index.d.ts" ],
       "types": [ "./cjs/types.d.ts" ],
       "Exception": [ "./cjs/Exception.d.ts" ],
       "Reflection": [ "./cjs/Reflection.d.ts" ],
       "Status": [ "./cjs/Status.d.ts" ],
+      "cookie": [ "./cjs/data/cookie.d.ts" ],
       "map": [ "./cjs/data/map.d.ts" ],
       "set": [ "./cjs/data/set.d.ts" ],
       "Nest": [ "./cjs/data/Nest.d.ts" ],
@@ -165,8 +170,7 @@
     "report": "nyc report -r lcov"
   },
   "dependencies": {
-    "@inquirer/prompts": "7.1.0",
-    "cookie": "1.0.2"
+    "@inquirer/prompts": "7.1.0"
   },
   "devDependencies": {
     "@types/chai": "4.3.20",

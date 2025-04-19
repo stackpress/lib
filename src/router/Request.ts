@@ -1,5 +1,3 @@
-//modules
-import * as cookie from 'cookie';
 //common
 import type { 
   Body,
@@ -12,6 +10,7 @@ import type {
 } from '../types.js';
 //data
 import map from '../data/map.js';
+import cookie from '../data/cookie.js';
 import { nest, isObject, objectFromQuery } from '../data/Nest.js';
 //local
 import { session } from './Session.js';

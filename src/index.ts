@@ -77,6 +77,7 @@ import Nest, {
   shouldBeAnArray,
   nest 
 } from './data/Nest.js';
+import cookie from './data/map.js';
 import map from './data/map.js';
 import set from './data/set.js';
 
@@ -125,6 +126,7 @@ export {
   Reflection,
   Status,
   codes,
+  cookie,
   map,
   set,
   nest,

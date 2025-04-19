@@ -48,6 +48,29 @@ export type CallableNest<M extends UnknownNest = UnknownNest> = (
 ) & Nest<M>;
 
 //--------------------------------------------------------------------//
+// Cookie Types
+
+export type CookieOptions = {
+  domain?: string,
+  expires?: Date,
+  httpOnly?: boolean,
+  maxAge?: number,
+  path?: string,
+  partitioned?: boolean,
+  priority?: 'low'|'medium'|'high',
+  sameSite?: boolean|'lax'|'strict'|'none',
+  secure?: boolean
+};
+
+export type CookieParseOptions = {
+  decode?: (str: string) => string | undefined
+};
+
+export type CookieSerializeOptions = CookieOptions & {
+  encode?: (str: string) => string
+};
+
+//--------------------------------------------------------------------//
 // Status Types
 
 export type ResponseStatus = {
@@ -175,17 +198,6 @@ export type RequestOptions<R = unknown> = {
 export type Revision = {
   action: 'set'|'remove',
   value?: string|string[]
-};
-
-export type CookieOptions = {
-  domain?: string;
-  expires?: Date;
-  httpOnly?: boolean;
-  maxAge?: number;
-  path?: string;
-  priority?: 'low'|'medium'|'high';
-  sameSite?: boolean|'lax'|'strict'|'none';
-  secure?: boolean;
 };
 
 //--------------------------------------------------------------------//
