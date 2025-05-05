@@ -94,7 +94,7 @@ import RouteEmitter from './emitter/RouteEmitter.js';
 import Request, { withUnknownHost } from './router/Request.js';
 import Response from './router/Response.js';
 import Router from './router/Router.js';
-import Terminal, { terminalControls } from './router/Terminal.js';
+import Terminal, { control } from './router/Terminal.js';
 
 import Exception from './Exception.js';
 import Reflection from './Reflection.js';
@@ -126,6 +126,7 @@ export {
   Reflection,
   Status,
   codes,
+  control,
   cookie,
   map,
   set,
@@ -139,6 +140,5 @@ export {
   objectFromQuery,
   objectFromFormData,
   shouldBeAnArray,
-  terminalControls,
   withUnknownHost
 };

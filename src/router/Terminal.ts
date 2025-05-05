@@ -8,7 +8,7 @@ import Router from './Router.js';
 /**
  * Returns a list of control methods for the terminal
  */
-export function terminalControls(brand = '') {
+export function control(brand = '') {
   const controls = {
     brand,
     
@@ -50,7 +50,7 @@ export function terminalControls(brand = '') {
         message = message.replace('%s', variable);
       }
       //add brand to message
-      message = `${this.brand} ${message}`;
+      message = `${this.brand} ${message}`.trim();
       //colorize the message
       if (color) {
         console.log(color, message);
@@ -91,7 +91,7 @@ export default class Terminal<R = unknown, S = unknown>
   //the event command
   public readonly command: string;
   //input and output controls
-  protected _controls: ReturnType<typeof terminalControls>;
+  protected _control: ReturnType<typeof control>;
   //cached cli args
   protected _args: string[];
   //cached terminal params (parsed argv)
@@ -108,14 +108,14 @@ export default class Terminal<R = unknown, S = unknown>
    * Returns the terminal brand
    */
   public get brand() {
-    return this._controls.brand;
+    return this._control.brand;
   }
 
   /**
    * Returns the terminal controls
    */
-  public get controls() {
-    return Object.freeze(this._controls);
+  public get control() {
+    return Object.freeze(this._control);
   }
 
   /**
@@ -138,7 +138,7 @@ export default class Terminal<R = unknown, S = unknown>
     //set cli args
     this._args = args.slice(1);
     //set controls
-    this._controls = terminalControls(brand);
+    this._control = control(brand);
   }
 
   /**
