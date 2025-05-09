@@ -1,8 +1,7 @@
-import { describe, it, beforeEach } from 'mocha';
+import { describe, it } from 'mocha';
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
-import ArgString from '../src/data/processors/ArgString';
 import Nest from '../src/data/Nest'
 
 describe('ArgString argv Tests', () => {
