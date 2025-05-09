@@ -28,7 +28,8 @@ export default class QueryString {
     const separator = '~~' + Math.floor(Math.random() * 10000) + '~~';
     query.split(/\&/gi).forEach((filter: any) => {
       //key eg. foo[bar][][baz]
-      let [ key, value ] = filter.split('=', 2);
+      let [ key, ...values ] = filter.split('=');
+      let value = values.join('=');
       key = decodeURIComponent(key);
       value = value.replace(/\+/g, ' ');
       value = decodeURIComponent(value);
