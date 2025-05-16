@@ -1,5 +1,7 @@
 //modules
 import { input } from '@inquirer/prompts';
+//lib
+import type { TypeOf } from '../types.js';
 //data
 import { objectFromArgs } from '../data/Nest.js';
 //local
@@ -144,7 +146,7 @@ export default class Terminal<R = unknown, S = unknown>
   /**
    * Retrieves the first value found from the given flag/s in cli
    */
-  public expect<T>(flags: string[], defaults: T) {
+  public expect<T>(flags: string[], defaults: TypeOf<T>) {
     for (const flag of flags) {
       if (this.data[flag]) {
         return this.data[flag] as T;
@@ -156,9 +158,9 @@ export default class Terminal<R = unknown, S = unknown>
   /**
    * Runs the command
    */
-  public run() {
+  public run<T = unknown>() {
     const req = this.request({ data: this.data });
     const res = this.response();
-    return this.emit(this.command, req, res);
+    return this.resolve<T>(this.command, req, res);
   }
 }
