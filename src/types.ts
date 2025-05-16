@@ -21,7 +21,7 @@ export type TypeOf<T> = T extends number
   : T extends undefined
   ? any
   : T extends null
-  ? unknown
+  ? null
   : T;
 
 export type Key = string|number;
