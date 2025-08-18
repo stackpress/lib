@@ -73,9 +73,17 @@ describe('FileLoader Tests', () => {
     expect(actual).to.contain('node_modules');
   });
 
-  it('Should import', () => {
+  it('Should import', async () => {
     const fs = new NodeFS();
     const loader = new FileLoader(fs, import.meta.dirname);
+    const num1 = await loader.import('./fixtures/numbercjs.cjs');
+    expect(num1.default).to.equal(1);
+    const num2 = await loader.import('./fixtures/numberesm');
+    expect(num2.default).to.equal(2);
+    const num21 = await loader.import('./fixtures/numberesm.js');
+    expect(num21.default).to.equal(2);
+    const num3 = await loader.import('./fixtures/numberts');
+    expect(num3.default).to.equal(3);
   });
 
   it('Should get relative path', () => {
