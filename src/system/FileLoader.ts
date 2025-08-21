@@ -152,7 +152,7 @@ export default class FileLoader {
     getDefault = false
   ): Promise<T> {
     const absolute = await this.absolute(pathname);
-    //if JSON, safely require it
+    // If JSON, safely require it
     if (path.extname(absolute) === '.json') {
       const contents = await this._fs.readFile(absolute, 'utf8');
       try {
@@ -160,7 +160,16 @@ export default class FileLoader {
       } catch(e) {}
       return {} as T;
     }
-    const imports = await import(pathToFileURL(absolute).href);
+    //if no require, try to esm dynamic import
+    if (typeof require === 'undefined') {
+      const imports = await import(pathToFileURL(absolute).href);
+      if (getDefault) {
+        return imports.default as T;
+      }
+      return imports as T;
+    }
+    //if we are here, then require is available
+    const imports = require(absolute);
     if (getDefault) {
       return imports.default as T;
     }
