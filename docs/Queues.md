@@ -8,7 +8,7 @@ Because events can be defined anywhere, event priority allows you to structure e
 
 Even better, the `TaskQueue` makes the `EventEmitter` a true **plugin system**: you can insert new code between existing listeners without rewriting or restructuring what’s already there. This means features, extensions, or third-party modules can seamlessly “hook into” the event pipeline without breaking your core logic.
 
-<img width="192" height="108" alt="image" src="https://github.com/user-attachments/assets/b313723b-618f-4911-8820-82ff8ab0998d" />
+<img height="324" alt="image" src="https://github.com/user-attachments/assets/b313723b-618f-4911-8820-82ff8ab0998d" />
 
 ```typescript
 const itemQueue = new ItemQueue<string>();
