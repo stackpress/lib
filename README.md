@@ -70,7 +70,7 @@ Cross-platform file loading utilities for locating, loading, and importing files
 - Dynamic import support
 - Project root (@/) path shortcuts
 
-## Type Safety
+## [Type Safety](./docs/Types.md)
 
 The library is built with TypeScript and provides comprehensive type definitions. All components support generic types for enhanced type safety:
 
