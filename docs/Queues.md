@@ -1,25 +1,21 @@
-# Queue
+# Queues
 
-Priority-based queue implementations for managing items and tasks with FIFO ordering.
+Priority-based queue implementations for managing items and tasks with FIFO ordering. Includes both generic item queues and specialized task queues with priority-based ordering, FIFO ordering within same priority levels, task execution with before/after hooks, and chainable API for queue operations.
 
-When an event is triggered, Stackpress doesn’t just fire off listeners blindly. Instead, it organizes them into a `TaskQueue`, which then consumes items sequentially by priority. 
+When an event is triggered, Stackpress doesn't just fire off listeners blindly. Instead, it organizes them into a `TaskQueue`, which then consumes items sequentially by priority. Because events can be defined anywhere, event priority allows you to structure execution like a series of steps—making the flow of your application predictable and easy to follow.
 
-Because events can be defined anywhere, event priority allows you to structure execution like a series of steps—making the flow of your application predictable and easy to follow.
-
-Even better, the `TaskQueue` makes the `EventEmitter` a true **plugin system**: you can insert new code between existing listeners without rewriting or restructuring what’s already there. This means features, extensions, or third-party modules can seamlessly “hook into” the event pipeline without breaking your core logic.
-
-<img height="324" alt="image" src="https://github.com/user-attachments/assets/b313723b-618f-4911-8820-82ff8ab0998d" />
+Even better, the `TaskQueue` makes the `EventEmitter` a true **plugin system**: you can insert new code between existing listeners without rewriting or restructuring what's already there. This means features, extensions, or third-party modules can seamlessly "hook into" the event pipeline without breaking your core logic.
 
 ```typescript
 const itemQueue = new ItemQueue<string>();
 const taskQueue = new TaskQueue<[number]>();
 ```
 
-## ItemQueue
+## 1. ItemQueue
 
-An item queue that orders and consumes items sequentially based on priority (FIFO by default).
+An item queue that orders and consumes items sequentially based on priority with FIFO ordering by default. The ItemQueue provides the foundation for priority-based processing where items with higher priority values are processed before items with lower priority values.
 
-### Properties
+### 1.1. Properties
 
 The following properties are available when instantiating an ItemQueue.
 
@@ -28,13 +24,9 @@ The following properties are available when instantiating an ItemQueue.
 | `queue` | `Item<I>[]` | The internal queue array (readonly) |
 | `size` | `number` | The number of items in the queue |
 
-### Methods
+### 1.2. Adding Items with Priority
 
-The following methods are available when instantiating an ItemQueue.
-
-#### Adding Items with Priority
-
-The following example shows how to add items with specific priority levels.
+The following example shows how to add items with specific priority levels for controlled execution order.
 
 ```typescript
 const queue = new ItemQueue<string>();
@@ -54,9 +46,9 @@ queue.add('low', 1);
 
 The ItemQueue instance to allow method chaining.
 
-#### Adding Items to Bottom
+### 1.3. Adding Items to Bottom
 
-The following example shows how to add items to the bottom of the queue (lowest priority).
+The following example shows how to add items to the bottom of the queue with the lowest priority.
 
 ```typescript
 queue.push('bottom-item');
@@ -72,9 +64,9 @@ queue.push('bottom-item');
 
 The ItemQueue instance to allow method chaining.
 
-#### Adding Items to Top
+### 1.4. Adding Items to Top
 
-The following example shows how to add items to the top of the queue (highest priority).
+The following example shows how to add items to the top of the queue with the highest priority.
 
 ```typescript
 queue.shift('top-item');
@@ -90,7 +82,7 @@ queue.shift('top-item');
 
 The ItemQueue instance to allow method chaining.
 
-#### Consuming Items
+### 1.5. Consuming Items
 
 The following example shows how to consume items one at a time in priority order.
 
@@ -103,9 +95,9 @@ console.log(item); // 'top-item'
 
 The next item in the queue, or `undefined` if the queue is empty.
 
-## TaskQueue
+## 2. TaskQueue
 
-A task queue that extends ItemQueue specifically for executing functions sequentially.
+A task queue that extends ItemQueue specifically for executing functions sequentially with priority-based ordering. The TaskQueue provides advanced features like before/after hooks, execution control, and status reporting for complex task management scenarios.
 
 ```typescript
 const queue = new TaskQueue<[number]>();
@@ -115,7 +107,7 @@ queue.add(async (x) => console.log(x + 3), 10);
 await queue.run(5);
 ```
 
-### Properties
+### 2.1. Properties
 
 The following properties are available when instantiating a TaskQueue.
 
@@ -126,13 +118,9 @@ The following properties are available when instantiating a TaskQueue.
 | `queue` | `Item<TaskAction<A>>[]` | The internal queue array (inherited) |
 | `size` | `number` | The number of tasks in the queue (inherited) |
 
-### Methods
+### 2.2. Running Tasks
 
-The following methods are available when instantiating a TaskQueue.
-
-#### Running Tasks
-
-The following example shows how to execute all tasks in the queue sequentially.
+The following example shows how to execute all tasks in the queue sequentially with proper error handling.
 
 ```typescript
 const queue = new TaskQueue<[number]>();
@@ -159,9 +147,9 @@ console.log(result.code); // 309 (ABORT) or 200 (OK)
 
 A promise that resolves to a ResponseStatus indicating success, abort, or not found.
 
-#### Adding Tasks with Priority
+### 2.3. Adding Tasks with Priority
 
-The following example shows how to add tasks with specific priority levels.
+The following example shows how to add tasks with specific priority levels for controlled execution order.
 
 ```typescript
 queue.add(async (x) => console.log('high priority', x), 10);
@@ -178,9 +166,9 @@ queue.add(async (x) => console.log('high priority', x), 10);
 
 The TaskQueue instance to allow method chaining.
 
-#### Adding Tasks to Bottom
+### 2.4. Adding Tasks to Bottom
 
-The following example shows how to add tasks to the bottom of the queue.
+The following example shows how to add tasks to the bottom of the queue with the lowest priority.
 
 ```typescript
 queue.push(async (x) => console.log('low priority', x));
@@ -196,9 +184,9 @@ queue.push(async (x) => console.log('low priority', x));
 
 The TaskQueue instance to allow method chaining.
 
-#### Adding Tasks to Top
+### 2.5. Adding Tasks to Top
 
-The following example shows how to add tasks to the top of the queue.
+The following example shows how to add tasks to the top of the queue with the highest priority.
 
 ```typescript
 queue.shift(async (x) => console.log('high priority', x));
@@ -214,9 +202,9 @@ queue.shift(async (x) => console.log('high priority', x));
 
 The TaskQueue instance to allow method chaining.
 
-#### Setting Hooks
+### 2.6. Setting Hooks
 
-The following example shows how to set before and after hooks for task execution.
+The following example shows how to set before and after hooks for task execution monitoring and control.
 
 ```typescript
 queue.before = async (x) => {
@@ -240,16 +228,34 @@ queue.after = async (x) => {
 
 For hooks: `false` to abort execution, any other value to continue.
 
-### Task Execution Flow
+## 3. Task Execution Flow
 
-1. **Before Hook**: Called before each task (if set)
-2. **Task Execution**: The actual task function is called
-3. **After Hook**: Called after each task (if set)
+The following describes the sequential execution flow when running tasks in a TaskQueue. Understanding this flow is essential for implementing proper error handling and execution control in your applications.
 
-If any step returns `false`, execution is aborted and the queue returns `Status.ABORT`.
+### 3.1. Execution Steps
 
-### Status Codes
+The task execution follows a predictable sequence that allows for monitoring and control at each stage.
 
-- `Status.OK` (200): All tasks completed successfully
-- `Status.ABORT` (309): Execution was aborted by a task or hook
-- `Status.NOT_FOUND` (404): No tasks in the queue
+ 1. **Before Hook** — Called before each task (if set)
+ 2. **Task Execution** — The actual task function is called
+ 3. **After Hook** — Called after each task (if set)
+
+### 3.2. Execution Control
+
+If any step returns `false`, execution is aborted and the queue returns `Status.ABORT`. This provides fine-grained control over task execution flow.
+
+ - **Continue Execution** — Return `true` or any truthy value
+ - **Abort Execution** — Return `false` to stop processing remaining tasks
+
+## 4. Status Codes
+
+The following status codes are returned by TaskQueue operations to indicate the result of task execution. These codes follow HTTP status code conventions for consistency across the Stackpress ecosystem.
+
+### 4.1. Success Codes
+
+ - **Status.OK (200)** — All tasks completed successfully
+ - **Status.NOT_FOUND (404)** — No tasks in the queue
+
+### 4.2. Error Codes
+
+ - **Status.ABORT (309)** — Execution was aborted by a task or hook

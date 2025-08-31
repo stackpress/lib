@@ -1,26 +1,48 @@
 # Events
 
-From browser clicks to CLI commands to backend routing, Stackpress treats everything as an event that flows seamlessly through your stack.
+Event-driven architecture designed to support event chain reactions across different platforms and environments. From browser clicks to CLI commands to backend routing, Stackpress treats everything as an event that flows seamlessly through your stack, providing responsive, loosely coupled, scalable, and resilient system design.
 
 > Behind user experiences are a chain reaction of events.
 
 At its core, all software exists for users to interact with it. These interactions—whether a mouse click in the browser, a command in the terminal, or a tap on a mobile app, are all actions. Actions are **events**. Software, in one way or another, is always waiting for certain actions to occur and then responding to them. This means every application has an inherent level of **event-driven design** ([IBM Developer](https://developer.ibm.com/articles/advantages-of-an-event-driven-architecture/?utm_source=chatgpt.com), [Wikipedia](https://en.wikipedia.org/wiki/Event-driven_architecture?utm_source=chatgpt.com)).
 
-Modern event-driven systems are valued for being **responsive, loosely coupled, scalable, and resilient** ([Confluent](https://www.confluent.io/learn/event-driven-architecture/?utm_source=chatgpt.com), [PubNub](https://www.pubnub.com/blog/the-benefits-of-event-driven-architecture/?utm_source=chatgpt.com)). 
+Modern event-driven systems are valued for being **responsive, loosely coupled, scalable, and resilient** ([Confluent](https://www.confluent.io/learn/event-driven-architecture/?utm_source=chatgpt.com), [PubNub](https://www.pubnub.com/blog/the-benefits-of-event-driven-architecture/?utm_source=chatgpt.com)).
 
-- **🔄 Responsive** — React immediately when an event occurs, instead of waiting on rigid request/response cycles. This enables real-time behavior, such as updating a UI the moment data changes or triggering backend workflows instantly.  
-- **🧩 Loosely Coupled** — Components don’t need direct knowledge of each other; they communicate through events. This reduces dependencies, making systems easier to maintain and extend.  
-- **📈 Scalable** — Events are asynchronous, which means they can be queued, processed in parallel, and distributed across workers or servers. This makes handling high loads far simpler.  
-- **🛡️ Resilient** — Failures are isolated. If one listener fails, the rest of the system continues. Recovery strategies like retries or fallbacks can be added without rewriting business logic.  
+## 1. Event-Driven Architecture Benefits
 
-Stackpress builds on these principles by making events not just a layer, but the **foundation** of software design. A user interaction starts at the edge (browser, CLI, mobile app), but in a fully event-driven design these same events can propagate through the backend—across servers, databases, sockets, etc. setting of a chain reaction of events where one event triggers actions, and those actions can emit more events in turn, and so on.
+The following describes the key advantages of event-driven architecture and how Stackpress implements these principles to create robust, maintainable applications.
 
-In Stackpress, even a router is a type of event emitter. By treating routes, sockets, and commands as events, Stackpress provides a unified, generically designed emitter that simplifies building across environments.
+### 1.1. Responsive Systems
 
+React immediately when an event occurs, instead of waiting on rigid request/response cycles. This enables real-time behavior, such as updating a UI the moment data changes or triggering backend workflows instantly.
 
-## EventEmitter
+ - **🔄 Real-time Updates** — UI components update immediately when data changes
+ - **⚡ Instant Workflows** — Backend processes trigger without delay
 
-A class that implements the observer pattern for handling events with priority levels and task queues.
+### 1.2. Loosely Coupled Components
+
+Components don't need direct knowledge of each other; they communicate through events. This reduces dependencies, making systems easier to maintain and extend.
+
+ - **🧩 Modular Design** — Components can be developed and tested independently
+ - **🔧 Easy Maintenance** — Changes to one component don't break others
+
+### 1.3. Scalable Architecture
+
+Events are asynchronous, which means they can be queued, processed in parallel, and distributed across workers or servers. This makes handling high loads far simpler.
+
+ - **📈 Parallel Processing** — Multiple events can be handled simultaneously
+ - **🌐 Distributed Systems** — Events can be processed across multiple servers
+
+### 1.4. Resilient Error Handling
+
+Failures are isolated. If one listener fails, the rest of the system continues. Recovery strategies like retries or fallbacks can be added without rewriting business logic.
+
+ - **🛡️ Fault Isolation** — One component failure doesn't crash the entire system
+ - **🔄 Recovery Strategies** — Built-in retry and fallback mechanisms
+
+## 2. EventEmitter
+
+A class that implements the observer pattern for handling events with priority levels and task queues. The EventEmitter provides the foundation for all event-driven functionality in Stackpress.
 
 ```typescript
 type EventMap = Record<string, [number]> & {
@@ -31,7 +53,7 @@ type EventMap = Record<string, [number]> & {
 const emitter = new EventEmitter<EventMap>();
 ```
 
-### Properties
+### 2.1. Properties
 
 The following properties are available when instantiating an EventEmitter.
 
@@ -42,13 +64,9 @@ The following properties are available when instantiating an EventEmitter.
 | `event` | `Event<M[keyof M]>` | Current event match information |
 | `listeners` | `object` | Frozen shallow copy of all event listeners |
 
-### Methods
+### 2.2. Adding Event Listeners
 
-The following methods are available when instantiating an EventEmitter.
-
-#### Adding Event Listeners
-
-The following example shows how to add event listeners with optional priority.
+The following example shows how to add event listeners with optional priority levels for controlling execution order.
 
 ```typescript
 emitter.on('trigger something', async (x) => {
@@ -72,9 +90,9 @@ emitter.on('trigger something', async (x) => {
 
 The EventEmitter instance to allow method chaining.
 
-#### Emitting Events
+### 2.3. Emitting Events
 
-The following example shows how to emit events and trigger all registered listeners.
+The following example shows how to emit events and trigger all registered listeners in priority order.
 
 ```typescript
 const result = await emitter.emit('trigger something', 42);
@@ -92,9 +110,9 @@ console.log(result.code); // 200 for success, 404 if no listeners
 
 A promise that resolves to a Status object indicating success or failure.
 
-#### Removing Event Listeners
+### 2.4. Removing Event Listeners
 
-The following example shows how to remove a specific event listener.
+The following example shows how to remove a specific event listener from the emitter.
 
 ```typescript
 const handler = async (x) => console.log(x);
@@ -113,7 +131,7 @@ emitter.unbind('trigger something', handler);
 
 The EventEmitter instance to allow method chaining.
 
-#### Clearing All Event Listeners
+### 2.5. Clearing All Event Listeners
 
 The following example shows how to clear all listeners for a specific event.
 
@@ -131,9 +149,9 @@ emitter.clear('trigger something');
 
 The EventEmitter instance to allow method chaining.
 
-#### Matching Events
+### 2.6. Matching Events
 
-The following example shows how to get possible event matches.
+The following example shows how to get possible event matches for pattern-based event systems.
 
 ```typescript
 const matches = emitter.match('trigger something');
@@ -150,9 +168,9 @@ console.log(matches.get('trigger something')?.pattern);
 
 A Map of event matches with their patterns and data.
 
-#### Getting Task Queue
+### 2.7. Getting Task Queue
 
-The following example shows how to get a task queue for a specific event.
+The following example shows how to get a task queue for a specific event to inspect pending tasks.
 
 ```typescript
 const queue = emitter.tasks('trigger something');
@@ -169,9 +187,9 @@ console.log(queue.size); // Number of tasks for this event
 
 A TaskQueue containing all tasks for the specified event.
 
-#### Using Other Emitters
+### 2.8. Using Other Emitters
 
-The following example shows how to merge listeners from another emitter.
+The following example shows how to merge listeners from another emitter for composition.
 
 ```typescript
 const emitter1 = new EventEmitter();
@@ -191,9 +209,9 @@ emitter1.use(emitter2); // emitter1 now has emitter2's listeners
 
 The EventEmitter instance to allow method chaining.
 
-#### Creating Task Queues
+### 2.9. Creating Task Queues
 
-The following example shows how to create a new task queue (can be overridden in subclasses).
+The following example shows how to create a new task queue for custom event processing.
 
 ```typescript
 const queue = emitter.makeQueue();
@@ -203,9 +221,9 @@ const queue = emitter.makeQueue();
 
 A new TaskQueue instance for managing event tasks.
 
-#### Setting Hooks
+### 2.10. Setting Hooks
 
-The following example shows how to set before and after hooks for event execution.
+The following example shows how to set before and after hooks for event execution monitoring.
 
 ```typescript
 emitter.before = async (event) => {
@@ -229,9 +247,9 @@ emitter.after = async (event) => {
 For `before` hook: `false` to stop execution, any other value to continue.
 For `after` hook: return value is ignored.
 
-## ExpressEmitter
+## 3. ExpressEmitter
 
-Event emitter with regex pattern matching and parameter extraction capabilities, extending EventEmitter with Express-like routing patterns.
+Event emitter with regex pattern matching and parameter extraction capabilities, extending EventEmitter with Express-like routing patterns. This allows for flexible event naming and automatic parameter extraction from event names.
 
 ```typescript
 type EventMap = {
@@ -243,7 +261,7 @@ type EventMap = {
 const emitter = new ExpressEmitter<EventMap>('/');
 ```
 
-### Properties
+### 3.1. Properties
 
 The following properties are available when instantiating an ExpressEmitter.
 
@@ -256,13 +274,9 @@ The following properties are available when instantiating an ExpressEmitter.
 | `event` | `Event<M[keyof M]>` | Current event match information (inherited) |
 | `listeners` | `object` | Frozen shallow copy of all event listeners (inherited) |
 
-### Methods
+### 3.2. Adding Pattern-Based Event Listeners
 
-The following methods are available when instantiating an ExpressEmitter.
-
-#### Adding Pattern-Based Event Listeners
-
-The following example shows how to add event listeners with pattern matching.
+The following example shows how to add event listeners with pattern matching for flexible event handling.
 
 ```typescript
 const emitter = new ExpressEmitter(' '); // Space separator
@@ -301,9 +315,9 @@ emitter.on(':method /api/:resource', async (req, res) => {
 
 The ExpressEmitter instance to allow method chaining.
 
-#### Adding Regex Event Listeners
+### 3.3. Adding Regex Event Listeners
 
-The following example shows how to add event listeners using regular expressions.
+The following example shows how to add event listeners using regular expressions for advanced pattern matching.
 
 ```typescript
 // Global regex
@@ -331,9 +345,9 @@ emitter.on(/user (login|logout)/i, async (data) => {
 
 The ExpressEmitter instance to allow method chaining.
 
-#### Pattern Matching
+### 3.4. Pattern Matching
 
-The following example shows how to get all matching patterns for an event.
+The following example shows how to get all matching patterns for an event to understand which listeners will be triggered.
 
 ```typescript
 emitter.on('user *', handler1);
@@ -354,9 +368,9 @@ const matches = emitter.match('user login');
 
 A Map of event matches with their patterns, parameters, and arguments.
 
-#### Using Other ExpressEmitters
+### 3.5. Using Other ExpressEmitters
 
-The following example shows how to merge patterns and listeners from another emitter.
+The following example shows how to merge patterns and listeners from another emitter for composition.
 
 ```typescript
 const emitter1 = new ExpressEmitter('/');
@@ -378,11 +392,11 @@ emitter1.use(emitter2); // Merges expressions and listeners
 
 The ExpressEmitter instance to allow method chaining.
 
-### Pattern Syntax
+### 3.6. Pattern Syntax
 
-ExpressEmitter supports several pattern matching syntaxes:
+ExpressEmitter supports several pattern matching syntaxes for flexible event handling.
 
-#### Wildcard Patterns
+#### 3.6.1. Wildcard Patterns
 
 ```typescript
 // Single wildcard - matches one segment
@@ -392,7 +406,7 @@ emitter.on('user *', handler); // Matches: 'user login', 'user logout'
 emitter.on('api **', handler); // Matches: 'api/users/123/posts'
 ```
 
-#### Parameter Extraction
+#### 3.6.2. Parameter Extraction
 
 ```typescript
 // Named parameters
@@ -406,90 +420,9 @@ emitter.on(':method /api/:resource/:id', handler);
 // Extracts: { method: 'GET', resource: 'users', id: '123' }
 ```
 
-#### Mixed Patterns
+## 4. RouteEmitter
 
-```typescript
-// Parameters with wildcards
-emitter.on(':action user *', handler);
-// Matches: 'login user data', 'logout user session'
-// Extracts: { action: 'login' }, args: ['data']
-
-// Complex routing patterns
-emitter.on(':method /api/:version/users/*', handler);
-// Matches: 'GET /api/v1/users/profile'
-// Extracts: { method: 'GET', version: 'v1' }, args: ['profile']
-```
-
-### Event Data Structure
-
-When patterns match, the event data contains:
-
-```typescript
-interface EventData {
-  args: string[];        // Wildcard matches and regex groups
-  params: object;        // Named parameter extractions
-}
-
-// Example for pattern ':method /api/:resource/*'
-// Matching event 'GET /api/users/profile'
-{
-  args: ['profile'],           // Wildcard matches
-  params: {                    // Named parameters
-    method: 'GET',
-    resource: 'users'
-  }
-}
-```
-
-### Custom Separators
-
-ExpressEmitter allows custom separators for different use cases:
-
-```typescript
-// File path patterns
-const fileEmitter = new ExpressEmitter('/');
-fileEmitter.on('/src/*/index.js', handler);
-
-// Command patterns  
-const cmdEmitter = new ExpressEmitter(' ');
-cmdEmitter.on(':command --:flag', handler);
-
-// API patterns
-const apiEmitter = new ExpressEmitter('-');
-apiEmitter.on('api-:version-users', handler);
-```
-
-### Regular Expression Support
-
-ExpressEmitter supports both global and non-global regular expressions:
-
-```typescript
-// Global regex - uses matchAll()
-emitter.on(/user-(.+)/g, handler);
-
-// Non-global regex - uses match()
-emitter.on(/user-(.+)/, handler);
-
-// Case insensitive
-emitter.on(/USER-(.+)/i, handler);
-```
-
-### Priority-Based Execution
-
-Like EventEmitter, ExpressEmitter supports priority-based execution:
-
-```typescript
-emitter.on('user *', handler1, 1);      // Lower priority
-emitter.on('user login', handler2, 5);  // Higher priority  
-emitter.on(/user (.+)/, handler3, 3);   // Medium priority
-
-// Execution order: handler2, handler3, handler1
-await emitter.emit('user login', data);
-```
-
-## RouteEmitter
-
-Event-driven routing system that extends ExpressEmitter for HTTP-like route handling.
+Event-driven routing system that extends ExpressEmitter for HTTP-like route handling. This provides a unified interface for handling different types of requests across various platforms.
 
 ```typescript
 type RouteMap = {
@@ -501,7 +434,7 @@ type RouteMap = {
 const router = new RouteEmitter<Request, Response>();
 ```
 
-### Properties
+### 4.1. Properties
 
 The following properties are available when instantiating a RouteEmitter.
 
@@ -511,13 +444,9 @@ The following properties are available when instantiating a RouteEmitter.
 | `separator` | `string` | Pattern separator (always '/') |
 | `expressions` | `Map<string, EventExpression>` | Map of event names to regex expressions (inherited) |
 
-### Methods
+### 4.2. Defining Routes
 
-The following methods are available when instantiating a RouteEmitter.
-
-#### Defining Routes
-
-The following example shows how to define HTTP-like routes.
+The following example shows how to define HTTP-like routes for different request methods and paths.
 
 ```typescript
 const router = new RouteEmitter();
@@ -560,9 +489,9 @@ router.route('ANY', '/health', async (req, res) => {
 
 The RouteEmitter instance to allow method chaining.
 
-#### Using Other RouteEmitters
+### 4.3. Using Other RouteEmitters
 
-The following example shows how to merge routes from another router.
+The following example shows how to merge routes from another router for modular route organization.
 
 ```typescript
 const apiRouter = new RouteEmitter();
@@ -582,75 +511,3 @@ mainRouter.use(apiRouter); // Merges routes and listeners
 **Returns**
 
 The RouteEmitter instance to allow method chaining.
-
-### Route Patterns
-
-RouteEmitter supports Express-like route patterns:
-
-#### Parameter Routes
-
-```typescript
-// Single parameter
-router.route('GET', '/users/:id', handler);
-// Matches: GET /users/123
-// Extracts: { id: '123' }
-
-// Multiple parameters  
-router.route('GET', '/users/:userId/posts/:postId', handler);
-// Matches: GET /users/123/posts/456
-// Extracts: { userId: '123', postId: '456' }
-```
-
-#### Wildcard Routes
-
-```typescript
-// Single wildcard
-router.route('GET', '/files/*', handler);
-// Matches: GET /files/document.pdf
-
-// Catch-all wildcard
-router.route('GET', '/static/**', handler);  
-// Matches: GET /static/css/main.css
-```
-
-#### Method Handling
-
-```typescript
-// Specific methods
-router.route('GET', '/users', getUsers);
-router.route('POST', '/users', createUser);
-router.route('PUT', '/users/:id', updateUser);
-router.route('DELETE', '/users/:id', deleteUser);
-
-// Any method
-router.route('ANY', '/health', healthCheck);
-```
-
-### Event Generation
-
-RouteEmitter automatically generates event names from routes:
-
-```typescript
-router.route('GET', '/users/:id', handler);
-// Generates event: 'GET /users/:id'
-// Can be emitted as: router.emit('GET /users/123', req, res)
-
-router.route('ANY', '/api/*', handler);  
-// Generates regex pattern for any method
-// Matches: 'GET /api/users', 'POST /api/data', etc.
-```
-
-### Integration with Router
-
-RouteEmitter is used internally by the Router class but can be used standalone:
-
-```typescript
-const routeEmitter = new RouteEmitter<MyRequest, MyResponse>();
-
-routeEmitter.route('GET', '/api/:resource', async (req, res) => {
-  const resource = routeEmitter.event?.data.params.resource;
-  // Handle API resource request
-});
-
-// Emit route events directly
-await routeEmitter.emit('GET /api/users', request, response);

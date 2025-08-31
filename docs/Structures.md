@@ -1,10 +1,12 @@
 # Data Structures
 
-Data structures in programming are specialized formats for organizing, processing, storing, and retrieving data within a computer's memory. They define the relationships between data elements and the operations that can be performed on them. The choice of data structure significantly impacts the efficiency and performance of algorithms and overall program execution. 
+Specialized formats for organizing, processing, storing, and retrieving data within a computer's memory. Data structures define the relationships between data elements and the operations that can be performed on them, with type-safe nested object manipulation, path-based data access with dot notation, built-in parsers for query strings, form data, and arguments, and chainable API for fluent data operations.
 
-## Nest
+The choice of data structure significantly impacts the efficiency and performance of algorithms and overall program execution. Stackpress provides enhanced data structures that extend native JavaScript collections with additional functionality for common development patterns.
 
-Hierarchical data management utilities for nested objects and arrays.
+## 1. Nest
+
+Hierarchical data management utilities for nested objects and arrays. The Nest class provides type-safe access to deeply nested data structures with convenient methods for manipulation, iteration, and serialization.
 
 ```typescript
 import { nest, Nest, ReadonlyNest } from '@stackpress/lib';
@@ -41,7 +43,7 @@ const readonly = new ReadonlyNest<NestMap>({
 });
 ```
 
-### Properties
+### 1.1. Properties
 
 The following properties are available when instantiating a Nest.
 
@@ -54,13 +56,9 @@ The following properties are available when instantiating a Nest.
 | `withPath` | `PathString` | Parser for path notations |
 | `withQuery` | `QueryString` | Parser for query string |
 
-### Methods
+### 1.2. Retrieving Data
 
-The following methods are available when instantiating a Nest.
-
-#### Retrieving Data
-
-The following example shows how to retrieve data from a nest.
+The following example shows how to retrieve data from a nest using type-safe path navigation.
 
 ```typescript
 config.get('database', 'postgres', 'port'); //--> 5432
@@ -75,12 +73,11 @@ config.get<number>('database', 'postgres', 'port'); //--> 5432
 
 **Returns**
 
-The value given the object key path. If you don't provide a generic, 
-will follow the type map provided.
+The value given the object key path. If you don't provide a generic, will follow the type map provided.
 
-#### Setting Data
+### 1.3. Setting Data
 
-The following example shows how to add or update data in a nest.
+The following example shows how to add or update data in a nest with chainable operations.
 
 ```typescript
 config.set('database', 'postgres', 'port', 5432); //--> Nest
@@ -97,7 +94,7 @@ config.set({ foo: 'bar', baz: 'qux' }); //--> Nest
 
 The nest object to allow chainability.
 
-#### Checking For Data
+### 1.4. Checking For Data
 
 The following example shows how to check if an object key path has been set.
 
@@ -115,9 +112,9 @@ config.has('database', 'postgres', 'port'); //--> true
 
 `true` if the object key path is set, `false` otherwise.
 
-#### Deleting Data
+### 1.5. Deleting Data
 
-The following example shows how to delete a value.
+The following example shows how to delete a value from the nested structure.
 
 ```typescript
 config.delete('database', 'postgres', 'port'); //--> Nest
@@ -133,9 +130,9 @@ config.delete('database', 'postgres', 'port'); //--> Nest
 
 The nest object to allow chainability.
 
-#### Purging Data
+### 1.6. Purging Data
 
-The following example shows how to purge the nest.
+The following example shows how to purge all data from the nest.
 
 ```typescript
 config.clear(); //--> Nest
@@ -145,7 +142,7 @@ config.clear(); //--> Nest
 
 The nest object to allow chainability.
 
-#### Getting the Top-Level Keys
+### 1.7. Getting the Top-Level Keys
 
 The following example shows how to get the top-level keys in a nest.
 
@@ -157,7 +154,7 @@ config.keys(); //--> [ 'database' ]
 
 An array of object key strings.
 
-#### Getting the Top-Level Values
+### 1.8. Getting the Top-Level Values
 
 The following example shows how to get the top-level values in a nest.
 
@@ -169,9 +166,9 @@ config.values(); //--> [ { postgres: { host: 'localhost', port: 5432 } } ]
 
 An array of arbitrary values.
 
-#### Getting the Top-Level Entries
+### 1.9. Getting the Top-Level Entries
 
-The following example shows how to get the top-level entries in a nest.
+The following example shows how to get the top-level entries in a nest as key-value pairs.
 
 ```typescript
 config.entries(); //--> [ ['database', { postgres: { host: 'localhost', port: 5432 } }] ]
@@ -181,9 +178,9 @@ config.entries(); //--> [ ['database', { postgres: { host: 'localhost', port: 54
 
 An array of key-value pairs.
 
-#### Retrieving Data Using a Key Path
+### 1.10. Retrieving Data Using a Key Path
 
-The following example shows how to retrieve data from a nest using a key dot path.
+The following example shows how to retrieve data from a nest using a dot-separated key path.
 
 ```typescript
 config.path('database.postgres.port'); //--> 5432
@@ -200,12 +197,11 @@ config.path('database.mysql.port', 3306); //--> 3306
 
 **Returns**
 
-The value given the object key path. If you don't provide a generic, 
-will follow the type map provided.
+The value given the object key path. If you don't provide a generic, will follow the type map provided.
 
-#### Iterating Over Data
+### 1.11. Iterating Over Data
 
-The following example shows how to iterate over data at a specific path.
+The following example shows how to iterate over data at a specific path with async callback support.
 
 ```typescript
 await config.forEach('database', (value, key) => {
@@ -224,9 +220,9 @@ await config.forEach('database', (value, key) => {
 
 A promise that resolves to `true` if all iterations completed, `false` if stopped early.
 
-#### Converting a Nest to a JSON
+### 1.12. Converting a Nest to a JSON
 
-The following example shows how to generate a JSON string from a nest.
+The following example shows how to generate a JSON string from a nest with formatting options.
 
 ```typescript
 config.toString(); 
@@ -245,9 +241,9 @@ config.toString(false); //--> {"database":{"postgres":{"host":"localhost","port"
 
 A JSON string derived from the nest.
 
-#### Callable Nest
+### 1.13. Callable Nest
 
-Creates a callable Nest instance that can be invoked as a function to get nested values.
+Creates a callable Nest instance that can be invoked as a function to get nested values with functional programming patterns.
 
 ```typescript
 import { nest } from '@stackpress/lib';
@@ -265,11 +261,9 @@ config('database', 'postgres', 'host'); // 'localhost'
 config<string>('database', 'postgres', 'host'); // 'localhost'
 ```
 
+## 2. Maps
 
-
-## Maps
-
-Creates a callable Map instance that can be invoked as a function to get values.
+Creates a callable Map instance that can be invoked as a function to get values. The enhanced Map provides additional functionality while maintaining compatibility with the native Map interface.
 
 ```typescript
 import { map } from '@stackpress/lib';
@@ -287,7 +281,7 @@ userMap.set('bob', { name: 'Bob', age: 35 });
 console.log(userMap.size); // 3
 ```
 
-### Properties
+### 2.1. Properties
 
 The following properties are available on a callable map.
 
@@ -295,13 +289,9 @@ The following properties are available on a callable map.
 |----------|------|-------------|
 | `size` | `number` | Number of key-value pairs in the map |
 
-### Methods
+### 2.2. Direct Invocation
 
-The following methods are available on a callable map.
-
-#### Direct Invocation
-
-The following example shows how to use the map as a function.
+The following example shows how to use the map as a function for convenient value access.
 
 ```typescript
 const value = myMap('key'); // Equivalent to myMap.get('key')
@@ -317,9 +307,9 @@ const value = myMap('key'); // Equivalent to myMap.get('key')
 
 The value associated with the key, or `undefined` if not found.
 
-#### Setting Values
+### 2.3. Setting Values
 
-The following example shows how to set key-value pairs.
+The following example shows how to set key-value pairs with method chaining support.
 
 ```typescript
 myMap.set('newKey', 'newValue');
@@ -336,9 +326,9 @@ myMap.set('newKey', 'newValue');
 
 The Map instance to allow method chaining.
 
-#### Getting Values
+### 2.4. Getting Values
 
-The following example shows how to get values by key.
+The following example shows how to get values by key using the standard Map interface.
 
 ```typescript
 const value = myMap.get('key');
@@ -354,9 +344,9 @@ const value = myMap.get('key');
 
 The value associated with the key, or `undefined` if not found.
 
-#### Checking Key Existence
+### 2.5. Checking Key Existence
 
-The following example shows how to check if a key exists.
+The following example shows how to check if a key exists in the map.
 
 ```typescript
 const exists = myMap.has('key'); // true or false
@@ -372,9 +362,9 @@ const exists = myMap.has('key'); // true or false
 
 `true` if the key exists, `false` otherwise.
 
-#### Deleting Keys
+### 2.6. Deleting Keys
 
-The following example shows how to delete a key-value pair.
+The following example shows how to delete a key-value pair from the map.
 
 ```typescript
 const deleted = myMap.delete('key'); // true if deleted, false if not found
@@ -390,9 +380,9 @@ const deleted = myMap.delete('key'); // true if deleted, false if not found
 
 `true` if the key was deleted, `false` if the key didn't exist.
 
-#### Clearing All Data
+### 2.7. Clearing All Data
 
-The following example shows how to remove all key-value pairs.
+The following example shows how to remove all key-value pairs from the map.
 
 ```typescript
 myMap.clear();
@@ -403,9 +393,9 @@ console.log(myMap.size); // 0
 
 `undefined`
 
-#### Iterating Over Entries
+### 2.8. Iterating Over Entries
 
-The following example shows how to iterate over all key-value pairs.
+The following example shows how to iterate over all key-value pairs in the map.
 
 ```typescript
 for (const [key, value] of myMap.entries()) {
@@ -417,9 +407,9 @@ for (const [key, value] of myMap.entries()) {
 
 An iterator of `[key, value]` pairs.
 
-#### Iterating Over Keys
+### 2.9. Iterating Over Keys
 
-The following example shows how to iterate over all keys.
+The following example shows how to iterate over all keys in the map.
 
 ```typescript
 for (const key of myMap.keys()) {
@@ -431,9 +421,9 @@ for (const key of myMap.keys()) {
 
 An iterator of keys.
 
-#### Iterating Over Values
+### 2.10. Iterating Over Values
 
-The following example shows how to iterate over all values.
+The following example shows how to iterate over all values in the map.
 
 ```typescript
 for (const value of myMap.values()) {
@@ -445,9 +435,9 @@ for (const value of myMap.values()) {
 
 An iterator of values.
 
-#### Using forEach
+### 2.11. Using forEach
 
-The following example shows how to execute a function for each key-value pair.
+The following example shows how to execute a function for each key-value pair in the map.
 
 ```typescript
 myMap.forEach((value, key, map) => {
@@ -465,15 +455,9 @@ myMap.forEach((value, key, map) => {
 
 `undefined`
 
+## 3. Sets
 
-
-
-
-
-
-## Sets
-
-Creates a callable Set instance that can be invoked as a function to get values by index.
+Creates a callable Set instance that can be invoked as a function to get values by index. The enhanced Set provides indexed access while maintaining compatibility with the native Set interface.
 
 ```typescript
 import { set } from '@stackpress/lib';
@@ -489,7 +473,7 @@ tags.add('react');
 console.log(tags.size); // 4
 ```
 
-### Properties
+### 3.1. Properties
 
 The following properties are available on a callable set.
 
@@ -497,13 +481,9 @@ The following properties are available on a callable set.
 |----------|------|-------------|
 | `size` | `number` | Number of values in the set |
 
-### Methods
+### 3.2. Direct Invocation
 
-The following methods are available on a callable set.
-
-#### Direct Invocation
-
-The following example shows how to use the set as a function to get values by index.
+The following example shows how to use the set as a function to get values by index position.
 
 ```typescript
 const value = mySet(0); // Get first item
@@ -520,9 +500,9 @@ const value2 = mySet(2); // Get third item
 
 The value at the specified index, or `undefined` if index is out of bounds.
 
-#### Getting Values by Index
+### 3.3. Getting Values by Index
 
-The following example shows how to get values by index using the index method.
+The following example shows how to get values by index using the explicit index method.
 
 ```typescript
 const value = mySet.index(0); // Same as mySet(0)
@@ -538,9 +518,9 @@ const value = mySet.index(0); // Same as mySet(0)
 
 The value at the specified index, or `undefined` if index is out of bounds.
 
-#### Adding Values
+### 3.4. Adding Values
 
-The following example shows how to add values to the set.
+The following example shows how to add values to the set with method chaining support.
 
 ```typescript
 mySet.add('newValue');
@@ -556,9 +536,9 @@ mySet.add('newValue');
 
 The Set instance to allow method chaining.
 
-#### Checking Value Existence
+### 3.5. Checking Value Existence
 
-The following example shows how to check if a value exists.
+The following example shows how to check if a value exists in the set.
 
 ```typescript
 const exists = mySet.has('value'); // true or false
@@ -574,9 +554,9 @@ const exists = mySet.has('value'); // true or false
 
 `true` if the value exists, `false` otherwise.
 
-#### Deleting Values
+### 3.6. Deleting Values
 
-The following example shows how to delete a value.
+The following example shows how to delete a value from the set.
 
 ```typescript
 const deleted = mySet.delete('value'); // true if deleted, false if not found
@@ -592,9 +572,9 @@ const deleted = mySet.delete('value'); // true if deleted, false if not found
 
 `true` if the value was deleted, `false` if the value didn't exist.
 
-#### Clearing All Data
+### 3.7. Clearing All Data
 
-The following example shows how to remove all values.
+The following example shows how to remove all values from the set.
 
 ```typescript
 mySet.clear();
@@ -605,9 +585,9 @@ console.log(mySet.size); // 0
 
 `undefined`
 
-#### Iterating Over Entries
+### 3.8. Iterating Over Entries
 
-The following example shows how to iterate over all value pairs.
+The following example shows how to iterate over all value pairs in the set.
 
 ```typescript
 for (const [value1, value2] of mySet.entries()) {
@@ -619,9 +599,9 @@ for (const [value1, value2] of mySet.entries()) {
 
 An iterator of `[value, value]` pairs.
 
-#### Iterating Over Values
+### 3.9. Iterating Over Values
 
-The following example shows how to iterate over all values.
+The following example shows how to iterate over all values in the set.
 
 ```typescript
 for (const value of mySet.values()) {
@@ -633,9 +613,9 @@ for (const value of mySet.values()) {
 
 An iterator of values.
 
-#### Using forEach
+### 3.10. Using forEach
 
-The following example shows how to execute a function for each value.
+The following example shows how to execute a function for each value in the set.
 
 ```typescript
 mySet.forEach((value1, value2, set) => {

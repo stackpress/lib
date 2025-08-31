@@ -1,6 +1,6 @@
 # Routing
 
-Event-driven routing system with generic Request and Response wrappers that work across different platforms (HTTP, terminal, web sockets).
+Event-driven routing system with generic Request and Response wrappers that work across different platforms. Provides cross-platform request/response handling, parameter extraction from routes, event-driven architecture, and generic type support for different mediums including HTTP, terminal, and web sockets.
 
 ```typescript
 type RequestData = { userId: string };
@@ -14,11 +14,11 @@ router.route('GET', '/users/:id', async (req, res, ctx) => {
 });
 ```
 
-## Request
+## 1. Request
 
-Generic request wrapper that works with IncomingMessage and WHATWG (Fetch) Request.
+Generic request wrapper that works with IncomingMessage and WHATWG (Fetch) Request. The Request class provides a unified interface for handling different types of requests across various platforms while maintaining type safety and consistent API access patterns.
 
-### Properties
+### 1.1. Properties
 
 The following properties are available when instantiating a Request.
 
@@ -38,13 +38,9 @@ The following properties are available when instantiating a Request.
 | `type` | `string` | Type of body content |
 | `loader` | `RequestLoader<R>` | Body loader function |
 
-### Methods
+### 1.2. Loading Request Body
 
-The following methods are available when instantiating a Request.
-
-#### Loading Request Body
-
-The following example shows how to load the request body asynchronously.
+The following example shows how to load the request body asynchronously for processing.
 
 ```typescript
 const req = router.request({ 
@@ -60,11 +56,11 @@ console.log(req.body); // Access the loaded body
 
 The Request instance to allow method chaining.
 
-## Response
+## 2. Response
 
-Generic response wrapper that works with ServerResponse and WHATWG (Fetch) Response.
+Generic response wrapper that works with ServerResponse and WHATWG (Fetch) Response. The Response class provides a unified interface for generating different types of responses with consistent formatting and status handling across platforms.
 
-### Properties
+### 2.1. Properties
 
 The following properties are available when instantiating a Response.
 
@@ -87,13 +83,9 @@ The following properties are available when instantiating a Response.
 | `type` | `string` | Type of body content |
 | `dispatcher` | `ResponseDispatcher<S>` | Response dispatcher function |
 
-### Methods
+### 2.2. Setting JSON Response
 
-The following methods are available when instantiating a Response.
-
-#### Setting JSON Response
-
-The following example shows how to set a JSON response.
+The following example shows how to set a JSON response with optional status code and message.
 
 ```typescript
 res.setJSON({ message: 'Success', data: results });
@@ -112,9 +104,9 @@ res.setJSON('{"message": "Success"}', 201, 'Created');
 
 The Response instance to allow method chaining.
 
-#### Setting HTML Response
+### 2.3. Setting HTML Response
 
-The following example shows how to set an HTML response.
+The following example shows how to set an HTML response for web page rendering.
 
 ```typescript
 res.setHTML('<h1>Welcome</h1>', 200, 'OK');
@@ -132,9 +124,9 @@ res.setHTML('<h1>Welcome</h1>', 200, 'OK');
 
 The Response instance to allow method chaining.
 
-#### Setting Error Response
+### 2.4. Setting Error Response
 
-The following example shows how to set an error response.
+The following example shows how to set an error response with validation details and stack trace.
 
 ```typescript
 res.setError('Invalid input', { name: 'required' }, [], 400, 'Bad Request');
@@ -159,9 +151,9 @@ res.setError({
 
 The Response instance to allow method chaining.
 
-#### Setting Results Response
+### 2.5. Setting Results Response
 
-The following example shows how to set a single result response.
+The following example shows how to set a single result response for API endpoints.
 
 ```typescript
 res.setResults({ id: 1, name: 'John' });
@@ -179,9 +171,9 @@ res.setResults({ id: 1, name: 'John' });
 
 The Response instance to allow method chaining.
 
-#### Setting Rows Response
+### 2.6. Setting Rows Response
 
-The following example shows how to set a collection response with total count.
+The following example shows how to set a collection response with pagination information.
 
 ```typescript
 res.setRows([{ id: 1 }, { id: 2 }], 100); // 2 items out of 100 total
@@ -200,9 +192,9 @@ res.setRows([{ id: 1 }, { id: 2 }], 100); // 2 items out of 100 total
 
 The Response instance to allow method chaining.
 
-#### Redirecting
+### 2.7. Redirecting
 
-The following example shows how to redirect the response.
+The following example shows how to redirect the response to a different URL.
 
 ```typescript
 res.redirect('/login', 302, 'Found');
@@ -221,9 +213,9 @@ res.redirect('https://example.com'); // Default 302
 
 The Response instance to allow method chaining.
 
-#### Dispatching Response
+### 2.8. Dispatching Response
 
-The following example shows how to dispatch the response to the native resource.
+The following example shows how to dispatch the response to the native resource for final processing.
 
 ```typescript
 const nativeResponse = await res.dispatch();
@@ -233,9 +225,9 @@ const nativeResponse = await res.dispatch();
 
 The native response resource after dispatching.
 
-#### Converting to Status Response
+### 2.9. Converting to Status Response
 
-The following example shows how to convert the response to a status response object.
+The following example shows how to convert the response to a status response object for API consistency.
 
 ```typescript
 const statusResponse = res.toStatusResponse();
@@ -246,11 +238,11 @@ const statusResponse = res.toStatusResponse();
 
 A StatusResponse object with all response details.
 
-## Router
+## 3. Router
 
-Event-driven router that extends ExpressEmitter for handling HTTP-like routing.
+Event-driven router that extends ExpressEmitter for handling HTTP-like routing. The Router class provides the main interface for defining routes, handling requests, and managing the routing lifecycle with full event-driven capabilities.
 
-### Properties
+### 3.1. Properties
 
 The following properties are available when instantiating a Router.
 
@@ -258,13 +250,9 @@ The following properties are available when instantiating a Router.
 |----------|------|-------------|
 | `routes` | `Map<string, Route>` | Map of event names to route definitions |
 
-### Methods
+### 3.2. Defining Routes
 
-The following methods are available when instantiating a Router.
-
-#### Defining Routes
-
-The following example shows how to define routes with different HTTP methods.
+The following example shows how to define routes with different HTTP methods and parameter extraction.
 
 ```typescript
 router.route('GET', '/users/:id', async (req, res, ctx) => {
@@ -292,9 +280,9 @@ router.route('POST', '/users', async (req, res, ctx) => {
 
 The Router instance to allow method chaining.
 
-#### Emitting Route Events
+### 3.3. Emitting Route Events
 
-The following example shows how to emit route events directly.
+The following example shows how to emit route events directly for programmatic route execution.
 
 ```typescript
 const req = router.request({ url: '/users/123' });
@@ -316,9 +304,9 @@ console.log(status.code); // 200, 404, etc.
 
 A promise that resolves to a Status object indicating success or failure.
 
-#### Resolving Routes
+### 3.4. Resolving Routes
 
-The following example shows how to resolve routes and get response data.
+The following example shows how to resolve routes and get response data for testing or internal processing.
 
 ```typescript
 // Resolve by method and path
@@ -343,9 +331,9 @@ const response = await router.resolve('user-created', userData);
 
 A promise that resolves to a partial StatusResponse object.
 
-#### Creating Request Objects
+### 3.5. Creating Request Objects
 
-The following example shows how to create request objects.
+The following example shows how to create request objects with various initialization options.
 
 ```typescript
 const req = router.request({
@@ -366,9 +354,9 @@ const req = router.request({
 
 A new Request instance.
 
-#### Creating Response Objects
+### 3.6. Creating Response Objects
 
-The following example shows how to create response objects.
+The following example shows how to create response objects with predefined headers and data.
 
 ```typescript
 const res = router.response({
@@ -387,9 +375,9 @@ const res = router.response({
 
 A new Response instance.
 
-#### Using Other Routers
+### 3.7. Using Other Routers
 
-The following example shows how to merge routes and listeners from another router.
+The following example shows how to merge routes and listeners from another router for modular organization.
 
 ```typescript
 const apiRouter = new Router();
@@ -409,9 +397,9 @@ mainRouter.use(apiRouter); // Merges routes and listeners
 
 The Router instance to allow method chaining.
 
-## Route Parameters
+## 4. Route Parameters
 
-Routes support parameter extraction using colon notation:
+Routes support parameter extraction using colon notation for dynamic path segments. Parameters are automatically extracted and made available through the request data object for easy access in route handlers.
 
 ```typescript
 router.route('GET', '/users/:id/posts/:postId', (req, res) => {
@@ -421,14 +409,20 @@ router.route('GET', '/users/:id/posts/:postId', (req, res) => {
 });
 ```
 
-## Cross-Platform Usage
+## 5. Cross-Platform Usage
 
-The Router system is designed to work across different platforms:
+The Router system is designed to work across different platforms and environments. This flexibility allows you to use the same routing patterns whether you're building web applications, CLI tools, or real-time applications.
 
-- **HTTP Servers**: Node.js IncomingMessage/ServerResponse
-- **WHATWG Fetch**: Browser/Deno Request/Response
-- **Terminal Applications**: Custom request/response objects
-- **WebSockets**: Custom message handling
+### 5.1. Supported Platforms
+
+The following platforms are supported by the routing system with their respective request/response types.
+
+ - **HTTP Servers** — Node.js IncomingMessage/ServerResponse
+ - **WHATWG Fetch** — Browser/Deno Request/Response
+ - **Terminal Applications** — Custom request/response objects
+ - **WebSockets** — Custom message handling
+
+### 5.2. Platform-Specific Examples
 
 ```typescript
 // HTTP Server usage

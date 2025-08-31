@@ -1,6 +1,6 @@
 # Exception
 
-Enhanced error handling with expressive error reporting and stack trace support.
+Enhanced error handling with expressive error reporting and stack trace support. Provides better error information than standard JavaScript errors with template-based error messages, validation error aggregation, enhanced stack trace parsing, and HTTP status code integration.
 
 ```typescript
 const exception = new Exception('Invalid Parameters: %s', 400)
@@ -11,13 +11,13 @@ const exception = new Exception('Invalid Parameters: %s', 400)
   .withPosition(100, 200);
 ```
 
-## Static Methods
+## 1. Static Methods
 
-The following methods can be accessed directly from Exception itself.
+The following methods can be accessed directly from Exception itself. These factory methods provide convenient ways to create Exception instances for common error scenarios without needing to instantiate the class directly.
 
-### Creating Exceptions with Templates
+### 1.1. Creating Exceptions with Templates
 
-The following example shows how to create exceptions with template strings.
+The following example shows how to create exceptions with template strings using placeholder substitution.
 
 ```typescript
 throw Exception.for('Something %s is %s', 'good', 'bad');
@@ -35,9 +35,9 @@ throw Exception.for('Something %s is %s', 'good', 'bad');
 
 A new Exception instance with the formatted message.
 
-### Creating Exceptions from Response Objects
+### 1.2. Creating Exceptions from Response Objects
 
-The following example shows how to create exceptions from response objects.
+The following example shows how to create exceptions from response objects containing error details.
 
 ```typescript
 const response = { 
@@ -59,9 +59,9 @@ throw Exception.forResponse(response);
 
 A new Exception instance configured from the response object.
 
-### Creating Exceptions for Validation Errors
+### 1.3. Creating Exceptions for Validation Errors
 
-The following example shows how to create exceptions for validation errors.
+The following example shows how to create exceptions specifically for validation errors with field-specific error messages.
 
 ```typescript
 throw Exception.forErrors({
@@ -80,9 +80,9 @@ throw Exception.forErrors({
 
 A new Exception instance with "Invalid Parameters" message and error details.
 
-### Requiring Conditions
+### 1.4. Requiring Conditions
 
-The following example shows how to assert conditions and throw if they fail.
+The following example shows how to assert conditions and throw exceptions if they fail.
 
 ```typescript
 Exception.require(count > 0, 'Count %s must be positive', count);
@@ -100,9 +100,9 @@ Exception.require(count > 0, 'Count %s must be positive', count);
 
 Void if condition is true, throws Exception if false.
 
-### Try-Catch Wrapper
+### 1.5. Try-Catch Wrapper
 
-The following example shows how to use the synchronous try-catch wrapper.
+The following example shows how to use the synchronous try-catch wrapper for safe operation execution.
 
 ```typescript
 const result = Exception
@@ -123,9 +123,9 @@ const result = Exception
 
 An object with a `catch` method for handling errors.
 
-### Upgrading Errors
+### 1.6. Upgrading Errors
 
-The following example shows how to upgrade regular errors to exceptions.
+The following example shows how to upgrade regular errors to exceptions with additional context.
 
 ```typescript
 try {
@@ -146,9 +146,9 @@ try {
 
 An Exception instance (returns original if already an Exception).
 
-## Properties
+## 2. Properties
 
-The following properties are available when instantiating an Exception.
+The following properties are available when instantiating an Exception. These properties provide access to error details, HTTP status codes, and position information for debugging purposes.
 
 | Property | Type | Description |
 |----------|------|-------------|
@@ -158,13 +158,13 @@ The following properties are available when instantiating an Exception.
 | `start` | `number` | Starting character position of the error |
 | `type` | `string` | Exception type name |
 
-## Methods
+## 3. Methods
 
-The following methods are available when instantiating an Exception.
+The following methods are available when instantiating an Exception. These methods allow you to configure the exception with additional context and convert it to various formats for different use cases.
 
-### Setting Error Code
+### 3.1. Setting Error Code
 
-The following example shows how to set the HTTP status code.
+The following example shows how to set the HTTP status code for the exception.
 
 ```typescript
 exception.withCode(404);
@@ -180,9 +180,9 @@ exception.withCode(404);
 
 The Exception instance to allow method chaining.
 
-### Adding Validation Errors
+### 3.2. Adding Validation Errors
 
-The following example shows how to add validation errors.
+The following example shows how to add validation errors with field-specific error messages.
 
 ```typescript
 exception.withErrors({
@@ -201,9 +201,9 @@ exception.withErrors({
 
 The Exception instance to allow method chaining.
 
-### Setting Position Information
+### 3.3. Setting Position Information
 
-The following example shows how to set character position information.
+The following example shows how to set character position information for parsing errors.
 
 ```typescript
 exception.withPosition(100, 200);
@@ -220,9 +220,9 @@ exception.withPosition(100, 200);
 
 The Exception instance to allow method chaining.
 
-### Converting to Response Object
+### 3.4. Converting to Response Object
 
-The following example shows how to convert the exception to a response object.
+The following example shows how to convert the exception to a response object suitable for API responses.
 
 ```typescript
 const response = exception.toResponse();
@@ -240,9 +240,9 @@ const response = exception.toResponse();
 
 An ErrorResponse object with all exception details.
 
-### Converting to JSON
+### 3.5. Converting to JSON
 
-The following example shows how to convert the exception to JSON.
+The following example shows how to convert the exception to a formatted JSON string.
 
 ```typescript
 const json = exception.toJSON();
@@ -253,9 +253,9 @@ console.log(json); // Pretty-printed JSON string
 
 A formatted JSON string representation of the exception.
 
-### Getting Stack Trace
+### 3.6. Getting Stack Trace
 
-The following example shows how to get the parsed stack trace.
+The following example shows how to get the parsed stack trace with detailed frame information.
 
 ```typescript
 const trace = exception.trace();

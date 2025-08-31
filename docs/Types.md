@@ -1,8 +1,6 @@
 # Types
 
-Type definitions for the Stackpress library providing type safety and 
-structure for data manipulation, event handling, routing, and system 
-operations.
+Type definitions for the Stackpress library providing type safety and structure for data manipulation, event handling, routing, and system operations. These comprehensive type definitions ensure compile-time safety and provide clear interfaces for all library components.
 
 ```typescript
 import type { 
@@ -12,15 +10,13 @@ import type {
 } from '@stackpress/lib/types';
 ```
 
-## General Types
+## 1. General Types
 
-The following types provide general utility for type manipulation and 
-inference.
+The following types provide general utility for type manipulation and inference across the library. These foundational types enable type-safe operations and maintain consistency throughout the Stackpress ecosystem.
 
-### TypeOf
+### 1.1. TypeOf
 
-Utility type that extracts the primitive type from a value, providing 
-type-safe inference for nested object operations.
+Utility type that extracts the primitive type from a value, providing type-safe inference for nested object operations.
 
 ```typescript
 type StringType = TypeOf<string>; // string
@@ -32,18 +28,15 @@ type NullType = TypeOf<null>; // null
 
 **Usage**
 
-Used internally by `Nest` and other data structures to maintain type 
-safety when accessing nested values with generic type parameters.
+Used internally by `Nest` and other data structures to maintain type safety when accessing nested values with generic type parameters.
 
-## Data Types
+## 2. Data Types
 
-The following types define structures for nested data manipulation and 
-scalar value handling.
+The following types define structures for nested data manipulation and scalar value handling. These types provide the foundation for type-safe data operations throughout the library.
 
-### NestedObject
+### 2.1. NestedObject
 
-Represents a nested object structure where values can be of any type or 
-further nested objects.
+Represents a nested object structure where values can be of any type or further nested objects.
 
 ```typescript
 type UserConfig = NestedObject<string | number>;
@@ -66,13 +59,11 @@ const config: UserConfig = {
 
 **Usage**
 
-Used as the foundation for `Nest` data structures and configuration 
-objects throughout the library.
+Used as the foundation for `Nest` data structures and configuration objects throughout the library.
 
-### UnknownNest
+### 2.2. UnknownNest
 
-Type alias for `NestedObject<unknown>` representing a nested object 
-with unknown value types.
+Type alias for `NestedObject<unknown>` representing a nested object with unknown value types.
 
 ```typescript
 const data: UnknownNest = {
@@ -83,13 +74,11 @@ const data: UnknownNest = {
 
 **Usage**
 
-Used as the default type parameter for `Nest` when specific value types 
-are not known at compile time.
+Used as the default type parameter for `Nest` when specific value types are not known at compile time.
 
-### Scalar
+### 2.3. Scalar
 
-Union type representing primitive values that can be stored in nested 
-structures.
+Union type representing primitive values that can be stored in nested structures.
 
 ```typescript
 const value: Scalar = 'hello'; // string
@@ -100,13 +89,11 @@ const empty: Scalar = null; // null
 
 **Usage**
 
-Used in form data processing and configuration systems where only 
-primitive values are expected.
+Used in form data processing and configuration systems where only primitive values are expected.
 
-### Hash
+### 2.4. Hash
 
-Type alias for `NestedObject<Scalar>` representing a nested object 
-structure containing only scalar values.
+Type alias for `NestedObject<Scalar>` representing a nested object structure containing only scalar values.
 
 ```typescript
 const settings: Hash = {
@@ -124,17 +111,15 @@ const settings: Hash = {
 
 **Usage**
 
-Used for configuration objects and form data where complex objects are 
-not allowed, only primitive values.
+Used for configuration objects and form data where complex objects are not allowed, only primitive values.
 
-## Cookie Types
+## 3. Cookie Types
 
-The following types define cookie configuration and parsing options.
+The following types define cookie configuration and parsing options for HTTP cookie management with security and behavior settings.
 
-### CookieOptions
+### 3.1. CookieOptions
 
-Configuration options for HTTP cookies including security and behavior 
-settings.
+Configuration options for HTTP cookies including security and behavior settings.
 
 ```typescript
 const cookieConfig: CookieOptions = {
@@ -164,14 +149,13 @@ const cookieConfig: CookieOptions = {
 
 **Usage**
 
-Used by the `Response` class when setting cookies and by cookie parsing 
-utilities in the data processors.
+Used by the `Response` class when setting cookies and by cookie parsing utilities in the data processors.
 
-## Status Types
+## 4. Status Types
 
-The following types define response status structures and error handling.
+The following types define response status structures and error handling for consistent API responses and error management.
 
-### ResponseStatus
+### 4.1. ResponseStatus
 
 Basic response status structure containing HTTP status code and message.
 
@@ -191,13 +175,11 @@ const status: ResponseStatus = {
 
 **Usage**
 
-Used as the foundation for all response status types and by the `Status` 
-utility for HTTP status code management.
+Used as the foundation for all response status types and by the `Status` utility for HTTP status code management.
 
-### ErrorResponse
+### 4.2. ErrorResponse
 
-Extended response structure for error conditions including error details 
-and stack traces.
+Extended response structure for error conditions including error details and stack traces.
 
 ```typescript
 const errorResponse: ErrorResponse = {
@@ -231,13 +213,11 @@ const errorResponse: ErrorResponse = {
 
 **Usage**
 
-Used by the `Response` class for error responses and by the `Exception` 
-class for structured error handling.
+Used by the `Response` class for error responses and by the `Exception` class for structured error handling.
 
-### SuccessResponse
+### 4.3. SuccessResponse
 
-Extended response structure for successful operations including result 
-data and pagination.
+Extended response structure for successful operations including result data and pagination.
 
 ```typescript
 const successResponse: SuccessResponse<User[]> = {
@@ -262,13 +242,11 @@ const successResponse: SuccessResponse<User[]> = {
 
 **Usage**
 
-Used by the `Response` class for successful API responses and data 
-retrieval operations.
+Used by the `Response` class for successful API responses and data retrieval operations.
 
-### StatusResponse
+### 4.4. StatusResponse
 
-Union type combining error and success response structures for flexible 
-response handling.
+Union type combining error and success response structures for flexible response handling.
 
 ```typescript
 const response: StatusResponse<User> = {
@@ -287,11 +265,9 @@ const errorResponse: StatusResponse = {
 
 **Usage**
 
-Used by router actions and event handlers that can return either success 
-or error responses. Distinguished from `ResponseStatus` by including 
-optional error and success fields.
+Used by router actions and event handlers that can return either success or error responses. Distinguished from `ResponseStatus` by including optional error and success fields.
 
-### Trace
+### 4.5. Trace
 
 Stack trace entry providing debugging information for error tracking.
 
@@ -315,15 +291,13 @@ const trace: Trace = {
 
 **Usage**
 
-Used in error responses and exception handling to provide detailed 
-debugging information about error origins.
+Used in error responses and exception handling to provide detailed debugging information about error origins.
 
-## Queue Types
+## 5. Queue Types
 
-The following types define structures for queue operations and task 
-management.
+The following types define structures for queue operations and task management with priority-based processing and execution control.
 
-### Item
+### 5.1. Item
 
 Generic item wrapper for priority queue operations.
 
@@ -343,10 +317,9 @@ const queueItem: Item<string> = {
 
 **Usage**
 
-Used by `ItemQueue` to wrap items with priority information for ordered 
-processing.
+Used by `ItemQueue` to wrap items with priority information for ordered processing.
 
-### TaskItem
+### 5.2. TaskItem
 
 Specialized item type for task functions with priority and arguments.
 
@@ -362,10 +335,9 @@ const taskItem: TaskItem<[string, number]> = {
 
 **Usage**
 
-Used by `TaskQueue` to manage executable functions with priority 
-ordering and argument type safety.
+Used by `TaskQueue` to manage executable functions with priority ordering and argument type safety.
 
-### TaskAction
+### 5.3. TaskAction
 
 Function type for executable tasks with flexible return types.
 
@@ -381,15 +353,13 @@ const taskAction: TaskAction<[User, Options]> = async (user, options) => {
 
 **Returns**
 
-Can return `boolean`, `undefined`, `void`, or promises of these types. 
-Returning `false` aborts queue processing.
+Can return `boolean`, `undefined`, `void`, or promises of these types. Returning `false` aborts queue processing.
 
 **Usage**
 
-Used to define executable functions in `TaskQueue` with type-safe 
-arguments and standardized return behavior.
+Used to define executable functions in `TaskQueue` with type-safe arguments and standardized return behavior.
 
-### TaskResult
+### 5.4. TaskResult
 
 Union type for task function return values.
 
@@ -401,15 +371,13 @@ const result3: TaskResult = undefined; // Continue processing
 
 **Usage**
 
-Used internally by `TaskQueue` to handle different return types from 
-task functions and determine processing flow.
+Used internally by `TaskQueue` to handle different return types from task functions and determine processing flow.
 
-## Event Types
+## 6. Event Types
 
-The following types define event system structures for type-safe event 
-handling.
+The following types define event system structures for type-safe event handling with pattern matching and parameter extraction.
 
-### Event
+### 6.1. Event
 
 Complete event object containing task information and event metadata.
 
@@ -446,13 +414,11 @@ const event: Event<[string, number]> = {
 
 **Usage**
 
-Used internally by `EventEmitter` to represent complete event objects 
-during emission and processing.
+Used internally by `EventEmitter` to represent complete event objects during emission and processing.
 
-### EventMap
+### 6.2. EventMap
 
-Type mapping event names to their argument types for type-safe event 
-emission.
+Type mapping event names to their argument types for type-safe event emission.
 
 ```typescript
 type AppEvents = {
@@ -469,10 +435,9 @@ emitter.on('user.login', (user: User, sessionId: string) => {
 
 **Usage**
 
-Used as a generic parameter for `EventEmitter` to provide compile-time 
-type checking for event names and arguments.
+Used as a generic parameter for `EventEmitter` to provide compile-time type checking for event names and arguments.
 
-### EventName
+### 6.3. EventName
 
 Utility type extracting valid event names from an event map.
 
@@ -482,10 +447,9 @@ type ValidEvents = EventName<AppEvents>; // 'user.login' | 'user.logout' | 'data
 
 **Usage**
 
-Used internally by `EventEmitter` to constrain event names to those 
-defined in the event map.
+Used internally by `EventEmitter` to constrain event names to those defined in the event map.
 
-### EventData
+### 6.4. EventData
 
 Parsed event information containing arguments and extracted parameters.
 
@@ -509,10 +473,9 @@ const eventData: EventData = {
 
 **Usage**
 
-Used by `ExpressEmitter` and `RouteEmitter` for pattern-based event 
-matching and parameter extraction.
+Used by `ExpressEmitter` and `RouteEmitter` for pattern-based event matching and parameter extraction.
 
-### EventMatch
+### 6.5. EventMatch
 
 Event matching result containing pattern information and extracted data.
 
@@ -537,10 +500,9 @@ const match: EventMatch = {
 
 **Usage**
 
-Used by pattern-matching event emitters to provide information about 
-how events were matched and what parameters were extracted.
+Used by pattern-matching event emitters to provide information about how events were matched and what parameters were extracted.
 
-### EventExpression
+### 6.6. EventExpression
 
 Compiled regular expression pattern for event matching.
 
@@ -560,17 +522,15 @@ const expression: EventExpression = {
 
 **Usage**
 
-Used internally by `ExpressEmitter` to store compiled patterns for 
-efficient event matching.
+Used internally by `ExpressEmitter` to store compiled patterns for efficient event matching.
 
-## Payload Types
+## 7. Payload Types
 
-The following types define request and response payload structures.
+The following types define request and response payload structures for HTTP communication and data transfer.
 
-### Body
+### 7.1. Body
 
-Union type for HTTP request/response body content supporting various 
-data formats.
+Union type for HTTP request/response body content supporting various data formats.
 
 ```typescript
 const stringBody: Body = 'Hello World';
@@ -581,10 +541,9 @@ const streamBody: Body = fs.createReadStream('file.txt');
 
 **Usage**
 
-Used by `Request` and `Response` classes to handle different body types 
-in a type-safe manner.
+Used by `Request` and `Response` classes to handle different body types in a type-safe manner.
 
-### Headers
+### 7.2. Headers
 
 HTTP headers structure supporting both object and Map representations.
 
@@ -603,10 +562,9 @@ const headerMap: Headers = new Map([
 
 **Usage**
 
-Used by `Request` and `Response` classes for HTTP header management 
-with support for multiple values per header.
+Used by `Request` and `Response` classes for HTTP header management with support for multiple values per header.
 
-### Data
+### 7.3. Data
 
 Generic data container supporting both Map and object representations.
 
@@ -625,10 +583,9 @@ const dataMap: Data = new Map([
 
 **Usage**
 
-Used by `Request` class to store merged data from query parameters, 
-POST data, and additional context.
+Used by `Request` class to store merged data from query parameters, POST data, and additional context.
 
-### Query
+### 7.4. Query
 
 URL query parameters supporting string, Map, or object representations.
 
@@ -640,10 +597,9 @@ const queryMap: Query = new Map([['page', '1'], ['limit', '10']]);
 
 **Usage**
 
-Used by `Request` class for URL query parameter handling with flexible 
-input formats.
+Used by `Request` class for URL query parameter handling with flexible input formats.
 
-### Post
+### 7.5. Post
 
 POST request data supporting object or Map representations.
 
@@ -664,7 +620,7 @@ const postMap: Post = new Map([
 
 Used by `Request` class for form data and POST body content management.
 
-### ResponseOptions
+### 7.6. ResponseOptions
 
 Configuration options for response initialization.
 
@@ -690,10 +646,9 @@ const options: ResponseOptions<User> = {
 
 **Usage**
 
-Used by `Response` class constructor for initialization with various 
-content types and metadata.
+Used by `Response` class constructor for initialization with various content types and metadata.
 
-### RequestOptions
+### 7.7. RequestOptions
 
 Configuration options for request initialization.
 
@@ -728,14 +683,13 @@ const options: RequestOptions<IncomingMessage> = {
 
 **Usage**
 
-Used by `Request` class constructor for initialization with various 
-request components and metadata.
+Used by `Request` class constructor for initialization with various request components and metadata.
 
-## Session Types
+## 8. Session Types
 
-The following types define session management structures.
+The following types define session management structures for user state tracking and persistence.
 
-### Session
+### 8.1. Session
 
 Session data container supporting object or Map representations.
 
@@ -754,10 +708,9 @@ const sessionMap: Session = new Map([
 
 **Usage**
 
-Used by `Request` class for session data management and by session 
-processors for cookie-based sessions.
+Used by `Request` class for session data management and by session processors for cookie-based sessions.
 
-### Revision
+### 8.2. Revision
 
 Session change tracking entry for audit and rollback capabilities.
 
@@ -781,14 +734,13 @@ const removeRevision: Revision = {
 
 **Usage**
 
-Used by `WriteSession` class to track session changes for persistence 
-and rollback functionality.
+Used by `WriteSession` class to track session changes for persistence and rollback functionality.
 
-## Route Types
+## 9. Route Types
 
-The following types define routing structures and HTTP method handling.
+The following types define routing structures and HTTP method handling for request routing and parameter extraction.
 
-### Method
+### 9.1. Method
 
 HTTP method enumeration supporting all standard HTTP verbs.
 
@@ -800,10 +752,9 @@ const allMethods: Method = 'ALL'; // Matches any method
 
 **Usage**
 
-Used by `Router` class for route registration and method-based request 
-handling.
+Used by `Router` class for route registration and method-based request handling.
 
-### Route
+### 9.2. Route
 
 Route definition containing HTTP method and path pattern.
 
@@ -823,10 +774,9 @@ const route: Route = {
 
 **Usage**
 
-Used by `Router` class to store route definitions and for route lookup 
-operations.
+Used by `Router` class to store route definitions and for route lookup operations.
 
-### RouteMap
+### 9.3. RouteMap
 
 Mapping of route patterns to request/response type pairs.
 
@@ -840,10 +790,9 @@ const routes: AppRoutes = {
 
 **Usage**
 
-Used internally by routing systems to maintain type relationships 
-between routes and their handlers.
+Used internally by routing systems to maintain type relationships between routes and their handlers.
 
-### RouteAction
+### 9.4. RouteAction
 
 Function type for route handlers with request and response parameters.
 
@@ -858,17 +807,15 @@ const routeAction: RouteAction<Request, Response> = async (req, res) => {
 
 **Usage**
 
-Used by `RouteEmitter` for route handler functions with standardized 
-request/response handling.
+Used by `RouteEmitter` for route handler functions with standardized request/response handling.
 
-## Router Types
+## 10. Router Types
 
-The following types define router context and action structures.
+The following types define router context and action structures for advanced routing scenarios with context management.
 
-### RouterContext
+### 10.1. RouterContext
 
-Context type for router operations, defaulting to Router when no custom 
-context is provided.
+Context type for router operations, defaulting to Router when no custom context is provided.
 
 ```typescript
 type DefaultContext = RouterContext<Request, Response, undefined>; // Router<Request, Response>
@@ -877,13 +824,11 @@ type CustomContext = RouterContext<Request, Response, MyContext>; // MyContext
 
 **Usage**
 
-Used by `Router` class to provide flexible context handling in route 
-handlers.
+Used by `Router` class to provide flexible context handling in route handlers.
 
-### RouterArgs
+### 10.2. RouterArgs
 
-Argument tuple for router action functions containing request, response, 
-and context.
+Argument tuple for router action functions containing request, response, and context.
 
 ```typescript
 type HandlerArgs = RouterArgs<Request, Response, Router>;
@@ -892,10 +837,9 @@ type HandlerArgs = RouterArgs<Request, Response, Router>;
 
 **Usage**
 
-Used internally by `Router` to define the argument structure for route 
-handler functions.
+Used internally by `Router` to define the argument structure for route handler functions.
 
-### RouterMap
+### 10.3. RouterMap
 
 Mapping of route patterns to router argument tuples.
 
@@ -909,13 +853,11 @@ const routerMap: AppRouterMap = {
 
 **Usage**
 
-Used internally by routing systems to maintain type relationships 
-between routes and their argument structures.
+Used internally by routing systems to maintain type relationships between routes and their argument structures.
 
-### RouterAction
+### 10.4. RouterAction
 
-Function type for router handlers with request, response, and context 
-parameters.
+Function type for router handlers with request, response, and context parameters.
 
 ```typescript
 const routerAction: RouterAction<Request, Response, Router> = async (req, res, router) => {
@@ -931,14 +873,13 @@ const routerAction: RouterAction<Request, Response, Router> = async (req, res, r
 
 **Usage**
 
-Used by `Router` class for route handler functions with full router 
-context access.
+Used by `Router` class for route handler functions with full router context access.
 
-## Filesystem Types
+## 11. Filesystem Types
 
-The following types define filesystem operation interfaces.
+The following types define filesystem operation interfaces for cross-platform file system abstraction and operations.
 
-### FileSystem
+### 11.1. FileSystem
 
 Interface defining filesystem operations for cross-platform compatibility.
 
@@ -980,5 +921,4 @@ const fs: FileSystem = {
 
 **Usage**
 
-Used by `FileLoader` and `NodeFS` classes to provide consistent 
-filesystem operations across different environments and platforms.
+Used by `FileLoader` and `NodeFS` classes to provide consistent filesystem operations across different environments and platforms.

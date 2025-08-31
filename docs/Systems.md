@@ -1,6 +1,6 @@
-# FileLoader
+# File System
 
-Cross-platform file loading utilities for locating, loading, and importing files throughout your project and node_modules.
+Cross-platform file loading utilities for locating, loading, and importing files throughout your project and node_modules. Provides cross-platform path resolution, Node modules discovery, dynamic import support, and project root (@/) path shortcuts for efficient file management across different environments.
 
 ```typescript
 import { NodeFS, FileLoader } from '@stackpress/lib';
@@ -8,7 +8,11 @@ import { NodeFS, FileLoader } from '@stackpress/lib';
 const loader = new FileLoader(new NodeFS());
 ```
 
-## Properties
+## 1. FileLoader
+
+Cross-platform file loading utilities that provide a unified interface for file operations across different environments. The FileLoader class abstracts filesystem operations and provides convenient methods for path resolution, module discovery, and dynamic imports.
+
+### 1.1. Properties
 
 The following properties are available when instantiating a FileLoader.
 
@@ -17,13 +21,9 @@ The following properties are available when instantiating a FileLoader.
 | `cwd` | `string` | Current working directory |
 | `fs` | `FileSystem` | Filesystem interface being used |
 
-## Methods
+### 1.2. Getting Absolute Paths
 
-The following methods are available when instantiating a FileLoader.
-
-### Getting Absolute Paths
-
-The following example shows how to get absolute paths from various path formats.
+The following example shows how to get absolute paths from various path formats with automatic resolution.
 
 ```typescript
 // Project root paths (@ prefix)
@@ -54,9 +54,9 @@ const path4 = await loader.absolute('/usr/local/bin');
 
 A promise that resolves to the absolute path string.
 
-### Getting Base Paths
+### 1.3. Getting Base Paths
 
-The following example shows how to remove file extensions from paths.
+The following example shows how to remove file extensions from paths for clean path manipulation.
 
 ```typescript
 const basePath = loader.basepath('/path/to/file.js');
@@ -76,9 +76,9 @@ const noExt = loader.basepath('/path/to/file');
 
 The path without the file extension.
 
-### Locating Node Modules
+### 1.4. Locating Node Modules
 
-The following example shows how to locate node_modules directories.
+The following example shows how to locate node_modules directories for package resolution.
 
 ```typescript
 // Find node_modules containing a specific package
@@ -102,9 +102,9 @@ const modulesPath2 = await loader.modules('lodash', '/some/path');
 
 A promise that resolves to the node_modules directory path.
 
-### Locating Library Path
+### 1.5. Locating Library Path
 
-The following example shows how to locate the @stackpress/lib installation.
+The following example shows how to locate the @stackpress/lib installation directory.
 
 ```typescript
 const libPath = await loader.lib();
@@ -124,9 +124,9 @@ const libPath2 = await loader.lib('/custom/path');
 
 A promise that resolves to the node_modules directory containing @stackpress/lib.
 
-### Importing Files
+### 1.6. Importing Files
 
-The following example shows how to dynamically import various file types.
+The following example shows how to dynamically import various file types with type safety.
 
 ```typescript
 // Import JavaScript/TypeScript modules
@@ -154,9 +154,9 @@ const defaultExport = await loader.import('./module.js', true);
 
 A promise that resolves to the imported module or JSON data.
 
-### Getting Relative Paths
+### 1.7. Getting Relative Paths
 
-The following example shows how to get relative paths between files.
+The following example shows how to get relative paths between files for import statements.
 
 ```typescript
 // Get relative path from source to target
@@ -187,9 +187,9 @@ const relativeWithExt = loader.relative(
 
 The relative path from source to target.
 
-### Resolving Paths
+### 1.8. Resolving Paths
 
-The following example shows how to resolve and verify path existence.
+The following example shows how to resolve and verify path existence with error handling.
 
 ```typescript
 // Resolve path (returns null if not found)
@@ -220,9 +220,9 @@ const resolved2 = await loader.resolve('@/src/index.ts', '/custom/pwd');
 
 A promise that resolves to the absolute path or null if not found.
 
-### Resolving Files with Extensions
+### 1.9. Resolving Files with Extensions
 
-The following example shows how to resolve files with automatic extension detection.
+The following example shows how to resolve files with automatic extension detection and fallbacks.
 
 ```typescript
 // Try multiple extensions
@@ -251,11 +251,13 @@ try {
 
 A promise that resolves to the resolved file path or null if not found.
 
-## Path Resolution Patterns
+## 2. Path Resolution Patterns
 
-FileLoader supports several path resolution patterns:
+FileLoader supports several path resolution patterns for flexible file access across different project structures and environments.
 
-### Project Root Paths (@/)
+### 2.1. Project Root Paths (@/)
+
+The @ symbol refers to the project root directory, providing a consistent way to reference files from the project base.
 
 ```typescript
 // @ refers to the project root (cwd)
@@ -263,7 +265,9 @@ await loader.absolute('@/src/index.ts');
 await loader.absolute('@/config/database.json');
 ```
 
-### Relative Paths
+### 2.2. Relative Paths
+
+Standard relative path resolution for files relative to the current working directory or specified path.
 
 ```typescript
 // Standard relative paths
@@ -271,7 +275,9 @@ await loader.absolute('./utils/helper.js');
 await loader.absolute('../shared/constants.ts');
 ```
 
-### Node Modules
+### 2.3. Node Modules
+
+Automatic resolution from node_modules directories with support for scoped packages and nested dependencies.
 
 ```typescript
 // Automatically resolves from node_modules
@@ -280,7 +286,9 @@ await loader.absolute('@types/node');
 await loader.absolute('@company/private-package');
 ```
 
-### Absolute Paths
+### 2.4. Absolute Paths
+
+Absolute paths are returned as-is with symlink resolution for consistent file access.
 
 ```typescript
 // Absolute paths are returned as-is (with symlink resolution)
@@ -288,9 +296,9 @@ await loader.absolute('/usr/local/bin/node');
 await loader.absolute('C:\\Program Files\\Node\\node.exe');
 ```
 
-## File System Abstraction
+## 3. File System Abstraction
 
-FileLoader works with any FileSystem implementation:
+FileLoader works with any FileSystem implementation, allowing for flexible filesystem backends and testing scenarios.
 
 ```typescript
 import { NodeFS } from '@stackpress/lib';
@@ -305,18 +313,22 @@ class CustomFS implements FileSystem {
 const customLoader = new FileLoader(new CustomFS());
 ```
 
-## Cross-Platform Compatibility
+## 4. Cross-Platform Compatibility
 
-FileLoader handles platform differences automatically:
+FileLoader handles platform differences automatically to ensure consistent behavior across different operating systems and environments.
 
-- **Path separators**: Automatically uses correct separators (/ vs \\)
-- **Symlinks**: Resolves symbolic links to real paths
-- **Case sensitivity**: Respects filesystem case sensitivity rules
-- **Module resolution**: Works with both CommonJS and ES modules
+### 4.1. Platform Features
 
-## Error Handling
+The following features ensure cross-platform compatibility.
 
-FileLoader provides clear error messages for common issues:
+ - **Path separators** — Automatically uses correct separators (/ vs \\)
+ - **Symlinks** — Resolves symbolic links to real paths
+ - **Case sensitivity** — Respects filesystem case sensitivity rules
+ - **Module resolution** — Works with both CommonJS and ES modules
+
+## 5. Error Handling
+
+FileLoader provides clear error messages for common issues to help with debugging and development.
 
 ```typescript
 try {
@@ -332,9 +344,11 @@ try {
 }
 ```
 
-## Usage Examples
+## 6. Usage Examples
 
-### Loading Configuration Files
+The following examples demonstrate common usage patterns for the FileLoader in real-world scenarios.
+
+### 6.1. Loading Configuration Files
 
 ```typescript
 // Load config with fallbacks
@@ -345,7 +359,7 @@ const env = process.env.NODE_ENV || 'development';
 const envConfig = await loader.import(`@/config/${env}.json`);
 ```
 
-### Module Resolution
+### 6.2. Module Resolution
 
 ```typescript
 // Resolve module paths for bundling
@@ -356,7 +370,7 @@ const relativePath = loader.relative('./src/index.js', modulePath);
 const modules = await loader.modules('.');
 ```
 
-### Dynamic Imports
+### 6.3. Dynamic Imports
 
 ```typescript
 // Dynamically import plugins
