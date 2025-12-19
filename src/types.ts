@@ -10,6 +10,15 @@ import type Response from './router/Response.js';
 import type Router from './router/Router.js';
 
 //--------------------------------------------------------------------//
+// General Types
+
+export type ExtendsType<T, U> = U & Pick<T, Exclude<keyof T, keyof U>>;
+
+export type Constructor<T, U extends Record<string, unknown> = {}> = U & {
+  new (): T; 
+};
+
+//--------------------------------------------------------------------//
 // Data Types
 
 export type TypeOf<T> = T extends number
