@@ -15,7 +15,7 @@ import type Router from './router/Router.js';
 export type ExtendsType<T, U> = U & Pick<T, Exclude<keyof T, keyof U>>;
 
 export type Constructor<T, U extends Record<string, unknown> = {}> = U & {
-  new (): T; 
+  new (): T
 };
 
 //--------------------------------------------------------------------//
@@ -35,7 +35,7 @@ export type TypeOf<T> = T extends number
 
 export type Key = string|number;
 export interface NestedObject<V = unknown> {
-  [ key: Key ]: V|NestedObject<V>;
+  [ key: Key ]: V|NestedObject<V>
 };
 export type UnknownNest = NestedObject<unknown>;
 export type Scalar = string|number|boolean|null;
@@ -43,9 +43,9 @@ export type Hash = NestedObject<Scalar>;
 export type ScalarInput = Scalar|Scalar[]|Hash;
 
 export type FileMeta = {
-  data: Buffer|string;
-  name: string;
-  type: string;
+  data: Buffer|string,
+  name: string,
+  type: string
 };
 
 export type CallableSet<V = any> = ((index: number) => V|undefined) & Set<V> & {
