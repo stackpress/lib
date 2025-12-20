@@ -6,6 +6,17 @@ import type { FileSystem } from '../types.js';
 import Exception from '../Exception.js';
 
 /**
+ * When TS builds to CJS, it converts dynamic import() to require()
+ * which does not work with ESM-only packages. So this is basically
+ * a monkey-patch to allow dynamic import of ESM packages in CJS 
+ * builds. Either this is a safer way to do dynamic imports.
+ */
+export const include = new Function(
+  'modulePath', 
+  'return import(modulePath)'
+);
+
+/**
  * Loader
  */
 export default class FileLoader {
@@ -98,6 +109,7 @@ export default class FileLoader {
     if (meta) {
       try {
         //@ts-ignore - require supported in all node versions
+        // (esm, cjs and otherwise)
         const absolute = require.resolve(pathname);
         if (absolute.includes('/node_modules/')) {
           //get the last index of node_modules
@@ -162,7 +174,7 @@ export default class FileLoader {
     }
     //if no require, try to esm dynamic import
     if (typeof require === 'undefined') {
-      const imports = await import(pathToFileURL(absolute).href);
+      const imports = await include(pathToFileURL(absolute).href);
       if (getDefault) {
         return imports.default as T;
       }

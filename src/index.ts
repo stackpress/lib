@@ -81,7 +81,7 @@ import cookie from './data/map.js';
 import map from './data/map.js';
 import set from './data/set.js';
 
-import FileLoader from './system/FileLoader.js';
+import FileLoader, { include } from './system/FileLoader.js';
 import NodeFS from './system/NodeFS.js';
 
 import ItemQueue from './queue/ItemQueue.js';
@@ -127,6 +127,7 @@ export {
   Status,
   codes,
   control,
+  include,
   cookie,
   map,
   set,
