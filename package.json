@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@stackpress/lib",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "license": "Apache-2.0",
   "description": "Shared library used across stackpress projects",
   "author": "Chris <chris@incept.asia>",
