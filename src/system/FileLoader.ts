@@ -11,10 +11,16 @@ import Exception from '../Exception.js';
  * a monkey-patch to allow dynamic import of ESM packages in CJS 
  * builds. Either this is a safer way to do dynamic imports.
  */
-export const include = new Function(
+export const esmImport = new Function(
   'modulePath', 
   'return import(modulePath)'
 );
+export async function include(modulePath: string) {
+  const exports = await esmImport(modulePath);
+  return typeof exports?.default?.default !== 'undefined'
+    ? exports?.default 
+    : exports;
+};
 
 /**
  * Loader
