@@ -1,4 +1,4 @@
-name: Stackpress Types Test Suite
+name: Stackpress Library Test Suite
 on: ["push", "pull_request"]
 jobs:
   test:
