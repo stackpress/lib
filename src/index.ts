@@ -77,9 +77,9 @@ import Nest, {
   shouldBeAnArray,
   nest 
 } from './data/Nest.js';
-import cookie from './data/_map.js';
-import map from './data/_map.js';
-import set from './data/_set.js';
+import cookie from './data/cookie.js';
+import DataMap, { map } from './data/Map.js';
+import DataSet, { set } from './data/Set.js';
 
 import FileLoader, { include, esmImport } from './system/FileLoader.js';
 import NodeFS from './system/NodeFS.js';
@@ -110,6 +110,8 @@ export {
   ReadonlyNest,
   ReadonlyPath,
   ReadonlySet,
+  DataMap,
+  DataSet,
   Nest,
   FileLoader,
   NodeFS,

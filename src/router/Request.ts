@@ -9,7 +9,7 @@ import type {
   RequestOptions
 } from '../types.js';
 //data
-import map from '../data/_map.js';
+import { map } from '../data/Map.js';
 import cookie from '../data/cookie.js';
 import { nest, isObject, objectFromQuery } from '../data/Nest.js';
 //local

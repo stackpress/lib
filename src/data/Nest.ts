@@ -286,21 +286,43 @@ export function nest<M extends UnknownNest = UnknownNest>(data?: M): CallableNes
   const callable = Object.assign(
     <T = any>(...path: Key[]) => store.get<T>(...path),
     {
-      clear: () => store.clear(),
-      delete: (...path: Key[]) => store.delete(...path),
-      entries: () => store.entries(),
-      forEach: (...path: Key[]) => store.forEach(...path),
-      get: <T = any>(...path: Key[]) => store.get<T>(...path),
-      has: (...path: Key[]) => store.has(...path),
-      keys: () => store.keys(),
-      path: <T = any>(path: string, defaults?: TypeOf<T>) => store.path<T>(path, defaults),
-      set: (...path: any[]) => store.set(...path),
-      toString: () => store.toString(),
-      values: () => store.values(),
       withArgs: store.withArgs,
       withFormData: store.withFormData,
       withPath: store.withPath,
-      withQuery: store.withQuery
+      withQuery: store.withQuery,
+      clear() {
+        return store.clear();
+      },
+      delete(...path: Key[]) {
+        return store.delete(...path);
+      },
+      entries() {
+        return store.entries();
+      },
+      forEach(...path: Key[]) {
+        return store.forEach(...path);
+      },
+      get<T = any>(...path: Key[]) {
+        return store.get<T>(...path);
+      },
+      has(...path: Key[]) {
+        return store.has(...path);
+      },
+      keys() {
+        return store.keys();
+      },
+      path<T = any>(path: string, defaults?: TypeOf<T>) {
+        return store.path<T>(path, defaults);
+      },
+      set(...path: any[]) {
+        return store.set(...path);
+      },
+      toString() {
+        return store.toString();
+      },
+      values() {
+        return store.values();
+      }
     } as Nest<M>
   );
   //magic size/data property

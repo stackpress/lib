@@ -48,13 +48,13 @@
       "require": "./cjs/data/cookie.js",
       "import": "./esm/data/cookie.js"
     },
-    "./map": {
-      "require": "./cjs/data/map.js",
-      "import": "./esm/data/map.js"
+    "./Map": {
+      "require": "./cjs/data/Map.js",
+      "import": "./esm/data/Map.js"
     },
-    "./set": {
-      "require": "./cjs/data/set.js",
-      "import": "./esm/data/set.js"
+    "./Set": {
+      "require": "./cjs/data/Set.js",
+      "import": "./esm/data/Set.js"
     },
     "./Nest": {
       "require": "./cjs/data/Nest.js",
@@ -131,8 +131,8 @@
       "Reflection": [ "./cjs/Reflection.d.ts" ],
       "Status": [ "./cjs/Status.d.ts" ],
       "cookie": [ "./cjs/data/cookie.d.ts" ],
-      "map": [ "./cjs/data/map.d.ts" ],
-      "set": [ "./cjs/data/set.d.ts" ],
+      "Map": [ "./cjs/data/Map.d.ts" ],
+      "Set": [ "./cjs/data/Set.d.ts" ],
       "Nest": [ "./cjs/data/Nest.d.ts" ],
       "ReadonlyMap": [ "./cjs/data/ReadonlyMap.d.ts" ],
       "ReadonlyNest": [ "./cjs/data/ReadonlyNest.d.ts" ],

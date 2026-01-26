@@ -15,7 +15,7 @@ import type {
 import Status from '../Status.js';
 import Exception from '../Exception.js';
 //data
-import map from '../data/_map.js';
+import { map } from '../data/Map.js';
 import { nest, isObject } from '../data/Nest.js';
 //local
 import { session } from './Session.js';

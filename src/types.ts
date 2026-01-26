@@ -2,7 +2,9 @@
 import type { Readable } from 'node:stream';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 //data
+import type DataMap from './data/Map.js';
 import type Nest from './data/Nest.js';
+import type DataSet from './data/Set.js';
 //router
 import type { WriteSession } from './router/Session.js';
 import type Request from './router/Request.js';
@@ -48,13 +50,37 @@ export type FileMeta = {
   type: string
 };
 
-export type CallableSet<V = any> = ((index: number) => V|undefined) & Set<V> & {
+export type CallableSet<V = any> = ((index: number) => V|undefined) & DataSet<V> & {
   index: (index: number) => V|undefined
 };
-export type CallableMap<K = any, V = any> = ((name: K) => V|undefined) & Map<K, V>;
+export type CallableMap<K = any, V = any> = ((name: K) => V|undefined) & DataMap<K, V>;
 export type CallableNest<M extends UnknownNest = UnknownNest> = (
   <T = any>(...path: Key[]) => T
 ) & Nest<M>;
+
+export type DataSetIterator<
+  V = any, 
+  S = DataSet<V>,
+  T = any
+> = (value: V, index: number, set: S) => T;
+
+export type DataSetFilter<
+  V = any, 
+  S = DataSet<V>
+> = DataSetIterator<V, S, boolean>;
+
+export type DataMapIterator<
+  K = any, 
+  V = any, 
+  M = DataMap<K, V>,
+  T = any
+> = (value: V, key: K, map: M) => T;
+
+export type DataMapFilter<
+  K = any, 
+  V = any, 
+  M = DataMap<K, V>
+> = DataMapIterator<K, V, M, boolean>;
 
 //--------------------------------------------------------------------//
 // Cookie Types

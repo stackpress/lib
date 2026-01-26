@@ -1,12 +1,21 @@
-export default class ReadonlyMap<S = any, T = any> {
+import DataMap from './Map.js';
+
+export default class ReadonlyMap<K = any, V = any> {
   //map of map
-  protected _map: Map<S, T>;
+  protected _map: DataMap<K, V>;
+
+  /**
+   * Returns the size of the map
+   */
+  public get size() {
+    return this._map.size;
+  }
 
   /**
    * Sets the initial values of the map
    */
-  constructor(init?: [S, T][]) {
-    this._map = new Map(init);
+  constructor(init?: [K, V][]) {
+    this._map = new DataMap<K, V>(init);
   }
 
   /**
@@ -17,10 +26,54 @@ export default class ReadonlyMap<S = any, T = any> {
   }
 
   /**
+   * Filters the data map (returns a new DataMap instance)
+   */
+  public filter(callback: (
+    value: V, 
+    key?: K, 
+    map?: DataMap<K, V>
+  ) => boolean) {
+    return this._map.filter(callback);
+  }
+
+  /**
+   * Finds the first entry that matches the callback
+   */
+  public find(callback: (
+    value: V, 
+    key?: K, 
+    map?: DataMap<K, V>
+  ) => boolean) {
+    return this._map.find(callback);
+  }
+
+  /**
+   * Finds the first key that matches the callback
+   */
+  public findKey(callback: (
+    value: V, 
+    key?: K, 
+    map?: DataMap<K, V>
+  ) => boolean) {
+    return this._map.findKey(callback);
+  }
+
+  /**
+   * Finds the first value that matches the callback
+   */
+  public findValue(callback: (
+    value: V, 
+    key?: K, 
+    map?: DataMap<K, V>
+  ) => boolean) {
+    return this._map.findValue(callback);
+  }
+
+  /**
    * Iterates over the map
    */
   public forEach(
-    iterator: (value: T, key: S, set: Map<S, T>) => void, 
+    iterator: (value: V, key: K, set: Map<K, V>) => void, 
     arg?: unknown
   ) {
     return this._map.forEach(iterator, arg);
@@ -29,14 +82,14 @@ export default class ReadonlyMap<S = any, T = any> {
   /**
    * Returns the value of the map
    */
-  public get(key: S) {
+  public get(key: K) {
     return this._map.get(key);
   }
 
   /**
    * Returns whether the map has the value
    */
-  public has(key: S) {
+  public has(key: K) {
     return this._map.has(key);
   }
 
@@ -48,10 +101,14 @@ export default class ReadonlyMap<S = any, T = any> {
   }
 
   /**
-   * Returns the size of the map
+   * Maps the data map values to a new data map
    */
-  public get size() {
-    return this._map.size;
+  public map<T>(callback: (
+    value: V, 
+    key?: K, 
+    map?: DataMap<K, V>) => T
+  ) {
+    return this._map.map(callback);
   }
 
   /**
