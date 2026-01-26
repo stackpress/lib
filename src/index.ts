@@ -77,9 +77,9 @@ import Nest, {
   shouldBeAnArray,
   nest 
 } from './data/Nest.js';
-import cookie from './data/map.js';
-import map from './data/map.js';
-import set from './data/set.js';
+import cookie from './data/_map.js';
+import map from './data/_map.js';
+import set from './data/_set.js';
 
 import FileLoader, { include, esmImport } from './system/FileLoader.js';
 import NodeFS from './system/NodeFS.js';
