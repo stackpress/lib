@@ -112,6 +112,23 @@ export default class ReadonlyMap<K = any, V = any> {
   }
 
   /**
+   * Returns the data map as a plain object
+   */
+  public toObject() {
+    return this._map.toObject();
+  }
+
+  /**
+   * Returns the data map as a JSON string
+   */
+  public toString(
+    replacer?: (key: string, value: any) => any, 
+    space?: string | number
+  ) {
+    return this._map.toString(replacer, space);
+  }
+
+  /**
    * Returns the values of the map
    */
   public values() {

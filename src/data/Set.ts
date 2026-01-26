@@ -13,7 +13,7 @@ export default class DataSet<V = any> extends Set<V> {
    * Filters the data map (returns a new DataSet instance)
    */
   public filter(callback: DataSetFilter<V, this>) {
-    const values = Array.from(this).filter(
+    const values = this.toArray().filter(
       (value, index) => callback(value, index, this)
     );
     const constructor = this.constructor as new(set: V[]) => this;
@@ -24,7 +24,7 @@ export default class DataSet<V = any> extends Set<V> {
    * Finds the first entry that matches the callback
    */
   public find(callback: DataSetFilter<V, this>) {
-    const values = Array.from(this);
+    const values = this.toArray();
     for (let i = 0; i < values.length; i++) {
       if (callback(values[i], i, this)) {
         return [ i, values[i] ];
@@ -52,7 +52,7 @@ export default class DataSet<V = any> extends Set<V> {
    * Returns the value at the given index
    */
   public index(index: number) {
-    const values = Array.from(this);
+    const values = this.toArray();
     return values[index];
   }
 
@@ -62,11 +62,28 @@ export default class DataSet<V = any> extends Set<V> {
   public map<T>(callback: DataSetIterator<V, this, T>) {
     const constructor = this.constructor as new() => DataSet<T>;
     const map = new constructor();
-    const values = Array.from(this);
+    const values = this.toArray();
     for (let i = 0; i < values.length; i++) {
       map.add(callback(values[i], i, this));
     }
     return map;
+  }
+
+  /**
+   * Returns the data set as a plain array
+   */
+  public toArray() {
+    return Array.from(this);
+  }
+
+  /**
+   * Returns the data set as a JSON string
+   */
+  public toString(
+    replacer?: (key: string, value: any) => any, 
+    space?: string | number
+  ) {
+    return JSON.stringify(this.toArray(), replacer, space);
   }
 };
 
@@ -75,45 +92,21 @@ export function set<V = any> (data?: V[]): CallableSet<V> {
   const callable = Object.assign(
     (index: number) => Array.from(store.values())[index],
     {
-      add(value: V) {
-        return store.add(value);
-      },
-      clear() {
-        return store.clear();
-      },
-      delete(value: V) {
-        return store.delete(value);
-      },
-      entries() {
-        return store.entries();
-      },
-      filter(callback: DataSetFilter<V, typeof store>) {
-        return store.filter(callback);
-      },
-      find(callback: DataSetFilter<V, typeof store>) {
-        return store.find(callback);
-      },
-      findIndex(callback: DataSetFilter<V, typeof store>) {
-        return store.findIndex(callback);
-      },
-      findValue(callback: DataSetFilter<V, typeof store>) {
-        return store.findValue(callback);
-      },
-      forEach(callback: (value: V, value2: V, set: Set<V>) => void) {
-        return store.forEach(callback);
-      },
-      has(value: V) {
-        return store.has(value);
-      },
-      index(index: number) {
-        return store.index(index);
-      },
-      map<T>(callback: DataSetIterator<V, typeof store, T>) {
-        return store.map<T>(callback);
-      },
-      values() {
-        return store.values();
-      }
+      add: store.add.bind(store),
+      clear: store.clear.bind(store),
+      delete: store.delete.bind(store),
+      entries: store.entries.bind(store),
+      filter: store.filter.bind(store),
+      find: store.find.bind(store),
+      findIndex: store.findIndex.bind(store),
+      findValue: store.findValue.bind(store),
+      forEach: store.forEach.bind(store),
+      has: store.has.bind(store),
+      index: store.index.bind(store),
+      map: store.map.bind(store),
+      toArray: store.toArray.bind(store),
+      toString: store.toString.bind(store),
+      values: store.values.bind(store)
     } as DataSet<V>
   );
   //magic size property

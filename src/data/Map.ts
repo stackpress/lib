@@ -57,6 +57,23 @@ export default class DataMap<K = any, V = any> extends Map<K, V> {
     }
     return map;
   }
+
+  /**
+   * Returns the data map as a plain object
+   */
+  public toObject() {
+    return Object.fromEntries(Object.entries(this));
+  }
+
+  /**
+   * Returns the data map as a JSON string
+   */
+  public toString(
+    replacer?: (key: string, value: any) => any, 
+    space?: string | number
+  ) {
+    return JSON.stringify(this.toObject(), replacer, space);
+  }
 };
 
 export function map<K = any, V = any> (data?: [K, V][]): CallableMap<K, V> {
@@ -64,48 +81,22 @@ export function map<K = any, V = any> (data?: [K, V][]): CallableMap<K, V> {
   const callable = Object.assign(
     (name: K) => store.get(name),
     {
-      clear() {
-        return store.clear();
-      },
-      delete(name: K) {
-        return store.delete(name);
-      },
-      entries() {
-        return store.entries();
-      },
-      filter(callback: DataMapFilter<K, V, typeof store>) {
-        return store.filter(callback);
-      },
-      find(callback: DataMapFilter<K, V, typeof store>) {
-        return store.find(callback);
-      },
-      findKey(callback: DataMapFilter<K, V, typeof store>) {
-        return store.findKey(callback);
-      },
-      findValue(callback: DataMapFilter<K, V, typeof store>) {
-        return store.findValue(callback);
-      },
-      forEach(callback: DataMapIterator<K, V, Map<K, V>, void>) {
-        return store.forEach(callback);
-      },
-      get(name: K) {
-        return store.get(name);
-      },
-      has(name: K) {
-        return store.has(name);
-      },
-      keys() {
-        return store.keys();
-      },
-      map<T>(callback: DataMapIterator<K, V, typeof store, T>) {
-        return store.map<T>(callback);
-      },
-      set(name: K, value: V) {
-        return store.set(name, value);
-      },
-      values() {
-        return store.values();
-      }
+      clear: store.clear.bind(store),
+      delete: store.delete.bind(store),
+      entries: store.entries.bind(store),
+      filter: store.filter.bind(store),
+      find: store.find.bind(store),
+      findKey: store.findKey.bind(store),
+      findValue: store.findValue.bind(store),
+      forEach: store.forEach.bind(store),
+      get: store.get.bind(store),
+      has: store.has.bind(store),
+      keys: store.keys.bind(store),
+      map: store.map.bind(store),
+      set: store.set.bind(store),
+      toObject: store.toObject.bind(store),
+      toString: store.toString.bind(store),
+      values: store.values.bind(store)
     } as DataMap<K, V>
   );
   //magic size property

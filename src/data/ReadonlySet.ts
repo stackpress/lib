@@ -2,6 +2,14 @@ import DataSet from './Set.js';
 export default class ReadonlySet<V = any> {
   //map of set
   protected _set: DataSet<V>;
+
+  /**
+   * Returns the size of the set
+   */
+  public get size() {
+    return this._set.size;
+  }
+
   /**
    * Sets the initial values of the set
    */
@@ -103,10 +111,20 @@ export default class ReadonlySet<V = any> {
   }
 
   /**
-   * Returns the size of the set
+   * Returns the data set as a plain array
    */
-  public get size() {
-    return this._set.size;
+  public toArray() {
+    return this._set.toArray();
+  }
+
+  /**
+   * Returns the data set as a JSON string
+   */
+  public toString(
+    replacer?: (key: string, value: any) => any, 
+    space?: string | number
+  ) {
+    return this._set.toString(replacer, space);
   }
 
   /**
