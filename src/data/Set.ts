@@ -38,7 +38,7 @@ export default class DataSet<V = any> extends Set<V> {
    */
   public findIndex(callback: DataSetFilter<V, this>) {
     const entry = this.find(callback);
-    return Array.isArray(entry) ? entry[0] : undefined;
+    return Array.isArray(entry) ? entry[0] : -1;
   }
 
   /**
