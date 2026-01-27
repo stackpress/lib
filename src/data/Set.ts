@@ -27,7 +27,7 @@ export default class DataSet<V = any> extends Set<V> {
     const values = this.toArray();
     for (let i = 0; i < values.length; i++) {
       if (callback(values[i], i, this)) {
-        return [ i, values[i] ];
+        return [ i, values[i] ] as [number, V];
       }
     }
     return undefined;
@@ -38,14 +38,15 @@ export default class DataSet<V = any> extends Set<V> {
    */
   public findIndex(callback: DataSetFilter<V, this>) {
     const entry = this.find(callback);
-    return typeof entry !== 'undefined' ? entry[0] as number : -1;
+    return Array.isArray(entry) ? entry[0] : undefined;
   }
 
   /**
    * Finds the first value that matches the callback
    */
   public findValue(callback: DataSetFilter<V, this>) {
-    return this.find(callback)?.[1];
+    const entry = this.find(callback);
+    return Array.isArray(entry) ? entry[1] : undefined;
   }
 
   /**

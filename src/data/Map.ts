@@ -36,14 +36,16 @@ export default class DataMap<K = any, V = any> extends Map<K, V> {
    * Finds the first key that matches the callback
    */
   public findKey(callback: DataMapFilter<K, V, this>) {
-    return this.find(callback)?.[0];
+    const entry = this.find(callback);
+    return Array.isArray(entry) ? entry[0] : undefined;
   }
 
   /**
    * Finds the first value that matches the callback
    */
   public findValue(callback: DataMapFilter<K, V, this>) {
-    return this.find(callback)?.[1];
+    const entry = this.find(callback);
+    return Array.isArray(entry) ? entry[1] : undefined;
   }
 
   /**
