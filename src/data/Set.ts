@@ -27,7 +27,7 @@ export default class DataSet<V = any> extends Set<V> {
     const values = this.toArray();
     for (let i = 0; i < values.length; i++) {
       if (callback(values[i], i, this)) {
-        return [ i, values[i] ] as [number, V];
+        return [ i, values[i] ] as [ number, V ];
       }
     }
     return undefined;

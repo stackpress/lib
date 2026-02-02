@@ -24,9 +24,9 @@ export default class DataMap<K = any, V = any> extends Map<K, V> {
    * Finds the first entry that matches the callback
    */
   public find(callback: DataMapFilter<K, V, this>) {
-    for (const entry of this.entries()) {
-      if (callback(entry[1], entry[0], this)) {
-        return entry;
+    for (const [ key, value ] of this.entries()) {
+      if (callback(value, key, this)) {
+        return [ key, value ] as [ K, V ];
       }
     }
     return undefined;
@@ -61,10 +61,17 @@ export default class DataMap<K = any, V = any> extends Map<K, V> {
   }
 
   /**
+   * Returns the data set as a plain array
+   */
+  public toArray() {
+    return Array.from(this.values());
+  }
+
+  /**
    * Returns the data map as a plain object
    */
   public toObject() {
-    return Object.fromEntries(Object.entries(this));
+    return Object.fromEntries(this) as Record<string, V>;
   }
 
   /**
