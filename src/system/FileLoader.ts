@@ -16,10 +16,10 @@ export const esmImport = new Function(
   'return import(modulePath)'
 );
 export async function include(modulePath: string) {
-  const exports = await esmImport(modulePath);
-  return typeof exports?.default?.default !== 'undefined'
-    ? exports?.default 
-    : exports;
+  const imports = await esmImport(modulePath);
+  return typeof imports?.default?.default !== 'undefined'
+    ? imports?.default 
+    : imports;
 };
 
 /**
