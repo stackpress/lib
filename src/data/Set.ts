@@ -50,11 +50,25 @@ export default class DataSet<V = any> extends Set<V> {
   }
 
   /**
+   * Returns the first value in the set
+   */
+  public first() {
+    return this.index(0);
+  }
+
+  /**
    * Returns the value at the given index
    */
   public index(index: number) {
     const values = this.toArray();
     return values[index];
+  }
+
+  /**
+   * Returns the last value in the set
+   */
+  public last() {
+    return this.index(this.size - 1);
   }
 
   /**
@@ -101,9 +115,11 @@ export function set<V = any> (data?: V[]): CallableSet<V> {
       find: store.find.bind(store),
       findIndex: store.findIndex.bind(store),
       findValue: store.findValue.bind(store),
+      first: store.first.bind(store),
       forEach: store.forEach.bind(store),
       has: store.has.bind(store),
       index: store.index.bind(store),
+      last: store.last.bind(store),
       map: store.map.bind(store),
       toArray: store.toArray.bind(store),
       toString: store.toString.bind(store),

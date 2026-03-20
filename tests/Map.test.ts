@@ -83,6 +83,18 @@ describe('DataMap Tests', () => {
       three: 30
     });
   });
+
+  it('Should get value from index', () => {
+    const store = new DataMap<string, number>();
+    store.set('one', 1);
+    store.set('two', 2);
+    store.set('three', 3);
+    expect(store.index(0)).to.equal(1);
+    expect(store.index(1)).to.equal(2);
+    expect(store.index(2)).to.equal(3);
+    expect(store.first()).to.equal(1);
+    expect(store.last()).to.equal(3);
+  });
 });
 
 describe('DataSet Tests', () => {
@@ -138,6 +150,19 @@ describe('DataSet Tests', () => {
     const mapped = store.map((value) => value * 10);
     expect(mapped.toArray()).to.deep.equal([ 10, 20, 30 ]);
   });
+
+  it('Should get index', () => {
+    const store = new DataSet<number>();
+    store.add(1);
+    store.add(2);
+    store.add(3);
+
+    expect(store.index(0)).to.equal(1);
+    expect(store.index(1)).to.equal(2);
+    expect(store.index(2)).to.equal(3);
+    expect(store.first()).to.equal(1);
+    expect(store.last()).to.equal(3);
+  });
 });
 
 describe('map() Tests', () => {
@@ -151,6 +176,11 @@ describe('map() Tests', () => {
     expect(store.has('bar')).to.equal(true);
     expect(store('foo')).to.equal('Bar');
     expect(store('bar')).to.equal('Zoo');
+
+    expect(store.index(0)).to.equal('Bar');
+    expect(store.index(1)).to.equal('Zoo');
+    expect(store.first()).to.equal('Bar');
+    expect(store.last()).to.equal('Zoo');
 
     expect(store.findKey(value => value === 'Bar')).to.equal('foo');
     expect(store.findKey(value => value === 'Foo')).to.be.undefined;
@@ -178,6 +208,11 @@ describe('set() Tests', () => {
     expect(store.has('bar')).to.equal(true);
     expect(store(0)).to.equal('foo');
     expect(store(1)).to.equal('bar');
+
+    expect(store.index(0)).to.equal('foo');
+    expect(store.index(1)).to.equal('bar');
+    expect(store.first()).to.equal('foo');
+    expect(store.last()).to.equal('bar');
 
     expect(store.findIndex(value => value === 'bar')).to.equal(1);
     expect(store.findIndex(value => value === 'Foo')).to.equal(-1);

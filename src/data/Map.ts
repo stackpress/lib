@@ -49,6 +49,28 @@ export default class DataMap<K = any, V = any> extends Map<K, V> {
   }
 
   /**
+   * Returns the first value in the set
+   */
+  public first() {
+    return this.index(0);
+  }
+
+  /**
+   * Returns the value at the given index
+   */
+  public index(index: number) {
+    const values = this.toArray();
+    return values[index];
+  }
+
+  /**
+   * Returns the last value in the set
+   */
+  public last() {
+    return this.index(this.size - 1);
+  }
+
+  /**
    * Maps the data map values to a new data map
    */
   public map<T>(callback: DataMapIterator<K, V, this, T>) {
@@ -97,12 +119,16 @@ export function map<K = any, V = any> (data?: [K, V][]): CallableMap<K, V> {
       find: store.find.bind(store),
       findKey: store.findKey.bind(store),
       findValue: store.findValue.bind(store),
+      first: store.first.bind(store),
       forEach: store.forEach.bind(store),
       get: store.get.bind(store),
       has: store.has.bind(store),
+      index: store.index.bind(store),
+      last: store.last.bind(store),
       keys: store.keys.bind(store),
       map: store.map.bind(store),
       set: store.set.bind(store),
+      toArray: store.toArray.bind(store),
       toObject: store.toObject.bind(store),
       toString: store.toString.bind(store),
       values: store.values.bind(store)
