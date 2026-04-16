@@ -229,4 +229,15 @@ describe('Exception Tests', () => {
     expect(response.status).to.equal('Unknown');
   });
 
+  it('Should handle page expired error', () => {
+    try {
+      throw Exception.for('Page expired').withCode(419);
+    } catch (e) {
+      const exception = Exception.upgrade(e as Error);
+      const response = exception.toResponse();
+      expect(response.code).to.equal(419);
+      expect(response.status).to.equal('Page Expired');
+      expect(response.error).to.equal('Page expired');
+    }
+  });
 });

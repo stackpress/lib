@@ -191,6 +191,9 @@ export const codes: Record<string, ResponseStatus> = {
   // The user agent requested a resource that cannot legally  
   // be provided, such as a web page censored by a government.
   LEGAL_REASONS: { code: 451, status: 'Unavailable For Legal Reasons' },
+  // This status code means that the CSRF token sent by the client is incorrect
+  // or missing. This is used to prevent Cross-Site Request Forgery attacks.
+  PAGE_EXPIRED: { code: 419, status: 'Page Expired' },
 
   //------------------------------------------------------------------//
   // 500 Status Codes
@@ -288,6 +291,7 @@ const Status = {
   TOO_MANY: codes.TOO_MANY,
   HEADER_TOO_LARGE: codes.HEADER_TOO_LARGE,
   LEGAL_REASONS: codes.LEGAL_REASONS,
+  PAGE_EXPIRED: codes.PAGE_EXPIRED,
 
   //------------------------------------------------------------------//
   // 500 Status Codes
