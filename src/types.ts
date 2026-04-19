@@ -10,6 +10,8 @@ import type { WriteSession } from './router/Session.js';
 import type Request from './router/Request.js';
 import type Response from './router/Response.js';
 import type Router from './router/Router.js';
+//template
+import type { TemplateEngine } from './Template.js';
 
 //--------------------------------------------------------------------//
 // General Types
@@ -330,4 +332,25 @@ export interface CallSite {
   isPromiseAll(): boolean;
   //is this an async call to Promise.any()?
   getPromiseIndex(): number|null;
+};
+
+//--------------------------------------------------------------------//
+// Template Types
+
+export type TemplateHelperOptions = {
+  path: string,
+  nest: Nest, 
+  body: string,
+  args: string,
+  engine: TemplateEngine
+};
+
+export type TemplateHelper = (options: TemplateHelperOptions) => string;
+export type TemplateResolver = (options: { path: string, nest: Nest }) => string;
+
+export type TemplateOptions = {
+  container?: string,
+  resolve?: TemplateResolver,
+  helpers?: Record<string, TemplateHelper>,
+  delimiters?: [ string, string ]
 };

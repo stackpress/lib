@@ -52,7 +52,11 @@ export type {
   FileStat,
   FileStream,
   FileSystem,
-  CallSite
+  CallSite,
+  TemplateHelperOptions,
+  TemplateHelper,
+  TemplateResolver,
+  TemplateOptions
 } from './types.js';
 
 import ArgString from './data/processors/ArgString.js';
@@ -98,6 +102,12 @@ import Terminal, { control } from './router/Terminal.js';
 
 import Exception from './Exception.js';
 import Reflection from './Reflection.js';
+import { 
+  TemplateEngine, 
+  helpers, 
+  escapeRegex,
+  render
+} from './Template.js';
 import Status, { codes } from './Status.js';
 
 export {
@@ -144,5 +154,9 @@ export {
   objectFromQuery,
   objectFromFormData,
   shouldBeAnArray,
-  withUnknownHost
+  withUnknownHost,
+  TemplateEngine, 
+  helpers, 
+  escapeRegex,
+  render
 }; 
