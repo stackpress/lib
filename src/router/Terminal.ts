@@ -18,14 +18,14 @@ export function control(brand = '') {
      * Outputs an colorful (red) log 
      */
     error(message: string, variables: string[] = []) {
-      this.output(message, variables, '\x1b[31m%s\x1b[0m');
+      controls.output(message, variables, '\x1b[31m%s\x1b[0m');
     },
 
     /**
      * Outputs an colorful (blue) log 
      */
     info(message: string, variables: string[] = []) {
-      this.output(message, variables, '\x1b[34m%s\x1b[0m');
+      controls.output(message, variables, '\x1b[34m%s\x1b[0m');
     },
 
     /**
@@ -52,7 +52,7 @@ export function control(brand = '') {
         message = message.replace('%s', variable);
       }
       //add brand to message
-      message = `${this.brand} ${message}`.trim();
+      message = `${controls.brand} ${message}`.trim();
       //colorize the message
       if (color) {
         console.log(color, message);
@@ -66,27 +66,26 @@ export function control(brand = '') {
      * Outputs a success log 
      */
     success(message: string, variables: string[] = []) {
-      this.output(message, variables, '\x1b[32m%s\x1b[0m');
+      controls.output(message, variables, '\x1b[32m%s\x1b[0m');
     },
 
     /**
      * Outputs a system log 
      */
     system(message: string, variables: string[] = []) {
-      this.output(message, variables, '\x1b[35m%s\x1b[0m');
+      controls.output(message, variables, '\x1b[35m%s\x1b[0m');
     },
 
     /**
      * Outputs a warning log 
      */
     warning(message: string, variables: string[] = []) {
-      this.output(message, variables, '\x1b[33m%s\x1b[0m');
+      controls.output(message, variables, '\x1b[33m%s\x1b[0m');
     }
   };
 
   return controls;
 }
-
 export default class Terminal<R = unknown, S = unknown> 
   extends Router<R, S, Terminal<R, S>> 
 {
