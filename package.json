@@ -44,6 +44,10 @@
       "require": "./cjs/Status.js",
       "import": "./esm/Status.js"
     },
+    "./Template": {
+      "require": "./cjs/Template.js",
+      "import": "./esm/Template.js"
+    },
     "./cookie": {
       "require": "./cjs/data/cookie.js",
       "import": "./esm/data/cookie.js"
@@ -130,6 +134,7 @@
       "Exception": [ "./cjs/Exception.d.ts" ],
       "Reflection": [ "./cjs/Reflection.d.ts" ],
       "Status": [ "./cjs/Status.d.ts" ],
+      "Template": [ "./cjs/Template.d.ts" ],
       "cookie": [ "./cjs/data/cookie.d.ts" ],
       "Map": [ "./cjs/data/Map.d.ts" ],
       "Set": [ "./cjs/data/Set.d.ts" ],
