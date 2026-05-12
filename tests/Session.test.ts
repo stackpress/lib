@@ -67,6 +67,84 @@ describe('WriteSession', () => {
       value: ['item3', 'item4'] 
     });
   });
+
+  it('should store cookie settings per key', () => {
+    writeSession.set('sessionId', 'abc123', {
+      httpOnly: true,
+      path: '/',
+      sameSite: 'lax'
+    });
+    writeSession.set('theme', 'dark', {
+      maxAge: 31536000,
+      path: '/preferences'
+    });
+
+    expect(writeSession.getOptions('sessionId')).to.deep.equal({
+      httpOnly: true,
+      path: '/',
+      sameSite: 'lax'
+    });
+    expect(writeSession.getOptions('theme')).to.deep.equal({
+      maxAge: 31536000,
+      path: '/preferences'
+    });
+    expect(writeSession.revisions.get('sessionId')).to.deep.equal({
+      action: 'set',
+      options: {
+        httpOnly: true,
+        path: '/',
+        sameSite: 'lax'
+      },
+      value: 'abc123'
+    });
+    expect(writeSession.revisions.get('theme')).to.deep.equal({
+      action: 'set',
+      options: {
+        maxAge: 31536000,
+        path: '/preferences'
+      },
+      value: 'dark'
+    });
+  });
+
+  it('should clear cookie settings when an entry is removed', () => {
+    writeSession.set('sessionId', 'abc123', {
+      httpOnly: true,
+      path: '/'
+    });
+
+    writeSession.delete('sessionId');
+
+    expect(writeSession.getOptions('sessionId')).to.be.undefined;
+    expect(writeSession.revisions.get('sessionId')).to.deep.equal({
+      action: 'remove'
+    });
+  });
+
+  it('should preserve existing cookie settings when only the value changes', () => {
+    writeSession.set('sessionId', 'abc123', {
+      httpOnly: true,
+      path: '/',
+      sameSite: 'strict'
+    });
+
+    writeSession.set('sessionId', 'def456');
+
+    expect(writeSession.getOptions('sessionId')).to.deep.equal({
+      httpOnly: true,
+      path: '/',
+      sameSite: 'strict'
+    });
+    expect(writeSession.revisions.get('sessionId')).to.deep.equal({
+      action: 'set',
+      options: {
+        httpOnly: true,
+        path: '/',
+        sameSite: 'strict'
+      },
+      value: 'def456'
+    });
+  });
 });
 
 describe('session function', () => {
@@ -106,6 +184,27 @@ describe('session function', () => {
     expect(Array.from(sessionInstance.revisions.entries())).to.deep.equal([
       ['key1', { action: 'set', value: 'value1' }],
       ['name', { action: 'remove' }]
+    ]);
+  });
+
+  it('should expose cookie settings through the callable wrapper', () => {
+    sessionInstance.set('token', 'shield', {
+      httpOnly: true,
+      path: '/',
+      secure: true
+    });
+
+    expect(sessionInstance.getOptions('token')).to.deep.equal({
+      httpOnly: true,
+      path: '/',
+      secure: true
+    });
+    expect(Object.entries(sessionInstance.options)).to.deep.equal([
+      ['token', {
+        httpOnly: true,
+        path: '/',
+        secure: true
+      }]
     ]);
   });
 
