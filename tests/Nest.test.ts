@@ -12,6 +12,12 @@ import Nest, {
   objectFromJson
 } from '../src/data/Nest';
 
+type Expect<T extends true> = T;
+type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends
+  (<T>() => T extends B ? 1 : 2)
+  ? true
+  : false;
+
 const body = `--BOUNDARY\r
 Content-Disposition: form-data; name="foo"\r
 bar\r
@@ -82,7 +88,7 @@ describe('Nest Store Tests', () => {
     expect(store.withPath.has('foo.bar')).to.equal(false);
     expect(store.withPath.has('foo.zoo')).to.equal(true);
 
-    store.withPath.forEach('foo.zoo', (value, index) => {
+    store.withPath.forEach('foo.zoo', (value: string, index: number) => {
       expect(value).to.equal(['foo', 'bar', 'zoo'][index]);
     });
     //can have a default
@@ -155,6 +161,69 @@ describe('Nest Store Tests', () => {
     store.set('foo', 'zoo', ['foo', 'bar', 'zoo']);
     expect(store.get().foo.zoo[0]).to.equal('foo');
   });
+
+  it('Should progressively narrow the builder types', () => {
+    const store = Nest.load()
+      .set('foo', 4)
+      .set('bar', 'baz', 'zoo')
+      .set('boo', { far: true });
+
+    const foo = store.get('foo');
+    const bar = store.get('bar', 'baz');
+    const boo = store.get('boo', 'far');
+
+    type _DataFoo = Expect<Equal<typeof store.data.foo, number>>;
+    type _DataBar = Expect<Equal<typeof store.data.bar.baz, string>>;
+    type _DataBoo = Expect<Equal<typeof store.data.boo.far, boolean>>;
+    type _GetFoo = Expect<Equal<typeof foo, number>>;
+    type _GetBar = Expect<Equal<typeof bar, string>>;
+    type _GetBoo = Expect<Equal<typeof boo, boolean>>;
+
+    const _dataFoo: _DataFoo = true;
+    const _dataBar: _DataBar = true;
+    const _dataBoo: _DataBoo = true;
+    const _getFoo: _GetFoo = true;
+    const _getBar: _GetBar = true;
+    const _getBoo: _GetBoo = true;
+
+    void _dataFoo;
+    void _dataBar;
+    void _dataBoo;
+    void _getFoo;
+    void _getBar;
+    void _getBoo;
+
+    expect(store.get('foo')).to.equal(4);
+    expect(store.get('bar', 'baz')).to.equal('zoo');
+    expect(store.get('boo', 'far')).to.equal(true);
+  });
+
+  it('Should keep untyped reads unknown unless overridden', () => {
+    const config = (store: Nest) => {
+      const unknownValue = store.get('boo', 'far');
+      const numberValue = store.get<number>('foo');
+      const stringValue = store.get<string>('bar', 'baz');
+      const booleanValue = store.get<boolean>('boo', 'far');
+
+      type _Unknown = Expect<Equal<typeof unknownValue, unknown>>;
+      type _Number = Expect<Equal<typeof numberValue, number>>;
+      type _String = Expect<Equal<typeof stringValue, string>>;
+      type _Boolean = Expect<Equal<typeof booleanValue, boolean>>;
+
+      const _unknown: _Unknown = true;
+      const _number: _Number = true;
+      const _string: _String = true;
+      const _boolean: _Boolean = true;
+
+      void _unknown;
+      void _number;
+      void _string;
+      void _boolean;
+    };
+
+    config(new Nest());
+  });
+
   it('Should be callable', async () => {
     let store: CallableNest = nest();
     expect(store.size).to.equal(0);
@@ -210,6 +279,36 @@ describe('Nest Store Tests', () => {
     expect(store.path('product.srp', 100)).to.equal(100);
   });
 
+  it('Should progressively narrow the callable builder types', () => {
+    const store = nest()
+      .set('foo', 4)
+      .set('bar', 'baz', 'zoo')
+      .set('boo', { far: true });
+
+    const foo = store('foo');
+    const bar = store('bar', 'baz');
+    const boo = store('boo', 'far');
+
+    type _DataFoo = Expect<Equal<typeof store.data.foo, number>>;
+    type _GetFoo = Expect<Equal<typeof foo, number>>;
+    type _GetBar = Expect<Equal<typeof bar, string>>;
+    type _GetBoo = Expect<Equal<typeof boo, boolean>>;
+
+    const _dataFoo: _DataFoo = true;
+    const _getFoo: _GetFoo = true;
+    const _getBar: _GetBar = true;
+    const _getBoo: _GetBoo = true;
+
+    void _dataFoo;
+    void _getFoo;
+    void _getBar;
+    void _getBoo;
+
+    expect(store('foo')).to.equal(4);
+    expect(store('bar', 'baz')).to.equal('zoo');
+    expect(store('boo', 'far')).to.equal(true);
+  });
+
   /*
  * ADD UNIT TEST
  */
@@ -254,7 +353,7 @@ describe('Nest Store Tests', () => {
     let store = new Nest;
     try {
       store.data = {} as any;
-    } catch (error) {
+    } catch (error: any) {
       expect(error).to.exist;
       expect(error.message).to.equal('Argument 1 expected Object');
     }
@@ -351,6 +450,29 @@ describe('Nest Store Tests', () => {
     expect(store.toString()).to.include('foo');
     expect(store.toString()).to.include('bar');
   });
+
+  it('Should return the correct type', async () => {
+    const nest = Nest.load()
+      .set('foo', 4)
+      .set('bar', 'baz', 'zoo')
+      .set('boo', { far: true });
+
+    expect(typeof nest.data.foo).to.equal('number');
+    expect(typeof nest.data.bar.baz).to.equal('string');
+    expect(typeof nest.data.boo.far).to.equal('boolean');
+
+    expect(nest.data.foo).to.equal(4);
+    expect(nest.data.bar.baz).to.equal('zoo');
+    expect(nest.data.boo.far).to.equal(true);
+
+    expect(typeof nest.get('foo')).to.equal('number');
+    expect(typeof nest.get('bar', 'baz')).to.equal('string');
+    expect(typeof nest.get('boo', 'far')).to.equal('boolean');
+
+    expect(nest.get('foo')).to.equal(4);
+    expect(nest.get('bar', 'baz')).to.equal('zoo');
+    expect(nest.get('boo', 'far')).to.equal(true);
+  });
 });
 
 describe('ReadonlyNest Tests', () => {
@@ -401,8 +523,9 @@ describe('ReadonlyNest Tests', () => {
   it('Should handle empty array in forEach', async () => {
     const data = { foo: [] };
     const nest = new ReadonlyNest(data);
-    const result = await nest.forEach('foo', (value, key) => {
+    const result = await nest.forEach('foo', (value: undefined, key: string) => {
       expect(value).to.equal(undefined);
+      void key;
       return true;
     });
     expect(result).to.equal(false);
@@ -412,7 +535,7 @@ describe('ReadonlyNest Tests', () => {
     const data = { foo: ['bar', 'baz'] };
     const nest = new ReadonlyNest(data);
     let count = 0;
-    const result = await nest.forEach('foo', (value: any, index: string | number) => {
+    const result = await nest.forEach('foo', (value: string, index: number) => {
       expect(value).to.equal(['bar', 'baz'][index]);
       count++;
       return true;

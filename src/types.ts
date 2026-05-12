@@ -42,9 +42,87 @@ export interface NestedObject<V = unknown> {
   [ key: Key ]: V|NestedObject<V>
 };
 export type UnknownNest = NestedObject<unknown>;
+export type Infer = { readonly __infer: unique symbol };
+export type KeyPath = readonly Key[];
 export type Scalar = string|number|boolean|null;
 export type Hash = NestedObject<Scalar>;
 export type ScalarInput = Scalar|Scalar[]|Hash;
+
+export type Widen<T> = T extends string
+  ? string
+  : T extends number
+    ? number
+    : T extends boolean
+      ? boolean
+      : T extends undefined
+        ? undefined
+        : T extends null
+          ? null
+          : T extends ReadonlyArray<infer V>
+            ? Widen<V>[]
+            : T extends object
+              ? { [K in keyof T]: Widen<T[K]> }
+              : T;
+
+type ArrayValue<T> = T extends ReadonlyArray<infer V> ? V : never;
+type IsArray<T> = T extends ReadonlyArray<any> ? true : false;
+type IsPlainObject<T> = T extends object
+  ? T extends Function
+    ? false
+    : IsArray<T> extends true
+      ? false
+      : true
+  : false;
+
+export type ValueAt<T, K extends Key> = T extends null | undefined
+  ? unknown
+  : K extends keyof T
+    ? T[K]
+    : K extends number
+      ? ArrayValue<T>
+      : K extends `${number}`
+        ? ArrayValue<T>
+        : unknown;
+
+export type PathValue<T, P extends KeyPath> = P extends readonly [
+  infer Head extends Key,
+  ...infer Rest extends KeyPath
+]
+  ? PathValue<ValueAt<T, Head>, Rest>
+  : T;
+
+export type PathObject<P extends KeyPath, V> = P extends readonly [
+  infer Head extends Key,
+  ...infer Rest extends KeyPath
+]
+  ? { [K in Head]: PathObject<Rest, V> }
+  : Widen<V>;
+
+export type Merge<A, B> = IsPlainObject<A> extends true
+  ? IsPlainObject<B> extends true
+    ? {
+        [K in keyof A | keyof B]: K extends keyof B
+          ? K extends keyof A
+            ? Merge<A[K], B[K]>
+            : B[K]
+          : K extends keyof A
+            ? A[K]
+            : never
+      }
+    : B
+  : B;
+
+export type SetResult<M, P extends KeyPath, V> = Merge<M, PathObject<P, V>>;
+
+export type SetInputResult<M, I extends Array<any>> = I extends []
+  ? M
+  : I extends [infer N extends object]
+    ? Merge<M, Widen<N>>
+    : I extends [...infer P, infer V]
+      ? P extends [Key, ...Key[]]
+        ? SetResult<M, P, V>
+        : M
+      : M;
 
 export type FileMeta = {
   data: Buffer|string,
@@ -56,9 +134,20 @@ export type CallableSet<V = any> = ((index: number) => V|undefined) & DataSet<V>
   index: (index: number) => V|undefined
 };
 export type CallableMap<K = any, V = any> = ((name: K) => V|undefined) & DataMap<K, V>;
-export type CallableNest<M extends UnknownNest = UnknownNest> = (
-  <T = any>(...path: Key[]) => T
-) & Nest<M>;
+export type CallableNest<M extends object = {}> = Omit<
+  Nest<M>,
+  'clear'|'delete'|'set'
+> & {
+  (): M;
+  <V = Infer, const P extends KeyPath = KeyPath>(
+    ...path: P
+  ): V extends Infer ? PathValue<M, P> : V;
+  clear(): CallableNest<{}>;
+  delete(...path: Key[]): CallableNest<M>;
+  set<const I extends Array<any>>(
+    ...input: I
+  ): CallableNest<SetInputResult<M, I>>;
+};
 
 export type DataSetIterator<
   V = any, 
@@ -234,6 +323,7 @@ export type RequestOptions<R = unknown> = {
 //this is a revision entry
 export type Revision = {
   action: 'set'|'remove',
+  options?: CookieOptions,
   value?: string|string[]
 };
 

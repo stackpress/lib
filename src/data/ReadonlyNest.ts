@@ -1,12 +1,18 @@
-//common
-import type { Key, UnknownNest, TypeOf } from '../types.js';
-//local
+//client
+import type {
+  Infer,
+  Key,
+  KeyPath,
+  PathValue,
+  TypeOf,
+  UnknownNest
+} from '../types.js';
 import Path from './ReadonlyPath.js';
 
 /**
  * Nest easily manipulates object data
  */
-export default class ReadonlyNest<M extends UnknownNest = UnknownNest>  {
+export default class ReadonlyNest<M extends object = {}>  {
   /**
    * Parser for path notations
    */
@@ -51,7 +57,7 @@ export default class ReadonlyNest<M extends UnknownNest = UnknownNest>  {
    */
   async forEach(...path: any[]): Promise<boolean> {
     const callback = path.pop() as Function;
-    let list = this.get(...path);
+    let list: any = this.get(...path);
 
     if (!list
       || Array.isArray(list) && !list.length
@@ -73,15 +79,17 @@ export default class ReadonlyNest<M extends UnknownNest = UnknownNest>  {
   /**
    * Retrieves the data hashed specified by the path
    */
-  public get<T extends UnknownNest = M>(): T;
-  public get<T = any>(...path: Key[]): T;
-  public get<T = any>(...path: Key[]): UnknownNest|T {
+  public get<T extends object = M>(): T;
+  public get<V = Infer, const P extends KeyPath = KeyPath>(
+    ...path: P
+  ): V extends Infer ? PathValue<M, P> : V;
+  public get(...path: Key[]): unknown {
     if (!path.length) {
       return this._data;
     }
 
     if (!this.has(...path)) {
-      return undefined as T;
+      return undefined;
     }
 
     const last = path.pop() as Key;
@@ -91,7 +99,7 @@ export default class ReadonlyNest<M extends UnknownNest = UnknownNest>  {
       pointer = pointer[step] as UnknownNest;
     });
 
-    return pointer[last] as T;
+    return pointer[last];
   }
 
   /**

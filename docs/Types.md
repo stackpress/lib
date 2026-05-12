@@ -717,6 +717,10 @@ Session change tracking entry for audit and rollback capabilities.
 ```typescript
 const revision: Revision = {
   action: 'set',
+  options: {
+    httpOnly: true,
+    sameSite: 'lax'
+  },
   value: 'newValue'
 };
 
@@ -730,6 +734,7 @@ const removeRevision: Revision = {
 | Property | Type | Description |
 |----------|------|-------------|
 | `action` | `'set'|'remove'` | Type of change performed |
+| `options` | `CookieOptions` | Cookie settings stored for this specific key |
 | `value` | `string|string[]` | New value (for set operations) |
 
 **Usage**

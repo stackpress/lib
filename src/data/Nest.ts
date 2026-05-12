@@ -1,26 +1,32 @@
-//common
-import type { 
-  Key, 
+//client
+import type {
+  CallableNest,
+  Key,
+  NestedObject,
+  SetInputResult,
   TypeOf,
-  NestedObject, 
-  UnknownNest, 
-  CallableNest 
+  UnknownNest
 } from '../types.js';
 import Exception from '../Exception.js';
-//processors
 import ArgString from './processors/ArgString.js';
+import FormData from './processors/FormData.js';
 import PathString from './processors/PathString.js';
 import QueryString from './processors/QueryString.js';
-import FormData from './processors/FormData.js';
-//local
 import ReadonlyNest from './ReadonlyNest.js';
 
 /**
  * Nest easily manipulates object data
  */
-export default class Nest<M extends UnknownNest = UnknownNest> 
+export default class Nest<M extends object = {}> 
   extends ReadonlyNest<M>
 {
+  /**
+   * Starts a new typed builder chain
+   */
+  public static load<M extends object = {}>(data?: M) {
+    return new Nest<M>(data);
+  }
+
   /**
    * Parser for terminal args
    */
@@ -75,7 +81,7 @@ export default class Nest<M extends UnknownNest = UnknownNest>
    */
   public clear() {
     this._data = {} as M;
-    return this;
+    return this as unknown as Nest<{}>;
   }
 
   /**
@@ -105,6 +111,9 @@ export default class Nest<M extends UnknownNest = UnknownNest>
   /**
    * Sets the data of a specified path
    */
+  public set<const I extends Array<any>>(
+    ...input: I
+  ): Nest<SetInputResult<M, I>>;
   public set(...path: any[]) {
     if (path.length < 1) {
       return this;
@@ -140,7 +149,7 @@ export default class Nest<M extends UnknownNest = UnknownNest>
     pointer[last] = value;
 
     //loop through the steps one more time fixing the objects
-    pointer = this._data;
+    pointer = this._data as UnknownNest;
     path.forEach((step) => {
       const next = pointer[step] as UnknownNest;
       //if next is not an array and next should be an array
@@ -281,20 +290,24 @@ export function shouldBeAnArray(object: NestedObject<unknown> | null | undefined
   return true;
 }
 
-export function nest<M extends UnknownNest = UnknownNest>(data?: M): CallableNest<M> {
+export function nest<M extends object = {}>(data?: M): CallableNest<M> {
   const store = new Nest<M>(data);
-  const callable = Object.assign(
-    <T = any>(...path: Key[]) => store.get<T>(...path),
+  let callable: CallableNest<M>;
+
+  callable = Object.assign(
+    (...path: Key[]) => store.get(...path),
     {
       withArgs: store.withArgs,
       withFormData: store.withFormData,
       withPath: store.withPath,
       withQuery: store.withQuery,
       clear() {
-        return store.clear();
+        store.clear();
+        return callable as CallableNest<{}>;
       },
       delete(...path: Key[]) {
-        return store.delete(...path);
+        store.delete(...path);
+        return callable as CallableNest<M>;
       },
       entries() {
         return store.entries();
@@ -315,7 +328,8 @@ export function nest<M extends UnknownNest = UnknownNest>(data?: M): CallableNes
         return store.path<T>(path, defaults);
       },
       set(...path: any[]) {
-        return store.set(...path);
+        store.set(...path);
+        return callable;
       },
       toString() {
         return store.toString();
@@ -323,7 +337,7 @@ export function nest<M extends UnknownNest = UnknownNest>(data?: M): CallableNes
       values() {
         return store.values();
       }
-    } as Nest<M>
+    } as CallableNest<M>
   );
   //magic size/data property
   Object.defineProperty(callable, 'size', { get: () => store.size });
