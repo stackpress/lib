@@ -136,3 +136,4 @@ esm/
 cjs/
 
 .clinerules
+.playwright
