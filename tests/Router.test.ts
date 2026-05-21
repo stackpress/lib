@@ -3,7 +3,7 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
-import Router from '../src/router/Router';
+import Router from '../src/router/Router.js';
 
 type R = { path: string };
 type S = { body?: string };
@@ -41,7 +41,7 @@ describe('Router Tests', () => {
       }
     });
     router.on('auth-signin', (req, res) => {
-      const type = req.data('type');
+      const type = req.data<string>('type');
       const username = req.data('token', type)
       const password = req.data.path('secret.password')
       const confirm = req.data.path('secret.confirm')
@@ -55,7 +55,7 @@ describe('Router Tests', () => {
         return
       }
 
-      res.setResults({ username });
+      res.results({ username });
     });
     router.route('get', '/auth/:type/signin', async (req, res, router) => {
       const response = await router.resolve(`auth-signin`, req);

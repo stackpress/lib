@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
-import Reflection from '../src/Reflection';
+import Reflection from '../src/Reflection.js';
 
 function func1(x: number) {
   return func2(x + 1);

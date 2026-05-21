@@ -2,15 +2,15 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
-import ReadonlyNest from '../src/data/ReadonlyNest';
-import type { CallableNest } from '../src/types';
+import ReadonlyNest from '../src/data/ReadonlyNest.js';
+import type { CallableNest } from '../src/types.js';
 import Nest, { 
   nest, 
   isObject,
   objectFromQuery,
   objectFromFormData,
   objectFromJson
-} from '../src/data/Nest';
+} from '../src/data/Nest.js';
 
 type Expect<T extends true> = T;
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends

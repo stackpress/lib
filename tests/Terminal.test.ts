@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
-import Terminal from '../src/router/Terminal';
+import Terminal from '../src/terminal/Terminal.js';
 
 describe('Terminal Tests', () => {
   it('Should get args', async () => {
@@ -37,7 +37,7 @@ describe('Terminal Tests', () => {
   it('Should run command successfully', async () => {
     const terminal = new Terminal(['command', '--i', 'value']);
     terminal.on('command', (req, res) => {
-      res.setResults(req.data());
+      res.results(req.data());
     })
     const response = await terminal.run<{ i: string }>();
     expect(response.code).to.equal(200);

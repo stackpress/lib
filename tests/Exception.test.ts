@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
-import Exception from '../src/Exception';
+import Exception from '../src/Exception.js';
 
 function func1(x: number) {
   func2(x + 1);
@@ -19,25 +19,28 @@ describe('Exception Tests', () => {
     try {
       throw Exception.for('Something good is bad')
     } catch (e) {
-      expect(e.name).to.equal('Exception');
-      expect(e.message).to.equal('Something good is bad');
-      expect(e.code).to.equal(500);
+      const error = e as Error;
+      expect(error.name).to.equal('Exception');
+      expect(error.message).to.equal('Something good is bad');
+      expect((error as any).code).to.equal(500);
     }
 
     try {
       throw Exception.for('Something good is bad', 'good', 'bad')
     } catch (e) {
-      expect(e.name).to.equal('Exception');
-      expect(e.message).to.equal('Something good is bad');
-      expect(e.code).to.equal(500);
+      const error = e as Exception;
+      expect(error.name).to.equal('Exception');
+      expect(error.message).to.equal('Something good is bad');
+      expect(error.code).to.equal(500);
     }
 
     try {
       throw Exception.for('Something %s is %s', 'good', 'bad')
     } catch (e) {
-      expect(e.name).to.equal('Exception');
-      expect(e.message).to.equal('Something good is bad');
-      expect(e.code).to.equal(500);
+      const error = e as Exception;
+      expect(error.name).to.equal('Exception');
+      expect(error.message).to.equal('Something good is bad');
+      expect(error.code).to.equal(500);
     }
   });
 
@@ -45,10 +48,11 @@ describe('Exception Tests', () => {
     try {
       throw Exception.forErrors({ key: 'value' })
     } catch (e) {
-      expect(e.name).to.equal('Exception');
-      expect(e.message).to.equal('Invalid Parameters');
-      expect(e.errors.key).to.equal('value');
-      expect(e.code).to.equal(500);
+      const error = e as Exception;
+      expect(error.name).to.equal('Exception');
+      expect(error.message).to.equal('Invalid Parameters');
+      expect(error.errors.key).to.equal('value');
+      expect(error.code).to.equal(500);
     }
   });
 
@@ -57,9 +61,10 @@ describe('Exception Tests', () => {
       const count = 0;
       Exception.require(count > 1, 'Count %s should be more than 1', count.toString())
     } catch (e) {
-      expect(e.name).to.equal('Exception');
-      expect(e.message).to.equal('Count 0 should be more than 1');
-      expect(e.code).to.equal(500);
+      const error = e as Exception;
+      expect(error.name).to.equal('Exception');
+      expect(error.message).to.equal('Count 0 should be more than 1');
+      expect(error.code).to.equal(500);
     }
   });
 
@@ -67,9 +72,10 @@ describe('Exception Tests', () => {
     try {
       throw Exception.for('Something good is bad').withCode(400)
     } catch (e) {
-      expect(e.name).to.equal('Exception');
-      expect(e.message).to.equal('Something good is bad');
-      expect(e.code).to.equal(400);
+      const error = e as Exception;
+      expect(error.name).to.equal('Exception');
+      expect(error.message).to.equal('Something good is bad');
+      expect(error.code).to.equal(400);
     }
   });
 
@@ -77,11 +83,12 @@ describe('Exception Tests', () => {
     try {
       throw Exception.for('Something good is bad').withPosition(1, 2)
     } catch (e) {
-      expect(e.name).to.equal('Exception');
-      expect(e.message).to.equal('Something good is bad');
-      expect(e.code).to.equal(500);
-      expect(e.start).to.equal(1);
-      expect(e.end).to.equal(2);
+      const error = e as Exception;
+      expect(error.name).to.equal('Exception');
+      expect(error.message).to.equal('Something good is bad');
+      expect(error.code).to.equal(500);
+      expect(error.start).to.equal(1);
+      expect(error.end).to.equal(2);
     }
   });
 
@@ -89,7 +96,8 @@ describe('Exception Tests', () => {
     try {
       throw Exception.for('Something good is bad')
     } catch (e) {
-      const json = e.toResponse();
+      const error = e as Exception;
+      const json = error.toResponse();
       expect(json.code).to.equal(500)
       expect(json.status).to.equal('Internal Server Error')
       expect(json.error).to.equal('Something good is bad')
@@ -100,7 +108,8 @@ describe('Exception Tests', () => {
     try {
       func1(1);
     } catch (e) {
-      const trace = e.trace();
+      const error = e as Exception;
+      const trace = error.trace();
       expect(trace[0]).to.have.property('method');
       expect(trace[0]).to.have.property('file');
       expect(trace[0]).to.have.property('line');
@@ -130,14 +139,15 @@ describe('Exception Tests', () => {
     try {
       throw Exception.for('Something good is bad');
     } catch (e) {
-      const json = e.toJSON();
+      const error = e as Exception;
+      const json = error.toJSON();
       const expected = JSON.stringify({
         code: 500,
         status: 'Internal Server Error',
         error: 'Something good is bad',
         start: 0,
         end: 0,
-        stack: e.trace(0, 0)
+        stack: error.trace(0, 0)
       }, null, 2);
       expect(json).to.equal(expected);
     }
@@ -184,7 +194,8 @@ describe('Exception Tests', () => {
       err.stack = 'Invalid stack entry';
       throw err;
     } catch (e) {
-      const trace = e.trace();
+      const error = e as Exception;
+      const trace = error.trace();
       expect(trace).to.be.an('array').that.is.empty;
     }
   });
@@ -213,7 +224,8 @@ describe('Exception Tests', () => {
       err.stack = 'Some non-standard stack entry';
       throw err;
     } catch (e) {
-      const trace = e.trace();
+      const error = e as Exception;
+      const trace = error.trace();
       expect(trace).to.be.an('array').that.is.empty;
     }
   });

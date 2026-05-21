@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
-import Response from '../src/router/Response';
+import Response from '../src/router/Response.js';
 
 describe('Response Tests', () => {
   it('Should be empty', () => {
@@ -97,7 +97,7 @@ describe('Response Tests', () => {
 
   it('Should setup HTML', () => {
     const response = new Response();
-    response.setHTML('Something good');
+    response.html('Something good');
     expect(response.code).to.equal(200);
     expect(response.status).to.equal('OK');
     expect(response.body).to.equal('Something good');
@@ -107,7 +107,7 @@ describe('Response Tests', () => {
 
   it('Should setup JSON', () => {
     const response = new Response();
-    response.setJSON({ name: 'bar' });
+    response.json({ name: 'bar' });
     expect(response.code).to.equal(200);
     expect(response.status).to.equal('OK');
     expect(response.body).to.contain('bar');
@@ -117,7 +117,7 @@ describe('Response Tests', () => {
 
   it('Should setup XML', () => {
     const response = new Response();
-    response.setXML('<name>bar</name>');
+    response.xml('<name>bar</name>');
     expect(response.code).to.equal(200);
     expect(response.status).to.equal('OK');
     expect(response.body).to.equal('<name>bar</name>');
@@ -127,7 +127,7 @@ describe('Response Tests', () => {
 
   it('Should setup results', () => {
     const response = new Response();
-    response.setResults({ name: 'bar' });
+    response.results({ name: 'bar' });
     expect(response.code).to.equal(200);
     expect(response.status).to.equal('OK');
     expect((response.body as Record<string, any>)?.name).to.equal('bar');
@@ -137,7 +137,7 @@ describe('Response Tests', () => {
 
   it('Should setup rows', () => {
     const response = new Response();
-    response.setRows([{ name: 'bar' }], 100);
+    response.rows([{ name: 'bar' }], 100);
     expect(response.code).to.equal(200);
     expect(response.status).to.equal('OK');
     expect((response.body as Record<string, any>[])?.[0].name).to.equal('bar');
@@ -156,7 +156,7 @@ describe('Response Tests', () => {
 
   it('Should dispatch', async () => {
     const response = new Response();
-    response.setBody('application/json', { name: 'bar' });
+    response.set('application/json', { name: 'bar' });
     let dispatched = false;
     response.dispatcher = async res => {
       expect(response.code).to.equal(200);

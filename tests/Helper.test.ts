@@ -2,10 +2,14 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
-import { map } from '../src/data/Map';
-import { set } from '../src/data/Set';
-import { makeArray, makeObject, shouldBeAnArray } from '../src/data/Nest';
-import { NestedObject } from '../src/types';
+import { map } from '../src/data/Map.js';
+import { set } from '../src/data/Set.js';
+import { 
+  makeArray, 
+  makeObject, 
+  shouldBeAnArray 
+} from '../src/data/Nest.js';
+import { NestedObject } from '../src/types.js';
 
 
 describe('Helper Tests', () => {

@@ -2,9 +2,9 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
-import type { CallableMap, CallableSet } from '../src/types';
-import DataMap, { map } from '../src/data/Map';
-import DataSet, { set } from '../src/data/Set';
+import type { CallableMap, CallableSet } from '../src/types.js';
+import DataMap, { map } from '../src/data/Map.js';
+import DataSet, { set } from '../src/data/Set.js';
 
 describe('DataMap Tests', () => {
   it('Should get by name', async () => {

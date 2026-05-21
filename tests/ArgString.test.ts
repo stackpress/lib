@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
-import Nest from '../src/data/Nest'
+import Nest from '../src/data/Nest.js';
 
 describe('ArgString argv Tests', () => {
   it('should parse "--key value"', () => {

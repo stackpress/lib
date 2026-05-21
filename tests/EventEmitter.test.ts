@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
-import EventEmitter from '../src/emitter/EventEmitter';
+import EventEmitter from '../src/emitter/EventEmitter.js';
 
 describe('Event Emitter Tests', () => {
   it('Should listen', async () => {
@@ -123,7 +123,7 @@ describe('Event Emitter Tests', () => {
 
   it('Should unbind', async () => {
     const emitter = new EventEmitter
-    let listener = async x => {
+    let listener = async () => {
       triggered.push(1)
     }
   
@@ -136,7 +136,7 @@ describe('Event Emitter Tests', () => {
     expect(triggered.length).to.equal(0)
     expect(actual.code).to.equal(404)
   
-    let listener2 = async x => {
+    let listener2 = async () => {
       triggered.push(2)
     }
   
@@ -255,8 +255,9 @@ describe('Event Emitter Tests', () => {
     try {
       await waitForIt();
     } catch (e) {
+      const error = e as Error;
       errored = true;
-      expect(e.message).to.equal('Test Error');
+      expect(error.message).to.equal('Test Error');
     }
 
     expect(errored).to.be.true;
@@ -278,8 +279,9 @@ describe('Event Emitter Tests', () => {
     try { 
       await emitter.emit('event1');
     } catch (e) {
+      const error = e as Error;
       errored = true;
-      expect(e.message).to.equal('Test Error');
+      expect(error.message).to.equal('Test Error');
     }
 
     expect(errored).to.be.true;

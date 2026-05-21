@@ -3,8 +3,8 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
-import FileLoader from '../src/system/FileLoader';
-import NodeFS from '../src/system/NodeFS';
+import FileLoader from '../src/system/FileLoader.js';
+import NodeFS from '../src/system/NodeFS.js';
 
 function normalize(path: string) {
   return path.replaceAll('\\', '/').replace(/^[A-Za-z]:/, '');

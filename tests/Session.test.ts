@@ -1,7 +1,11 @@
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
-import { ReadSession, WriteSession, session } from '../src/router/Session';
+import { 
+  ReadSession, 
+  WriteSession, 
+  session 
+} from '../src/router/Session.js';
 
 describe('ReadSession', () => {
   let readSession: ReadSession;
