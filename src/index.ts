@@ -98,7 +98,9 @@ import RouteEmitter from './emitter/RouteEmitter.js';
 import Request, { withUnknownHost } from './router/Request.js';
 import Response from './router/Response.js';
 import Router from './router/Router.js';
-import Terminal, { control } from './router/Terminal.js';
+
+import control from './terminal/control.js';
+import Terminal from './terminal/Terminal.js';
 
 import Exception from './Exception.js';
 import Reflection from './Reflection.js';
