@@ -251,6 +251,21 @@ export default class Response<S = unknown> {
   }
 
   /**
+   * Merges an exception object into this response
+   */
+  public fromException(exception: Exception) {
+    //sets the status code and message
+    this.statusCode(exception.code || 400);
+    //set the error message
+    this._error = exception.message || 'Unknown Error';
+    //set the errors
+    this.errors.set(exception.errors);
+    //set the stack trace
+    this._stack = exception.trace();
+    return this;
+  }
+
+  /**
    * Merges a success response object into this response
    */
   public fromStatusResponse<T = unknown>(response: Partial<StatusResponse<T>>) {
@@ -297,7 +312,7 @@ export default class Response<S = unknown> {
    */
   public redirect(url: string, code = 302, status?: string) {
     //sets the status code and message
-    this.setStatus(code, status);
+    this.statusCode(code, status);
     //set the header location
     this.headers.set('Location', url);
     return this;
@@ -306,9 +321,9 @@ export default class Response<S = unknown> {
   /**
    * Sets the body with checks 
    */
-  public setBody(type: string, body: Body, code = 200, status?: string) {
+  public set(type: string, body: Body, code = 200, status?: string) {
     //sets the status code and message
-    this.setStatus(code, status);
+    this.statusCode(code, status);
     //set the mimetype
     this._mimetype = type;
     //set the body
@@ -334,7 +349,7 @@ export default class Response<S = unknown> {
       error = error.error;
     }
     //sets the status code and message
-    this.setStatus(code, status);
+    this.statusCode(code, status);
     //set the error message
     this._error = error;
     this._stack = stack && stack.length > 0 ? stack : undefined;
@@ -346,45 +361,45 @@ export default class Response<S = unknown> {
   /**
    * Sets the body as HTML with checks 
    */
-  public setHTML(body: string, code = 200, status?: string) {
-    return this.setBody('text/html', body, code, status);
+  public html(body: string, code = 200, status?: string) {
+    return this.set('text/html', body, code, status);
   }
 
   /**
    * Sets the body as JSON with checks 
    */
-  public setJSON(body: string|NestedObject, code = 200, status?: string) {
+  public json(body: string|NestedObject, code = 200, status?: string) {
     if (typeof body !== 'string') {
       body = JSON.stringify(body, null, 2);
     }
-    return this.setBody('application/json', body, code, status);
+    return this.set('application/json', body, code, status);
   }
 
   /**
    * Sets the body as Object with checks 
    */
-  public setResults(body: NestedObject, code = 200, status?: string) {
+  public results(body: NestedObject, code = 200, status?: string) {
     this._total = 1;
-    return this.setBody('application/json', body, code, status);
+    return this.set('application/json', body, code, status);
   }
 
   /**
    * Sets the body as Array with checks 
    */
-  public setRows(
+  public rows(
     body: NestedObject[], 
     total = 0, 
     code = 200, 
     status?: string
   ) {
     this._total = total;
-    return this.setBody('application/json', body, code, status);
+    return this.set('application/json', body, code, status);
   }
 
   /**
    * Sets the status code and message
    */
-  public setStatus(code: number, message?: string) {
+  public statusCode(code: number, message?: string) {
     this._code = code;
     this._status = message || Status.get(code)?.status || '';
     return this;
@@ -393,8 +408,8 @@ export default class Response<S = unknown> {
   /**
    * Sets the body as XML with checks 
    */
-  public setXML(body: string, code = 200, status?: string) {
-    return this.setBody('text/xml', body, code, status);
+  public xml(body: string, code = 200, status?: string) {
+    return this.set('text/xml', body, code, status);
   }
 
   /**
