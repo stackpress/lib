@@ -2,21 +2,11 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
+import ExpressEmitter from '../src/emitter/ExpressEmitter.js';
 import Router from '../src/emitter/RouteEmitter.js';
 
 type R = { path: string };
 type S = { body?: string };
-
-type method = 'all' 
-  | 'connect' | 'delete'  | 'get' 
-  | 'head'    | 'options' | 'patch' 
-  | 'post'    | 'put'     | 'trace';
-
-const methods: method[] = [
-  'connect', 'delete',  'get', 
-  'head',    'options', 'patch',  
-  'post',    'put',     'trace'
-];
 
 describe('RouteEmitter Tests', () => {
   it('Should basic route', async () => {
@@ -75,5 +65,74 @@ describe('RouteEmitter Tests', () => {
       priority: number 
     }>;
     expect(Array.from(tasks.values())[1].item.name).to.equal('withName');
-  })
-})
+  });
+
+  it('should match parameterized routes and preserve route metadata', async () => {
+    const router = new Router<R, S>();
+    const triggered: string[] = [];
+
+    router.route('GET', '/users/:id', (req, res) => {
+      triggered.push(req.path);
+      res.body = 'matched';
+    });
+
+    const req: R = { path: '/users/42' };
+    const res: S = {};
+    const response = await router.emit('GET /users/42', req, res);
+    const [[ event, route ]] = Array.from(router.routes.entries());
+
+    expect(response.code).to.equal(200);
+    expect(triggered).to.deep.equal(['/users/42']);
+    expect(res.body).to.equal('matched');
+    expect(event).to.contain('^GET');
+    expect(route).to.deep.equal({ method: 'GET', path: '/users/:id' });
+  });
+
+  it('should allow any routes to match multiple verbs and trailing slashes', async () => {
+    const router = new Router<R, S>();
+    const triggered: string[] = [];
+
+    router.route('ANY', '/health/:scope', (req, res) => {
+      triggered.push(req.path);
+      res.body = req.path;
+    });
+
+    await router.emit('GET /health/live/', { path: '/health/live/' }, {});
+    const response = await router.emit(
+      'POST /health/ready',
+      { path: '/health/ready' },
+      {}
+    );
+
+    expect(response.code).to.equal(200);
+    expect(triggered).to.deep.equal([
+      '/health/live/',
+      '/health/ready'
+    ]);
+    expect(Array.from(router.routes.values())).to.deep.equal([
+      { method: 'ANY', path: '/health/:scope' }
+    ]);
+  });
+
+  it('should merge listeners from plain emitters without copying routes', async () => {
+    const router = new Router<R, S>();
+    const emitter = new ExpressEmitter<Record<string, [R, S]>>('/');
+    const triggered: string[] = [];
+
+    emitter.on('GET /shared/test', (req, res) => {
+      triggered.push(req.path);
+      res.body = 'shared';
+    });
+
+    router.use(emitter);
+    const response = await router.emit(
+      'GET /shared/test',
+      { path: '/shared/test' },
+      {}
+    );
+
+    expect(response.code).to.equal(200);
+    expect(triggered).to.deep.equal(['/shared/test']);
+    expect(router.routes.size).to.equal(0);
+  });
+});

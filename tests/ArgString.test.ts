@@ -4,131 +4,157 @@ import { expect } from 'chai';
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
 import Nest from '../src/data/Nest.js';
 
-describe('ArgString argv Tests', () => {
-  it('should parse "--key value"', () => {
-    const nest = new Nest();
-    nest.withArgs.set([
-      '--key', 'value', 
-      '--key2', '1534', 
-      '--key3', '15.34', 
-      '--key4', 'true',  
-      '--key5', 'false', 
+type ArgInput = string|string[];
+type ArgAssertion = (nest: Nest) => void;
+
+type ArgScenario = {
+  title: string,
+  source: string[],
+  assert: ArgAssertion
+};
+
+function runArgScenario(title: string, argv: ArgInput) {
+  const nest = new Nest();
+  nest.withArgs.set(argv);
+  return { title, nest };
+}
+
+const sharedScenarios: ArgScenario[] = [
+  {
+    title: 'should parse "--key value"',
+    source: [
+      '--key', 'value',
+      '--key2', '1534',
+      '--key3', '15.34',
+      '--key4', 'true',
+      '--key5', 'false',
       '--key6', 'null'
-    ]);
-    expect(nest.withPath.get('key')).to.equal('value');
-    expect(nest.withPath.get('key2')).to.equal(1534);
-    expect(nest.withPath.get('key3')).to.equal(15.34);
-    expect(nest.withPath.get('key4')).to.equal(true);
-    expect(nest.withPath.get('key5')).to.equal(false);
-    expect(nest.withPath.get('key6')).to.equal(null);
-  });
-
-  it('should parse "-xyz" (all true)', () => {
-    const nest = new Nest();
-    nest.withArgs.set(['-xyz']);
-    expect(nest.withPath.get('x')).to.equal(true);
-    expect(nest.withPath.get('y')).to.equal(true);
-    expect(nest.withPath.get('z')).to.equal(true);
-  });
-
-  it('should parse to args "value"', () => {
-    const nest = new Nest();
-    nest.withArgs.set([
-      'value',
-      '1534',
-      '15.34',
-      'true',
-      'false',
-      'null'
-    ]);
-    expect(nest.get(0)).to.equal('value');
-    expect(nest.get(1)).to.equal(1534);
-    expect(nest.get(2)).to.equal(15.34);
-    expect(nest.get(3)).to.equal(true);
-    expect(nest.get(4)).to.equal(false);
-    expect(nest.get(5)).to.equal(null);
-  });
-
-  it('should parse "--key[] value"', () => {
-    const nest = new Nest();
-    nest.withArgs.set([
+    ],
+    assert: nest => {
+      expect(nest.withPath.get('key')).to.equal('value');
+      expect(nest.withPath.get('key2')).to.equal(1534);
+      expect(nest.withPath.get('key3')).to.equal(15.34);
+      expect(nest.withPath.get('key4')).to.equal(true);
+      expect(nest.withPath.get('key5')).to.equal(false);
+      expect(nest.withPath.get('key6')).to.equal(null);
+    }
+  },
+  {
+    title: 'should parse "-xyz" (all true)',
+    source: [ '-xyz' ],
+    assert: nest => {
+      expect(nest.withPath.get('x')).to.equal(true);
+      expect(nest.withPath.get('y')).to.equal(true);
+      expect(nest.withPath.get('z')).to.equal(true);
+    }
+  },
+  {
+    title: 'should parse to args "value"',
+    source: [ 'value', '1534', '15.34', 'true', 'false', 'null' ],
+    assert: nest => {
+      expect(nest.get(0)).to.equal('value');
+      expect(nest.get(1)).to.equal(1534);
+      expect(nest.get(2)).to.equal(15.34);
+      expect(nest.get(3)).to.equal(true);
+      expect(nest.get(4)).to.equal(false);
+      expect(nest.get(5)).to.equal(null);
+    }
+  },
+  {
+    title: 'should parse "--key[] value"',
+    source: [
       '--key[]', 'value',
       '--key[]', '1534',
       '--key[]', '15.34',
       '--key[]', 'true',
       '--key[]', 'false',
       '--key[]', 'null'
-    ]);
-    const actual = nest.get<Array<any>>('key');
-    expect(actual[0]).to.equal('value');
-    expect(actual[1]).to.equal(1534);
-    expect(actual[2]).to.equal(15.34);
-    expect(actual[3]).to.equal(true);
-    expect(actual[4]).to.equal(false);
-    expect(actual[5]).to.equal(null);
-  });
-
-  it('should parse "--key[foo] value"', () => {
-    const nest = new Nest();
-    nest.withArgs.set([
+    ],
+    assert: nest => {
+      const actual = nest.get<unknown[]>('key') || [];
+      expect(actual[0]).to.equal('value');
+      expect(actual[1]).to.equal(1534);
+      expect(actual[2]).to.equal(15.34);
+      expect(actual[3]).to.equal(true);
+      expect(actual[4]).to.equal(false);
+      expect(actual[5]).to.equal(null);
+    }
+  },
+  {
+    title: 'should parse "--key[foo] value"',
+    source: [
       '--key[foo]', 'value',
       '--key[foo2]', '1534',
       '--key[foo3]', '15.34',
       '--key[foo4]', 'true',
       '--key[foo5]', 'false',
       '--key[foo6]', 'null'
-    ]);
-    expect(nest.withPath.get('key.foo')).to.equal('value');
-    expect(nest.withPath.get('key.foo2')).to.equal(1534);
-    expect(nest.withPath.get('key.foo3')).to.equal(15.34);
-    expect(nest.withPath.get('key.foo4')).to.equal(true);
-    expect(nest.withPath.get('key.foo5')).to.equal(false);
-    expect(nest.withPath.get('key.foo6')).to.equal(null);
-  });
-
-  it('should parse "--key[foo][] value"', () => {
-    const nest = new Nest();
-    nest.withArgs.set([
+    ],
+    assert: nest => {
+      expect(nest.withPath.get('key.foo')).to.equal('value');
+      expect(nest.withPath.get('key.foo2')).to.equal(1534);
+      expect(nest.withPath.get('key.foo3')).to.equal(15.34);
+      expect(nest.withPath.get('key.foo4')).to.equal(true);
+      expect(nest.withPath.get('key.foo5')).to.equal(false);
+      expect(nest.withPath.get('key.foo6')).to.equal(null);
+    }
+  },
+  {
+    title: 'should parse "--key[foo][] value"',
+    source: [
       '--key[foo][]', 'value',
       '--key[foo][]', '1534',
       '--key[foo][]', '15.34',
       '--key[foo][]', 'true',
       '--key[foo][]', 'false',
       '--key[foo][]', 'null'
-    ]);
-    const actual = nest.get<Array<any>>('key', 'foo');
-    expect(actual[0]).to.equal('value');
-    expect(actual[1]).to.equal(1534);
-    expect(actual[2]).to.equal(15.34);
-    expect(actual[3]).to.equal(true);
-    expect(actual[4]).to.equal(false);
-    expect(actual[5]).to.equal(null);
-  });
-
-  it('should parse "--key[][bar] value"', () => {
-    const nest = new Nest();
-    nest.withArgs.set([
+    ],
+    assert: nest => {
+      const actual = nest.get<unknown[]>('key', 'foo') || [];
+      expect(actual[0]).to.equal('value');
+      expect(actual[1]).to.equal(1534);
+      expect(actual[2]).to.equal(15.34);
+      expect(actual[3]).to.equal(true);
+      expect(actual[4]).to.equal(false);
+      expect(actual[5]).to.equal(null);
+    }
+  },
+  {
+    title: 'should parse "--key[][bar] value"',
+    source: [
       '--key[][foo]', 'value',
       '--key[][foo]', '1534',
       '--key[][foo]', '15.34',
       '--key[][foo]', 'true',
       '--key[][foo]', 'false',
       '--key[][foo]', 'null'
-    ]);
-    const actual = nest.get<Array<any>>('key');
-    expect(actual[0].foo).to.equal('value');
-    expect(actual[1].foo).to.equal(1534);
-    expect(actual[2].foo).to.equal(15.34);
-    expect(actual[3].foo).to.equal(true);
-    expect(actual[4].foo).to.equal(false);
-    expect(actual[5].foo).to.equal(null);
-  });
+    ],
+    assert: nest => {
+      const actual = nest.get<Array<{ foo: unknown }>>('key') || [];
+      expect(actual[0].foo).to.equal('value');
+      expect(actual[1].foo).to.equal(1534);
+      expect(actual[2].foo).to.equal(15.34);
+      expect(actual[3].foo).to.equal(true);
+      expect(actual[4].foo).to.equal(false);
+      expect(actual[5].foo).to.equal(null);
+    }
+  },
+  {
+    title: 'should not parse odd things like "- --"',
+    source: [ '-', '--' ],
+    assert: nest => {
+      expect(nest.size).to.equal(0);
+    }
+  }
+];
 
-  it('should not parse odd things like "- --"', () => {
-    const nest = new Nest();
-    nest.withArgs.set([ '-', '--' ]);
-    expect(nest.size).to.equal(0);
-  });
+describe('ArgString argv Tests', () => {
+  for (const scenario of sharedScenarios) {
+    it(scenario.title, () => {
+      const { nest } = runArgScenario(scenario.title, scenario.source);
+      scenario.assert(nest);
+    });
+  }
 
   it('should parse special use cases', () => {
     const case1 = new Nest();
@@ -209,16 +235,16 @@ describe('ArgString argv Tests', () => {
 });
 
 describe('ArgString string Tests', () => {
-  it('should parse "--key value"', () => {
-    const nest = new Nest();
-    nest.withArgs.set([
-      '--key', '"val ue"', 
-      '--key2', '1534', 
-      '--key3', '15.34', 
-      '--key4', 'true',  
-      '--key5', 'false', 
+  it('should parse quoted values with spaces', () => {
+    const { nest } = runArgScenario('quoted', [
+      '--key', '"val ue"',
+      '--key2', '1534',
+      '--key3', '15.34',
+      '--key4', 'true',
+      '--key5', 'false',
       '--key6', 'null'
     ].join(' '));
+
     expect(nest.withPath.get('key')).to.equal('val ue');
     expect(nest.withPath.get('key2')).to.equal(1534);
     expect(nest.withPath.get('key3')).to.equal(15.34);
@@ -227,110 +253,11 @@ describe('ArgString string Tests', () => {
     expect(nest.withPath.get('key6')).to.equal(null);
   });
 
-  it('should parse "-xyz" (all true)', () => {
-    const nest = new Nest();
-    nest.withArgs.set('-xyz');
-    expect(nest.withPath.get('x')).to.equal(true);
-    expect(nest.withPath.get('y')).to.equal(true);
-    expect(nest.withPath.get('z')).to.equal(true);
-  });
-
-  it('should parse to args "value"', () => {
-    const nest = new Nest();
-    nest.withArgs.set([
-      'value',
-      '1534',
-      '15.34',
-      'true',
-      'false',
-      'null'
-    ].join(' '));
-    expect(nest.get(0)).to.equal('value');
-    expect(nest.get(1)).to.equal(1534);
-    expect(nest.get(2)).to.equal(15.34);
-    expect(nest.get(3)).to.equal(true);
-    expect(nest.get(4)).to.equal(false);
-    expect(nest.get(5)).to.equal(null);
-  });
-
-  it('should parse "--key[] value"', () => {
-    const nest = new Nest();
-    nest.withArgs.set([
-      '--key[]', 'value',
-      '--key[]', '1534',
-      '--key[]', '15.34',
-      '--key[]', 'true',
-      '--key[]', 'false',
-      '--key[]', 'null'
-    ].join(' '));
-    const actual = nest.get<Array<any>>('key');
-    expect(actual[0]).to.equal('value');
-    expect(actual[1]).to.equal(1534);
-    expect(actual[2]).to.equal(15.34);
-    expect(actual[3]).to.equal(true);
-    expect(actual[4]).to.equal(false);
-    expect(actual[5]).to.equal(null);
-  });
-
-  it('should parse "--key[foo] value"', () => {
-    const nest = new Nest();
-    nest.withArgs.set([
-      '--key[foo]', 'value',
-      '--key[foo2]', '1534',
-      '--key[foo3]', '15.34',
-      '--key[foo4]', 'true',
-      '--key[foo5]', 'false',
-      '--key[foo6]', 'null'
-    ].join(' '));
-    expect(nest.withPath.get('key.foo')).to.equal('value');
-    expect(nest.withPath.get('key.foo2')).to.equal(1534);
-    expect(nest.withPath.get('key.foo3')).to.equal(15.34);
-    expect(nest.withPath.get('key.foo4')).to.equal(true);
-    expect(nest.withPath.get('key.foo5')).to.equal(false);
-    expect(nest.withPath.get('key.foo6')).to.equal(null);
-  });
-
-  it('should parse "--key[foo][] value"', () => {
-    const nest = new Nest();
-    nest.withArgs.set([
-      '--key[foo][]', 'value',
-      '--key[foo][]', '1534',
-      '--key[foo][]', '15.34',
-      '--key[foo][]', 'true',
-      '--key[foo][]', 'false',
-      '--key[foo][]', 'null'
-    ].join(' '));
-    const actual = nest.get<Array<any>>('key', 'foo');
-    expect(actual[0]).to.equal('value');
-    expect(actual[1]).to.equal(1534);
-    expect(actual[2]).to.equal(15.34);
-    expect(actual[3]).to.equal(true);
-    expect(actual[4]).to.equal(false);
-    expect(actual[5]).to.equal(null);
-  });
-
-  it('should parse "--key[][bar] value"', () => {
-    const nest = new Nest();
-    nest.withArgs.set([
-      '--key[][foo]', 'value',
-      '--key[][foo]', '1534',
-      '--key[][foo]', '15.34',
-      '--key[][foo]', 'true',
-      '--key[][foo]', 'false',
-      '--key[][foo]', 'null'
-    ].join(' '));
-    const actual = nest.get<Array<any>>('key');
-    expect(actual[0].foo).to.equal('value');
-    expect(actual[1].foo).to.equal(1534);
-    expect(actual[2].foo).to.equal(15.34);
-    expect(actual[3].foo).to.equal(true);
-    expect(actual[4].foo).to.equal(false);
-    expect(actual[5].foo).to.equal(null);
-  });
-
-  it('should not parse odd things like "- --"', () => {
-    const nest = new Nest();
-    nest.withArgs.set([ '-', '--' ].join(' '));
-    expect(nest.size).to.equal(0);
-  });
+  for (const scenario of sharedScenarios.slice(1)) {
+    it(scenario.title, () => {
+      const joined = scenario.source.join(' ');
+      const { nest } = runArgScenario(scenario.title, joined);
+      scenario.assert(nest);
+    });
+  }
 });

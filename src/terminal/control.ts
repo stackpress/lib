@@ -1,5 +1,5 @@
-//modules
-import { input } from '@inquirer/prompts';
+//client
+import input from './input.js';
 
 /**
  * Returns a list of control methods for the terminal

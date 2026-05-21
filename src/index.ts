@@ -53,6 +53,12 @@ export type {
   FileStream,
   FileSystem,
   CallSite,
+  TerminalInputConfig, 
+  TerminalInputContext, 
+  TerminalTTYInput, 
+  TerminalTTYOutput, 
+  TerminalPromptState,
+  TerminalInputTheme,
   TemplateHelperOptions,
   TemplateHelper,
   TemplateResolver,
@@ -100,6 +106,7 @@ import Response from './router/Response.js';
 import Router from './router/Router.js';
 
 import control from './terminal/control.js';
+import input from './terminal/input.js';
 import Terminal from './terminal/Terminal.js';
 
 import Exception from './Exception.js';
@@ -141,6 +148,7 @@ export {
   Status,
   codes,
   control,
+  input,
   esmImport,
   include,
   cookie,

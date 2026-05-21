@@ -195,6 +195,37 @@ describe('map() Tests', () => {
     expect(store.has('bar')).to.equal(true);
     expect(store.size).to.equal(1);
   });
+
+  it('should clear entries and iterate with map helpers', () => {
+    const store = map<string, number>([[ 'a', 1 ], [ 'b', 2 ]]);
+    const entries: string[] = [];
+
+    store.forEach((value, key) => {
+      entries.push(`${key}${value}`);
+    });
+
+    expect(entries).to.have.members([ 'a1', 'b2' ]);
+    expect(Array.from(store.entries())).to.deep.equal([
+      [ 'a', 1 ],
+      [ 'b', 2 ]
+    ]);
+
+    store.clear();
+    expect(store.size).to.equal(0);
+  });
+
+  it('should support empty callable maps', () => {
+    const store = map<string, number>();
+
+    expect(store.size).to.equal(0);
+    expect(store('a')).to.be.undefined;
+    expect(store.has('a')).to.equal(false);
+
+    store.set('a', 1);
+
+    expect(store.size).to.equal(1);
+    expect(store('a')).to.equal(1);
+  });
 });
 
 describe('set() Tests', () => {
@@ -226,5 +257,21 @@ describe('set() Tests', () => {
     expect(store.has('foo')).to.equal(false);
     expect(store.has('bar')).to.equal(true);
     expect(store.size).to.equal(1);
+  });
+
+  it('should clear entries and iterate with set helpers', () => {
+    const store = set([ 1, 2, 3 ]);
+    const values: number[] = [];
+
+    store.forEach(value => {
+      values.push(value);
+    });
+
+    expect(values).to.have.members([ 1, 2, 3 ]);
+    expect(Array.from(store.values())).to.deep.equal([ 1, 2, 3 ]);
+    expect(store.index(3)).to.be.undefined;
+
+    store.clear();
+    expect(store.size).to.equal(0);
   });
 });

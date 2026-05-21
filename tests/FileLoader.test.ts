@@ -1,4 +1,5 @@
 import path from 'node:path';
+import os from 'node:os';
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
@@ -8,6 +9,10 @@ import NodeFS from '../src/system/NodeFS.js';
 
 function normalize(path: string) {
   return path.replaceAll('\\', '/').replace(/^[A-Za-z]:/, '');
+}
+
+function makeTempPath(...parts: string[]) {
+  return path.join(os.tmpdir(), 'stackpress-file-loader', ...parts);
 }
 
 describe('FileLoader Tests', () => {
@@ -133,5 +138,44 @@ describe('FileLoader Tests', () => {
 
     const actual2 = await loader.resolveFile('@/fixtures/file', ['.foobar']);
     expect(actual2).to.be.null;
+  });
+
+  it('should resolve directory index files when present', async () => {
+    const fs = new NodeFS();
+    const root = makeTempPath('resolve-index');
+    const directory = path.join(root, 'feature');
+    const file = path.join(directory, 'index.js');
+    const loader = new FileLoader(fs, root);
+
+    await fs.mkdir(directory, { recursive: true });
+    await fs.writeFile(file, 'export default 1;');
+
+    const actual = await loader.resolveFile('./feature', [ '.js' ]);
+    expect(actual).to.equal(await fs.realpath(file));
+
+    await fs.unlink(file);
+  });
+
+  it('should throw when resolve and resolveFile require existing paths', async () => {
+    const fs = new NodeFS();
+    const loader = new FileLoader(fs, import.meta.dirname);
+
+    try {
+      await loader.resolve('./fixtures/missing.txt', import.meta.dirname, true);
+      expect.fail('Expected resolve() to reject');
+    } catch (error) {
+      expect((error as Error).message).to.contain(
+        "Cannot resolve './fixtures/missing.txt'"
+      );
+    }
+
+    try {
+      await loader.resolveFile('./fixtures/missing', [ '.txt' ], import.meta.dirname, true);
+      expect.fail('Expected resolveFile() to reject');
+    } catch (error) {
+      expect((error as Error).message).to.contain(
+        "Cannot resolve './fixtures/missing'"
+      );
+    }
   });
 });

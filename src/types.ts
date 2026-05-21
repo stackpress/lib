@@ -1,5 +1,6 @@
+//node
+import type { Readable, Writable } from 'node:stream';
 //modules
-import type { Readable } from 'node:stream';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 //data
 import type DataMap from './data/Map.js';
@@ -422,6 +423,54 @@ export interface CallSite {
   isPromiseAll(): boolean;
   //is this an async call to Promise.any()?
   getPromiseIndex(): number|null;
+};
+
+//--------------------------------------------------------------------//
+// Terminal Types
+
+export type TerminalInputTheme = {
+  validationFailureMode?: 'keep'|'clear'
+};
+
+export type TerminalInputConfig = {
+  message: string,
+  default?: string,
+  prefill?: 'tab'|'editable',
+  required?: boolean,
+  transformer?: (
+    value: string,
+    state: { isFinal: boolean }
+  ) => string,
+  validate?: (
+    value: string
+  ) => boolean|string|Promise<boolean|string>,
+  theme?: TerminalInputTheme,
+  pattern?: RegExp,
+  patternError?: string
+};
+
+export type TerminalInputContext = {
+  input?: Readable,
+  output?: Writable,
+  clearPromptOnDone?: boolean,
+  signal?: AbortSignal
+};
+
+export type TerminalTTYInput = Readable & {
+  isTTY?: boolean,
+  setEncoding?: (encoding: BufferEncoding) => void,
+  setRawMode?: (mode: boolean) => void
+};
+
+export type TerminalTTYOutput = Writable & {
+  isTTY?: boolean
+};
+
+export type TerminalPromptState = {
+  currentValue: string,
+  defaultValue: string,
+  errorMessage: string,
+  isFinal: boolean
 };
 
 //--------------------------------------------------------------------//

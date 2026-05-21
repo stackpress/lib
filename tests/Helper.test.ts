@@ -2,8 +2,6 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 //NOTE: no extensions in tests because it's excluded in tsconfig.json and
 //we are testing in a typescript environment via `ts-mocha -r tsx` (esm)
-import { map } from '../src/data/Map.js';
-import { set } from '../src/data/Set.js';
 import { 
   makeArray, 
   makeObject, 
@@ -78,78 +76,9 @@ describe('Helper Tests', () => {
     expect(result).to.be.false;
   });
 
-
-  /*
-  * ADD NEW UNIT TEST
-  */
-
   it('should handle all edge cases correctly', () => {
     expect(shouldBeAnArray(null as NestedObject<unknown> | null)).to.be.false;
     expect(shouldBeAnArray(undefined as NestedObject<unknown> | undefined)).to.be.false;
     expect(shouldBeAnArray({})).to.be.false;
   });
-
-
-
-
-  /*
-  * MORE UNIT TEST
-  */
-
-  it('should clear all entries', () => {
-    const m = map<string, number>([['a', 1], ['b', 2]]);
-    m.clear();
-    expect(m.size).to.equal(0);
-  });
-
-  it('should iterate over entries correctly', () => {
-    const m = map<string, number>([['a', 1], ['b', 2]]);
-    let entries: string[] = [];
-    m.forEach((value, key) => {
-      entries.push(key + value);
-    });
-    expect(entries).to.have.members(['a1', 'b2']);
-  });
-
-  it('should clear all entries', () => {
-    const s = set([1, 2]);
-    s.clear();
-    expect(s.size).to.equal(0);
-  });
-
-  it('should iterate over values correctly', () => {
-    const s = set([1, 2]);
-    let values: number[] = [];
-    s.forEach(value => {
-      values.push(value);
-    });
-    expect(values).to.have.members([1, 2]);
-  });
-
-  it('should return correct entries with entries()', () => {
-    const m = map<string, number>([['a', 1], ['b', 2]]);
-    const entries = Array.from(m.entries());
-    expect(entries).to.deep.equal([['a', 1], ['b', 2]]);
-  });
-
-  it('should handle an empty map', () => {
-    const m = map<string, number>();
-    expect(m.size).to.equal(0);
-    expect(m('a')).to.be.undefined;
-    expect(m.has('a')).to.be.false;
-    m.set('a', 1);
-    expect(m.size).to.equal(1);
-    expect(m('a')).to.equal(1);
-  });
-
-  it('should return correct values with `values()`', () => {
-    const s = set([1, 2, 3]);
-    const values = Array.from(s.values());
-    expect(values).to.deep.equal([1, 2, 3]);
-  });
-
-  it('should return undefined for index out of range', () => {
-    const s = set([1, 2, 3]);
-    expect(s.index(3)).to.be.undefined;
-  });
-}); 
+});
