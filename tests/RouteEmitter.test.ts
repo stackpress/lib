@@ -135,4 +135,30 @@ describe('RouteEmitter Tests', () => {
     expect(triggered).to.deep.equal(['/shared/test']);
     expect(router.routes.size).to.equal(0);
   });
+
+  it('should preserve canonical regex listener keys when merging parameterized routes', async () => {
+    const child = new Router<R, S>();
+    const parent = new Router<R, S>();
+    const event = '/^GET \\/users\\/([^/]+)\\/*$/g';
+    const malformed = '/^\\/^GET \\/users\\/([^/]+)\\/([^/]+)$\\/g$/g';
+    const triggered: string[] = [];
+
+    child.route('GET', '/users/:id', (req, res) => {
+      triggered.push(req.path);
+      res.body = 'matched';
+    });
+
+    parent.use(child);
+    const response = await parent.emit(
+      'GET /users/42',
+      { path: '/users/42' },
+      {}
+    );
+
+    expect(response.code).to.equal(200);
+    expect(triggered).to.deep.equal(['/users/42']);
+    expect(parent.listeners[event]).to.be.instanceOf(Set);
+    expect(parent.listeners[malformed]).to.be.undefined;
+    expect(Array.from(parent.expressions.keys())).to.deep.equal([event]);
+  });
 });

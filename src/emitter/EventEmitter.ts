@@ -177,10 +177,21 @@ export default class EventEmitter<M extends EventMap> {
         //skip
         continue;
       }
+      //listener keys are already canonical in the source emitter.
+      //Copy them directly so subclass on() overrides do not reinterpret
+      //regex-backed route keys as fresh event patterns during merge.
+      if (typeof this._listeners[event as keyof M] === 'undefined') {
+        this._listeners[event as keyof M] = new Set<TaskItem<M[keyof M]>>();
+      }
+      const listeners = this._listeners[event as keyof M] as Set<
+        TaskItem<M[keyof M]>
+      >;
       //then loop the tasks
       for (const { item, priority } of tasks) {
-        //listen to each task one by one
-        this.on(event, item, priority);
+        listeners.add({
+          item: item as TaskAction<M[keyof M]>,
+          priority
+        });
       }
     }
     return this;

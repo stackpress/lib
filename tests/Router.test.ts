@@ -129,4 +129,86 @@ describe('Router Tests', () => {
     }>;
     expect(Array.from(tasks.values())[1].item.name).to.equal('withName');
   })
+
+  it('should preserve exact, parameterized, and fallback routes after use()', async () => {
+    const child = new Router<R, S>();
+    const parent = new Router<R, S>();
+    const triggered: string[] = [];
+
+    child.route('GET', '/', (_req, res) => {
+      triggered.push('root');
+      res.body = 'root';
+    });
+    child.route('GET', '/login', (_req, res) => {
+      triggered.push('login');
+      res.body = 'login';
+    });
+    child.route('GET', '/user', (_req, res) => {
+      triggered.push('user');
+      res.body = 'user';
+    });
+    child.route('GET', '/user/:id', (req, res) => {
+      triggered.push(`get:${req.data('id')}`);
+      res.body = `get:${req.data('id')}`;
+    });
+    child.route('PUT', '/user/:id', (req, res) => {
+      triggered.push(`put:${req.data('id')}`);
+      res.body = `put:${req.data('id')}`;
+    });
+    child.route('DELETE', '/user/:id', (req, res) => {
+      triggered.push(`delete:${req.data('id')}`);
+      res.body = `delete:${req.data('id')}`;
+    });
+    child.route('ANY', '/files/**', (_req, res) => {
+      triggered.push('wildcard');
+      res.body = 'fallback';
+    });
+
+    parent.use(child);
+
+    const rootReq = parent.request({ resource: { path: '/' } });
+    const rootRes = parent.response({ resource: {} });
+    await parent.emit('GET /', rootReq, rootRes);
+
+    const loginReq = parent.request({ resource: { path: '/login' } });
+    const loginRes = parent.response({ resource: {} });
+    await parent.emit('GET /login', loginReq, loginRes);
+
+    const userReq = parent.request({ resource: { path: '/user' } });
+    const userRes = parent.response({ resource: {} });
+    await parent.emit('GET /user', userReq, userRes);
+
+    const getReq = parent.request({ resource: { path: '/user/1' } });
+    const getRes = parent.response({ resource: {} });
+    await parent.emit('GET /user/1', getReq, getRes);
+
+    const putReq = parent.request({ resource: { path: '/user/1' } });
+    const putRes = parent.response({ resource: {} });
+    await parent.emit('PUT /user/1', putReq, putRes);
+
+    const deleteReq = parent.request({ resource: { path: '/user/1' } });
+    const deleteRes = parent.response({ resource: {} });
+    await parent.emit('DELETE /user/1', deleteReq, deleteRes);
+
+    const fallbackReq = parent.request({ resource: { path: '/files/missing/path' } });
+    const fallbackRes = parent.response({ resource: {} });
+    await parent.emit('PATCH /files/missing/path', fallbackReq, fallbackRes);
+
+    expect(triggered).to.deep.equal([
+      'root',
+      'login',
+      'user',
+      'get:1',
+      'put:1',
+      'delete:1',
+      'wildcard'
+    ]);
+    expect(rootRes.body).to.equal('root');
+    expect(loginRes.body).to.equal('login');
+    expect(userRes.body).to.equal('user');
+    expect(getRes.body).to.equal('get:1');
+    expect(putRes.body).to.equal('put:1');
+    expect(deleteRes.body).to.equal('delete:1');
+    expect(fallbackRes.body).to.equal('fallback');
+  });
 })
