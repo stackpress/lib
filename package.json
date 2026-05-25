@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@stackpress/lib",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "license": "Apache-2.0",
   "description": "Shared library used across stackpress projects",
   "author": "Chris <chris@incept.asia>",
@@ -133,32 +133,84 @@
   },
   "typesVersions": {
     "*": {
-      "index": [ "./cjs/index.d.ts" ],
-      "types": [ "./cjs/types.d.ts" ],
-      "Exception": [ "./cjs/Exception.d.ts" ],
-      "Reflection": [ "./cjs/Reflection.d.ts" ],
-      "Status": [ "./cjs/Status.d.ts" ],
-      "Template": [ "./cjs/Template.d.ts" ],
-      "cookie": [ "./cjs/data/cookie.d.ts" ],
-      "Map": [ "./cjs/data/Map.d.ts" ],
-      "Set": [ "./cjs/data/Set.d.ts" ],
-      "Nest": [ "./cjs/data/Nest.d.ts" ],
-      "ReadonlyMap": [ "./cjs/data/ReadonlyMap.d.ts" ],
-      "ReadonlyNest": [ "./cjs/data/ReadonlyNest.d.ts" ],
-      "ReadonlySet": [ "./cjs/data/ReadonlySet.d.ts" ],
-      "EventEmitter": [ "./cjs/emitter/EventEmitter.d.ts" ],
-      "ExpressEmitter": [ "./cjs/emitter/ExpressEmitter.d.ts" ],
-      "RouteEmitter": [ "./cjs/emitter/RouteEmitter.d.ts" ],
-      "ItemQueue": [ "./cjs/queue/ItemQueue.d.ts" ],
-      "TaskQueue": [ "./cjs/queue/TaskQueue.d.ts" ],
-      "Request": [ "./cjs/router/Request.d.ts" ],
-      "Response": [ "./cjs/router/Response.d.ts" ],
-      "Router": [ "./cjs/router/Router.d.ts" ],
-      "Session": [ "./cjs/router/Session.d.ts" ],
-      "Terminal": [ "./cjs/terminal/Terminal.d.ts" ],
-      "terminal/*": [ "./cjs/terminal/*.d.ts" ],
-      "FileLoader": [ "./cjs/system/FileLoader.d.ts" ],
-      "NodeFS": [ "./cjs/system/NodeFS.d.ts" ]
+      "index": [
+        "./cjs/index.d.ts"
+      ],
+      "types": [
+        "./cjs/types.d.ts"
+      ],
+      "Exception": [
+        "./cjs/Exception.d.ts"
+      ],
+      "Reflection": [
+        "./cjs/Reflection.d.ts"
+      ],
+      "Status": [
+        "./cjs/Status.d.ts"
+      ],
+      "Template": [
+        "./cjs/Template.d.ts"
+      ],
+      "cookie": [
+        "./cjs/data/cookie.d.ts"
+      ],
+      "Map": [
+        "./cjs/data/Map.d.ts"
+      ],
+      "Set": [
+        "./cjs/data/Set.d.ts"
+      ],
+      "Nest": [
+        "./cjs/data/Nest.d.ts"
+      ],
+      "ReadonlyMap": [
+        "./cjs/data/ReadonlyMap.d.ts"
+      ],
+      "ReadonlyNest": [
+        "./cjs/data/ReadonlyNest.d.ts"
+      ],
+      "ReadonlySet": [
+        "./cjs/data/ReadonlySet.d.ts"
+      ],
+      "EventEmitter": [
+        "./cjs/emitter/EventEmitter.d.ts"
+      ],
+      "ExpressEmitter": [
+        "./cjs/emitter/ExpressEmitter.d.ts"
+      ],
+      "RouteEmitter": [
+        "./cjs/emitter/RouteEmitter.d.ts"
+      ],
+      "ItemQueue": [
+        "./cjs/queue/ItemQueue.d.ts"
+      ],
+      "TaskQueue": [
+        "./cjs/queue/TaskQueue.d.ts"
+      ],
+      "Request": [
+        "./cjs/router/Request.d.ts"
+      ],
+      "Response": [
+        "./cjs/router/Response.d.ts"
+      ],
+      "Router": [
+        "./cjs/router/Router.d.ts"
+      ],
+      "Session": [
+        "./cjs/router/Session.d.ts"
+      ],
+      "Terminal": [
+        "./cjs/terminal/Terminal.d.ts"
+      ],
+      "terminal/*": [
+        "./cjs/terminal/*.d.ts"
+      ],
+      "FileLoader": [
+        "./cjs/system/FileLoader.d.ts"
+      ],
+      "NodeFS": [
+        "./cjs/system/NodeFS.d.ts"
+      ]
     }
   },
   "files": [
