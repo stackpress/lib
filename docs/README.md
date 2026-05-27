@@ -1,7 +1,7 @@
 # API Reference
 
 - [Data](./api/data/Nest.md)
-  `Nest`, readonly wrappers, map/set helpers, parsers, and cookies.
+  `Nest`, readonly wrappers, map and set helpers, parsers, and cookie helpers.
 - [Events](./api/events/EventEmitter.md)
   `EventEmitter`, `ExpressEmitter`, and `RouteEmitter`.
 - [Queues](./api/queue/ItemQueue.md)
@@ -21,7 +21,7 @@
 - [Map](./api/data/Map.md)
 - [Set](./api/data/Set.md)
 - [Parsers](./api/data/Parsers.md)
-- [cookie](./api/data/Cookie.md)
+- [Cookie](./api/data/Cookie.md)
 
 ## Events
 

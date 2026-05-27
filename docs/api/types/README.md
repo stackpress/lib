@@ -34,7 +34,9 @@ import type {
 } from '@stackpress/lib/types';
 ```
 
-`@stackpress/lib/types` is the intended import path for the type surface. Many types are re-exported from the root barrel, but the dedicated types subpath is the clearest stable reference point.
+Use `@stackpress/lib/types` when you want a dedicated import path for the public
+type surface. Many of these types are also re-exported from the root barrel, but
+the `types` subpath is the clearest stable reference point.
 
 ## Data Types
 

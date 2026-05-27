@@ -6,15 +6,17 @@ Cookie-oriented session storage for requests and responses.
 
 ```ts
 import type { CallableSession } from '@stackpress/lib';
-import { session } from '@stackpress/lib/Session';
-import { ReadSession, WriteSession } from '@stackpress/lib/Session';
+import { ReadSession, WriteSession, session } from '@stackpress/lib/Session';
 ```
 
-`ReadSession`, `WriteSession`, and `session()` are package-exported by the `@stackpress/lib/Session` subpath. They are not re-exported from the root barrel.
+Import `ReadSession`, `WriteSession`, and `session()` from the
+`@stackpress/lib/Session` subpath. The root barrel only re-exports the
+`CallableSession` type.
 
 ## When To Use It
 
-Use these APIs when you need one session abstraction for request reads and response-side cookie revisions.
+Use these APIs when you need one session abstraction for request reads and
+response-side cookie revisions.
 
 ## API
 
@@ -66,7 +68,8 @@ store('sessionId');
 store.get('sessionId');
 ```
 
-`session(data?)` returns a `CallableSession` with these additional exposed properties:
+`session(data?)` returns a `CallableSession` with the usual callable lookup plus
+these exposed properties:
 
 - `data`
 - `options`
