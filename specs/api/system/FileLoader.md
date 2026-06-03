@@ -40,7 +40,7 @@ You can pass a custom `cwd` as the second argument.
 | `modules(pathname, pwd = cwd, meta = true)` | `Promise<string>` | Resolves the `node_modules` directory containing a package. |
 | `relative(pathname, require, withExtname = false)` | `string` | Relative import path from one file to another. |
 | `resolve(pathname, pwd = cwd, exists = false)` | `Promise<string \| null>` | Resolves files or directories. |
-| `resolveFile(pathname, pwd = cwd, exists = false)` | `Promise<string \| null>` | File-oriented resolution. |
+| `resolveFile(pathname, extnames = ['.js', '.json'], pwd = cwd, exists = false)` | `Promise<string \| null>` | File-oriented resolution. Checks the path directly, then tries each extension and `index` file. |
 
 ### Exported Helpers
 
@@ -58,6 +58,7 @@ const loader = new FileLoader(new NodeFS());
 
 const source = await loader.absolute('@/src/index.ts');
 const relative = loader.relative('/project/src/a.ts', '/project/src/utils/b.ts');
+const resolved = await loader.resolveFile('./plugin/foo', ['.ts', '.js']);
 const config = await loader.import<Record<string, unknown>>('./package.json');
 ```
 

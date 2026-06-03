@@ -1,18 +1,22 @@
 # API Reference
 
-- [Data](./api/data/Nest.md)
+Public API reference for the shared low-level utilities exported by `@stackpress/lib`.
+
+The category links below open the main API page for each area.
+
+- [Data APIs](./api/data/Nest.md)
   `Nest`, readonly wrappers, map and set helpers, parsers, and cookie helpers.
-- [Events](./api/events/EventEmitter.md)
+- [Event APIs](./api/events/EventEmitter.md)
   `EventEmitter`, `ExpressEmitter`, and `RouteEmitter`.
-- [Queues](./api/queue/ItemQueue.md)
+- [Queue APIs](./api/queue/ItemQueue.md)
   `ItemQueue` and `TaskQueue`.
-- [Routing](./api/router/Router.md)
+- [Routing APIs](./api/router/Router.md)
   `Router`, `Request`, `Response`, and `Session`.
-- [System](./api/system/FileLoader.md)
+- [System APIs](./api/system/FileLoader.md)
   `FileLoader` and `NodeFS`.
-- [Runtime](./api/runtime/Exception.md)
+- [Runtime APIs](./api/runtime/Exception.md)
   `Exception`, `Reflection`, `Status`, `Template`, and terminal helpers.
-- [Types](./api/types/README.md)
+- [Type APIs](./api/types/README.md)
   Public type families from `@stackpress/lib/types`.
 
 ## Data

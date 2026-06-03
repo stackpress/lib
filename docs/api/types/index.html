@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta content="Public type families exported from @stackpress/lib/types. ## Import ``ts import type { CallableMap, CallableNest, CallableSet, CookieOptions, ErrorResponse, Event, EventD" name="description">
+  <meta content="Public type families exported from @stackpress/lib/types. ## Import ``ts import type { CallableMap, CallableNest, CallableSet, Constructor, CookieOptions, CookieParseOpti" name="description">
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <meta content="Types | @stackpress/lib" property="og:title">
-  <meta content="Public type families exported from @stackpress/lib/types. ## Import ``ts import type { CallableMap, CallableNest, CallableSet, CookieOptions, ErrorResponse, Event, EventD" property="og:description">
+  <meta content="Public type families exported from @stackpress/lib/types. ## Import ``ts import type { CallableMap, CallableNest, CallableSet, Constructor, CookieOptions, CookieParseOpti" property="og:description">
   <meta content="website" property="og:type">
   <meta content="summary" name="twitter:card">
   <title>Types | @stackpress/lib</title>
@@ -59,7 +59,7 @@
   <div class="page-inner">
     <p class="eyebrow">API reference</p>
     <h1>Types</h1>
-    <p class="lede">Public type families exported from @stackpress/lib/types. ## Import ``ts import type { CallableMap, CallableNest, CallableSet, CookieOptions, ErrorResponse, Event, EventD</p>
+    <p class="lede">Public type families exported from @stackpress/lib/types. ## Import ``ts import type { CallableMap, CallableNest, CallableSet, Constructor, CookieOptions, CookieParseOpti</p>
     <div class="article-card markdown-body">
       <h1 id="types">Types</h1>
 
@@ -72,33 +72,89 @@
   CallableMap,
   CallableNest,
   CallableSet,
+  Constructor,
   CookieOptions,
+  CookieParseOptions,
+  CookieSerializeOptions,
+  Data,
+  DataMapFilter,
+  DataMapIterator,
+  DataSetFilter,
+  DataSetIterator,
   ErrorResponse,
   Event,
   EventData,
+  EventExpression,
   EventHook,
   EventMap,
   EventMatch,
+  EventName,
+  ExtendsType,
+  FileMeta,
+  FileRecursiveOption,
+  FileStat,
+  FileStream,
   FileSystem,
+  Hash,
+  Headers,
+  Infer,
+  Item,
+  Key,
+  KeyPath,
+  LoaderResults,
+  Merge,
+  Method,
   NestedObject,
+  PathObject,
+  PathValue,
+  Post,
+  Query,
+  Body,
+  CallSite,
+  CallableSession,
+  ResponseDispatcher,
+  RequestLoader,
   RequestOptions,
+  Revision,
   ResponseOptions,
   ResponseStatus,
   Route,
   RouteAction,
   RouteMap,
+  RouterArgs,
   RouterAction,
+  RouterContext,
   RouterMap,
+  Scalar,
+  ScalarInput,
+  Session,
+  SetInputResult,
+  SetResult,
   StatusResponse,
   SuccessResponse,
+  TaskAction,
+  TaskItem,
+  TaskResult,
+  TemplateHelper,
+  TemplateHelperOptions,
   TemplateOptions,
+  TemplateResolver,
   TerminalInputConfig,
-  TypeOf
+  TerminalInputContext,
+  TerminalInputTheme,
+  TerminalPromptState,
+  TerminalTTYInput,
+  TerminalTTYOutput,
+  Trace,
+  UnknownNest,
+  TypeOf,
+  ValueAt,
+  Widen
 } from '@stackpress/lib/types';</code></pre>
 
 <p>Use <code>@stackpress/lib/types</code>
- when you want a dedicated import path for the public type surface. Many of these types are also re-exported from the root barrel, but the <code>types</code>
- subpath is the clearest stable reference point.</p>
+ when you want a dedicated import path for the public type surface. The root barrel re-exports the most commonly consumed type names, but <code>@stackpress/lib/types</code>
+ is the stable import path for the full type module.</p>
 
 <h2 id="data-types">Data Types</h2>
 
@@ -149,6 +205,11 @@
 <td>Scalar, scalar array, or hash.</td>
 
     </tr><tr>
+      <td><code>FileMeta</code>
+</td>
+<td>File wrapper metadata used by multipart parsing.</td>
+
+    </tr><tr>
       <td><code>CallableNest&lt;M&gt;</code>
 </td>
 <td>Callable wrapper returned by <code>nest()</code>
@@ -165,6 +226,101 @@
 </td>
 <td>Callable wrapper returned by <code>set()</code>
 .</td>
+
+    </tr><tr>
+      <td><code>DataSetIterator</code>
+</td>
+<td>Callback shape for <code>DataSet#map()</code>
+.</td>
+
+    </tr><tr>
+      <td><code>DataSetFilter</code>
+</td>
+<td>Callback shape for <code>DataSet#filter()</code>
+ and find helpers.</td>
+
+    </tr><tr>
+      <td><code>DataMapIterator</code>
+</td>
+<td>Callback shape for <code>DataMap#map()</code>
+.</td>
+
+    </tr><tr>
+      <td><code>DataMapFilter</code>
+</td>
+<td>Callback shape for <code>DataMap#filter()</code>
+ and find helpers.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h2 id="lower-level-utility-types">Lower-Level Utility Types</h2>
+
+<p>These types support the generic return values used by the data helpers. Most callers do not need to import them directly unless they are extending the library's typed path behavior.</p>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Type</th>
+<th>Purpose</th>
+
+    </tr><tr>
+      <td><code>ExtendsType&lt;T, U&gt;</code>
+</td>
+<td>Combines an override shape with the remaining keys from another type.</td>
+
+    </tr><tr>
+      <td><code>Constructor&lt;T, U&gt;</code>
+</td>
+<td>Constructor contract with optional static fields.</td>
+
+    </tr><tr>
+      <td><code>KeyPath</code>
+</td>
+<td>Readonly array of nested path segments.</td>
+
+    </tr><tr>
+      <td><code>Infer</code>
+</td>
+<td>Internal marker used by callable generic defaults.</td>
+
+    </tr><tr>
+      <td><code>Widen&lt;T&gt;</code>
+</td>
+<td>Widens literal values to their primitive or object shapes.</td>
+
+    </tr><tr>
+      <td><code>ValueAt&lt;T, K&gt;</code>
+</td>
+<td>Resolves the value type at one path segment.</td>
+
+    </tr><tr>
+      <td><code>PathValue&lt;T, P&gt;</code>
+</td>
+<td>Resolves the value type at a nested path.</td>
+
+    </tr><tr>
+      <td><code>PathObject&lt;P, V&gt;</code>
+</td>
+<td>Builds an object shape from a path and value type.</td>
+
+    </tr><tr>
+      <td><code>Merge&lt;A, B&gt;</code>
+</td>
+<td>Merges object shapes for nested writes.</td>
+
+    </tr><tr>
+      <td><code>SetResult&lt;M, P, V&gt;</code>
+</td>
+<td>Result type for one path-based <code>set()</code>
+ operation.</td>
+
+    </tr><tr>
+      <td><code>SetInputResult&lt;M, I&gt;</code>
+</td>
+<td>Result type for callable <code>set()</code>
+ input overloads.</td>
 
     </tr>
   </table>
@@ -536,7 +692,7 @@
 </article>
 <aside class="article-toc">
   <strong>On this page</strong>
-  <a href="#import" title="Import">Import</a><a href="#data-types" title="Data Types">Data Types</a><a href="#status-and-error-types" title="Status And Error Types">Status And Error Types</a><a href="#queue-and-event-types" title="Queue And Event Types">Queue And Event Types</a><a href="#router-types" title="Router Types">Router Types</a><a href="#filesystem-types" title="Filesystem Types">Filesystem Types</a><a href="#terminal-and-template-types" title="Terminal And Template Types">Terminal And Template Types</a><a href="#related" title="Related">Related</a>
+  <a href="#import" title="Import">Import</a><a href="#data-types" title="Data Types">Data Types</a><a href="#lower-level-utility-types" title="Lower-Level Utility Types">Lower-Level Utility Types</a><a href="#status-and-error-types" title="Status And Error Types">Status And Error Types</a><a href="#queue-and-event-types" title="Queue And Event Types">Queue And Event Types</a><a href="#router-types" title="Router Types">Router Types</a><a href="#filesystem-types" title="Filesystem Types">Filesystem Types</a><a href="#terminal-and-template-types" title="Terminal And Template Types">Terminal And Template Types</a><a href="#related" title="Related">Related</a>
 </aside>
 </div>
     </main>
