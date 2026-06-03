@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>API Article Creative Draft</title><link rel="stylesheet" href="./styles.css"></head>
+<body>
+  <div class="wireframe-note">Creative Round 2 design draft. Representative API article page.</div>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">S</div><div><strong>@stackpress/lib</strong><span>API reference hub</span></div></div>
+      <section class="sidebar-section"><h2>Pages</h2><ul class="nav-list"><li><a href="./index.html">Reference Hub</a></li><li><a href="./events.html">Events</a></li><li><a href="./system.html">System</a></li><li><a href="./data.html">Data</a></li><li><a href="./routing.html">Routing</a></li><li><a href="./queue.html">Queue</a></li><li><a class="active" href="./api-reference.html">API Article</a></li><li><a href="./mobile-nav.html">Mobile Nav State</a></li></ul></section>
+      <section class="sidebar-section"><h3>Article siblings</h3><ul class="nav-list"><li><a class="primary" href="#">EventEmitter</a></li><li><a href="#">ExpressEmitter</a></li><li><a href="#">RouteEmitter</a></li></ul></section>
+    </aside>
+    <main class="content">
+      <header class="topbar"><div class="topbar-brand"><div class="brand-mark">S</div><div><strong>@stackpress/lib</strong><span>Docs</span></div></div><nav class="top-actions"><button class="theme-toggle" type="button" aria-pressed="false">Dark</button><a class="button" href="#">GitHub</a><a class="button" href="#">npm</a></nav><button class="mobile-menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-review-nav"><span></span><span></span><span></span></button></header>
+      <nav id="mobile-review-nav" class="mobile-review-nav"><a class="button" href="./index.html">Hub</a><a class="button" href="./events.html">Events</a><a class="button" href="./system.html">System</a><a class="button" href="./data.html">Data</a><a class="button" href="./routing.html">Routing</a><a class="button" href="./queue.html">Queue</a><a class="button" href="./api-reference.html">Article</a></nav>
+      <section class="page"><div class="page-inner article-layout">
+        <article class="article-main">
+          <p class="eyebrow">API article</p><h1>EventEmitter</h1><p class="lede">Article pages stay calm and lookup-oriented: import first, decision rule next, API tables, example, and related links.</p>
+          <section class="article-card"><h2>Import</h2><pre class="code-block">import { EventEmitter } from '@stackpress/lib';</pre></section>
+          <section class="article-card"><h2>When to use it</h2><p>Use EventEmitter when your event names are exact strings and you want ordered async listeners, hooks, and status results.</p></section>
+          <section class="article-card"><h2>Constructor</h2><pre class="code-block">type Events = {
+  saved: [string];
+};
+
+const emitter = new EventEmitter&lt;Events&gt;();</pre></section>
+          <section class="article-card"><h2>Properties</h2><div class="table-wire"><div class="table-row"><span>Name</span><span>Type</span><span>Notes</span></div><div class="table-row"><span>before</span><span>EventHook</span><span>Runs before each task and can abort.</span></div><div class="table-row"><span>after</span><span>EventHook</span><span>Runs after each task and can abort.</span></div><div class="table-row"><span>listeners</span><span>frozen copy</span><span>Listener registry keyed by event.</span></div></div></section>
+          <section class="article-card"><h2>Methods</h2><div class="table-wire"><div class="table-row"><span>Method</span><span>Returns</span><span>Notes</span></div><div class="table-row"><span>emit()</span><span>Promise status</span><span>Executes matching listeners in queue order.</span></div><div class="table-row"><span>on()</span><span>this</span><span>Adds a priority-aware listener.</span></div><div class="table-row"><span>use()</span><span>this</span><span>Merges listeners from another emitter.</span></div></div></section>
+          <section class="article-card"><h2>Example</h2><pre class="code-block">const emitter = new EventEmitter();
+
+emitter.on('saved', async id => {
+  console.log('saved', id);
+}, 10);
+
+await emitter.emit('saved', 'abc123');</pre></section>
+          <section class="article-card"><h2>Related</h2><div class="quick-links"><a href="./events.html"><span>ExpressEmitter</span><span>Events</span></a><a href="./events.html"><span>RouteEmitter</span><span>Events</span></a><a href="./index.html#queue"><span>TaskQueue</span><span>Queue</span></a></div></section>
+        </article>
+        <aside class="article-toc"><strong>On this page</strong><a href="#import">Import</a><a href="#when">When to use it</a><a href="#constructor">Constructor</a><a href="#properties">Properties</a><a href="#methods">Methods</a><a href="#example">Example</a><a href="#related">Related</a></aside>
+      </div></section>
+    </main>
+  </div><script src="./script.js"></script>
+</body>
+</html>

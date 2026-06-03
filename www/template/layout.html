@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="[[description]]" name="description">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="[[pageTitle]]" property="og:title">
+  <meta content="[[description]]" property="og:description">
+  <meta content="website" property="og:type">
+  <meta content="summary" name="twitter:card">
+  <title>[[pageTitle]]</title>
+  <link href="[[styleHref]]" rel="stylesheet">
+</head>
+<body>
+  <div class="site-shell">
+    <aside aria-label="Site navigation" class="sidebar">
+      <a class="brand" href="[[homeHref]]" title="@stackpress/lib">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>@stackpress/lib</strong><span>API reference hub</span></span>
+      </a>
+      [[sidebar]]
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <a class="topbar-brand" href="[[homeHref]]" title="@stackpress/lib">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span><strong>@stackpress/lib</strong><span>Docs</span></span>
+        </a>
+        <nav aria-label="Top actions" class="top-actions">
+          <button aria-pressed="false" class="theme-toggle" type="button">Dark</button>
+          <a class="button" href="[[repo]]" title="GitHub">GitHub</a>
+          <a class="button" href="[[npm]]" title="npm">npm</a>
+        </nav>
+        <button aria-controls="mobile-nav" aria-expanded="false" aria-label="Menu" class="mobile-menu" type="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+      <nav aria-label="Mobile pages" class="mobile-nav" id="mobile-nav">
+        [[mobileNav]]
+      </nav>
+      [[#?:hasToc]]
+      <div class="article-layout">[[body]][[tocHtml]]</div>
+      [[|]]
+      [[body]]
+      [[/?:hasToc]]
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="[[scriptHref]]"></script>
+</body>
+</html>

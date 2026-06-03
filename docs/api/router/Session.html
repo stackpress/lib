@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="Use these APIs when you need one session abstraction for request reads and response-side cookie revisions." name="description">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Session | @stackpress/lib" property="og:title">
+  <meta content="Use these APIs when you need one session abstraction for request reads and response-side cookie revisions." property="og:description">
+  <meta content="website" property="og:type">
+  <meta content="summary" name="twitter:card">
+  <title>Session | @stackpress/lib</title>
+  <link href="../../assets/styles/site.css" rel="stylesheet">
+</head>
+<body>
+  <div class="site-shell">
+    <aside aria-label="Site navigation" class="sidebar">
+      <a class="brand" href="../../index.html" title="@stackpress/lib">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>@stackpress/lib</strong><span>API reference hub</span></span>
+      </a>
+      <section class="sidebar-section">
+  <h2>Pages</h2>
+  <ul class="nav-list">
+    <li><a class="" href="../../index.html" title="Reference Hub">Reference Hub</a></li>
+    <li><a class="" href="../../events.html" title="Events">Events</a></li><li><a class="" href="../../system.html" title="System">System</a></li><li><a class="" href="../../data.html" title="Data">Data</a></li><li><a class="" href="../../routing.html" title="Routing">Routing</a></li><li><a class="" href="../../queue.html" title="Queue">Queue</a></li><li><a class="" href="../../runtime.html" title="Runtime">Runtime</a></li><li><a class="" href="../../types.html" title="Types">Types</a></li>
+  </ul>
+</section>
+
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <a class="topbar-brand" href="../../index.html" title="@stackpress/lib">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span><strong>@stackpress/lib</strong><span>Docs</span></span>
+        </a>
+        <nav aria-label="Top actions" class="top-actions">
+          <button aria-pressed="false" class="theme-toggle" type="button">Dark</button>
+          <a class="button" href="https://github.com/stackpress/lib" title="GitHub">GitHub</a>
+          <a class="button" href="https://www.npmjs.com/package/@stackpress/lib" title="npm">npm</a>
+        </nav>
+        <button aria-controls="mobile-nav" aria-expanded="false" aria-label="Menu" class="mobile-menu" type="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+      <nav aria-label="Mobile pages" class="mobile-nav" id="mobile-nav">
+        <a class="button" href="../../index.html" title="Hub">Hub</a>
+<a class="button" href="../../events.html" title="Events">Events</a>
+<a class="button" href="../../system.html" title="System">System</a>
+<a class="button" href="../../data.html" title="Data">Data</a>
+<a class="button" href="../../routing.html" title="Routing">Routing</a>
+<a class="button" href="../../queue.html" title="Queue">Queue</a>
+<a class="button" href="../../runtime.html" title="Runtime">Runtime</a>
+<a class="button" href="../../types.html" title="Types">Types</a>
+
+      </nav>
+      <div class="article-layout"><article class="page article-main">
+  <div class="page-inner">
+    <p class="eyebrow">API reference</p>
+    <h1>Session</h1>
+    <p class="lede">Use these APIs when you need one session abstraction for request reads and response-side cookie revisions.</p>
+    <div class="article-card markdown-body">
+      <h1 id="session">Session</h1>
+
+<p>Cookie-oriented session storage for requests and responses.</p>
+
+<h2 id="import">Import</h2>
+
+<pre class="code-block"><code class="language-ts">import type { CallableSession } from '@stackpress/lib';
+import { ReadSession, WriteSession, session } from '@stackpress/lib/Session';</code></pre>
+
+<p>Import <code>ReadSession</code>
+, <code>WriteSession</code>
+, and <code>session()</code>
+ from the <code>@stackpress/lib/Session</code>
+ subpath. The root barrel only re-exports the <code>CallableSession</code>
+ type.</p>
+
+<h2 id="when-to-use-it">When To Use It</h2>
+
+<p>Use these APIs when you need one session abstraction for request reads and response-side cookie revisions.</p>
+
+<h2 id="api">API</h2>
+
+<h3 id="readsession">ReadSession</h3>
+
+<p><code>ReadSession</code>
+ extends <code>ReadonlyMap&lt;string, string | string[]&gt;</code>
+.</p>
+
+<h4 id="properties">Properties</h4>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>data</code>
+</td>
+<td>`Record&lt;string, string \</td>
+<td>string[]&gt;`</td>
+<td>Plain-object snapshot of the session values.</td>
+
+    </tr><tr>
+      <td><code>options</code>
+</td>
+<td><code>Record&lt;string, CookieOptions&gt;</code>
+</td>
+<td>Plain-object snapshot of per-key cookie options.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h4 id="methods">Methods</h4>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Method</th>
+<th>Returns</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>getOptions(name)</code>
+</td>
+<td>`CookieOptions \</td>
+<td>undefined`</td>
+<td>Returns stored cookie options for one key.</td>
+
+    </tr>
+  </table>
+</div>
+
+<p>All <code>ReadonlyMap</code>
+ methods such as <code>get</code>
+, <code>has</code>
+, <code>keys</code>
+, <code>values</code>
+, <code>find</code>
+, and <code>toObject</code>
+ are also available.</p>
+
+<h3 id="writesession">WriteSession</h3>
+
+<p><code>WriteSession</code>
+ extends <code>ReadSession</code>
+.</p>
+
+<h4 id="properties">Properties</h4>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>revisions</code>
+</td>
+<td><code>Map&lt;string, Revision&gt;</code>
+</td>
+<td>Tracks per-key <code>set</code>
+ and <code>remove</code>
+ operations for adapters.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h4 id="methods">Methods</h4>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Method</th>
+<th>Returns</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>clear()</code>
+</td>
+<td><code>void</code>
+</td>
+<td>Removes every key and records <code>remove</code>
+ revisions.</td>
+
+    </tr><tr>
+      <td><code>delete(name)</code>
+</td>
+<td><code>boolean</code>
+</td>
+<td>Removes one key and records a <code>remove</code>
+ revision.</td>
+
+    </tr><tr>
+      <td><code>set(name, value, options?)</code>
+</td>
+<td><code>Map</code>
+ return</td>
+<td>Stores the value and records a <code>set</code>
+ revision, including cookie options when present.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="callable-helper">Callable Helper</h3>
+
+<pre class="code-block"><code class="language-ts">import { session } from '@stackpress/lib/Session';
+
+const store = session();
+store.set('sessionId', 'abc123', { httpOnly: true });
+store('sessionId');
+store.get('sessionId');</code></pre>
+
+<p><code>session(data?)</code>
+ returns a <code>CallableSession</code>
+ with the usual callable lookup plus these exposed properties:</p>
+
+<ul>
+  <li><code>data</code>
+</li><li><code>options</code>
+</li><li><code>revisions</code>
+</li><li><code>size</code>
+</li>
+</ul>
+
+<h2 id="example">Example</h2>
+
+<pre class="code-block"><code class="language-ts">import { session } from '@stackpress/lib/Session';
+
+const store = session();
+store.set('theme', 'dark', { path: '/', maxAge: 3600 });
+store.set('token', 'abc123', { httpOnly: true, sameSite: 'strict' });
+
+const token = store('token');
+const pending = Array.from(store.revisions.entries());</code></pre>
+
+<h2 id="related">Related</h2>
+
+<ul>
+  <li><a href="./Request.html" title="Request">Request</a>
+</li><li><a href="./Response.html" title="Response">Response</a>
+</li><li><a href="../data/Cookie.html" title="cookie">cookie</a>
+</li>
+</ul>
+
+    </div>
+    <nav aria-label="Pagination" class="pager">
+      <a href="./Router.html" title="Router">Previous: Router</a>
+      <a href="../queue/ItemQueue.html" title="ItemQueue">Next: ItemQueue</a>
+    </nav>
+  </div>
+</article>
+<aside class="article-toc">
+  <strong>On this page</strong>
+  <a href="#import" title="Import">Import</a><a href="#when-to-use-it" title="When To Use It">When To Use It</a><a href="#api" title="API">API</a><a href="#readsession" title="ReadSession">ReadSession</a><a href="#properties" title="Properties">Properties</a><a href="#methods" title="Methods">Methods</a><a href="#writesession" title="WriteSession">WriteSession</a><a href="#properties" title="Properties">Properties</a><a href="#methods" title="Methods">Methods</a><a href="#callable-helper" title="Callable Helper">Callable Helper</a><a href="#example" title="Example">Example</a><a href="#related" title="Related">Related</a>
+</aside>
+</div>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="../../assets/scripts/site.js"></script>
+</body>
+</html>

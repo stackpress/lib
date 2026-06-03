@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>@stackpress/lib Docs Wireframes - Reference Hub</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="wireframe-note">Round 2 full grayscale wireframe set. Layout and hierarchy only; no final color, type, imagery, or production code decisions.</div>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Site navigation">
+      <div class="brand"><div class="brand-mark">S</div><div><strong>@stackpress/lib</strong><span>API reference hub</span></div></div>
+      <section class="sidebar-section">
+        <h2>Pages</h2>
+        <ul class="nav-list">
+          <li><a class="active" href="./index.html">Reference Hub</a></li>
+          <li><a href="./events.html">Events</a></li>
+          <li><a href="./system.html">System</a></li>
+          <li><a href="./data.html">Data</a></li>
+          <li><a href="./routing.html">Routing</a></li>
+          <li><a href="./api-reference.html">API Article</a></li>
+          <li><a href="./mobile-nav.html">Mobile Nav State</a></li>
+        </ul>
+      </section>
+      <section class="sidebar-section">
+        <h3>Secondary APIs</h3>
+        <ul class="nav-list">
+          <li><a href="#queue">Queue</a></li>
+          <li><a href="#runtime">Runtime</a></li>
+          <li><a href="#types">Types</a></li>
+        </ul>
+      </section>
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <div class="topbar-brand"><div class="brand-mark">S</div><div><strong>@stackpress/lib</strong><span>Docs</span></div></div>
+        <nav class="top-actions" aria-label="Top actions"><a class="button" href="#">GitHub</a><a class="button" href="#">Package</a></nav>
+        <button class="mobile-menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-review-nav"><span></span><span></span><span></span></button>
+      </header>
+      <nav id="mobile-review-nav" class="mobile-review-nav" aria-label="Mobile pages">
+        <a class="button" href="./index.html">Hub</a><a class="button" href="./events.html">Events</a><a class="button" href="./system.html">System</a><a class="button" href="./data.html">Data</a><a class="button" href="./routing.html">Routing</a><a class="button" href="./api-reference.html">Article</a>
+      </nav>
+      <section class="page">
+        <div class="page-inner">
+          <p class="eyebrow">Reference hub</p>
+          <h1>Low-level Stackpress primitives, grouped by the jobs experienced developers reach for first.</h1>
+          <p class="lede">Fast paths into events, file loading, nested data, and route-aware request handling. Everything else remains one click away as API reference.</p>
+          <div class="hero-grid">
+            <div class="panel"><pre class="code-block">import {
+  EventEmitter,
+  FileLoader,
+  Nest,
+  Router
+} from '@stackpress/lib';</pre></div>
+            <aside class="panel">
+              <strong>Start by problem area</strong>
+              <div class="quick-links">
+                <a href="./events.html"><span>Coordinate async event flows</span><span>Events</span></a>
+                <a href="./system.html"><span>Load files and modules</span><span>System</span></a>
+                <a href="./data.html"><span>Parse and traverse nested payloads</span><span>Data</span></a>
+                <a href="./routing.html"><span>Resolve typed request handlers</span><span>Routing</span></a>
+              </div>
+            </aside>
+          </div>
+          <section class="section">
+            <div class="section-head"><div><h2>Primary API lanes</h2><p>These get first-screen priority because they describe the library’s practical center of gravity.</p></div></div>
+            <div class="lane-grid">
+              <article class="lane"><div class="lane-kicker"><span class="lane-icon"></span> Events</div><h3>EventEmitter, ExpressEmitter, RouteEmitter</h3><p>Priority-aware async listeners, route-style matching, and queue-backed execution.</p><ul><li>before and after hooks</li><li>status results</li><li>pattern matching</li></ul><a href="./events.html">Open events references</a></article>
+              <article class="lane"><div class="lane-kicker"><span class="lane-icon"></span> System</div><h3>FileLoader, NodeFS</h3><p>Filesystem abstraction and module loading utilities for runtime boundaries.</p><ul><li>absolute and relative paths</li><li>module resolution</li><li>Node-backed file operations</li></ul><a href="./system.html">Open system references</a></article>
+              <article class="lane"><div class="lane-kicker"><span class="lane-icon"></span> Data</div><h3>Nest, Map, Set, parsers, cookies</h3><p>Nested object access, readonly wrappers, callable stores, and payload parsers.</p><ul><li>query and form parsing</li><li>dot-path helpers</li><li>typed stores</li></ul><a href="./data.html">Open data references</a></article>
+              <article class="lane"><div class="lane-kicker"><span class="lane-icon"></span> Routing</div><h3>Router, Request, Response, Session</h3><p>Request and response wrappers around route-aware event resolution.</p><ul><li>method and path matching</li><li>typed wrappers</li><li>response status handling</li></ul><a href="./routing.html">Open router references</a></article>
+            </div>
+          </section>
+          <section class="section">
+            <div class="section-head"><div><h2>Secondary API index</h2><p>Kept visible, but lower priority than the four main primitive families.</p></div></div>
+            <div class="doc-grid">
+              <article id="queue" class="doc-card"><h3>Queue</h3><p>ItemQueue and TaskQueue references for ordered work execution.</p></article>
+              <article id="runtime" class="doc-card"><h3>Runtime</h3><p>Exception, Reflection, Status, Template, and terminal helpers.</p></article>
+              <article id="types" class="doc-card"><h3>Types</h3><p>Public type families from @stackpress/lib/types.</p></article>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="./script.js"></script>
+</body>
+</html>

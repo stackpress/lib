@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mobile Nav Creative Draft</title><link rel="stylesheet" href="./styles.css"></head>
+<body>
+  <div class="wireframe-note">Creative Round 1 design draft. Mobile drawer state.</div>
+  <div class="shell">
+    <aside class="sidebar"><div class="brand"><div class="brand-mark">S</div><div><strong>@stackpress/lib</strong><span>API reference hub</span></div></div><section class="sidebar-section"><h2>Pages</h2><ul class="nav-list"><li><a href="./index.html">Reference Hub</a></li><li><a href="./events.html">Events</a></li><li><a href="./system.html">System</a></li><li><a href="./data.html">Data</a></li><li><a href="./routing.html">Routing</a></li><li><a href="./api-reference.html">API Article</a></li><li><a class="active" href="./mobile-nav.html">Mobile Nav State</a></li></ul></section></aside>
+    <main class="content">
+      <header class="topbar"><div class="topbar-brand"><div class="brand-mark">S</div><div><strong>@stackpress/lib</strong><span>Docs</span></div></div><nav class="top-actions"><a class="button" href="#">GitHub</a><a class="button" href="#">npm</a></nav><button class="mobile-menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-review-nav"><span></span><span></span><span></span></button></header>
+      <nav id="mobile-review-nav" class="mobile-review-nav"><a class="button" href="./index.html">Hub</a><a class="button" href="./events.html">Events</a><a class="button" href="./system.html">System</a><a class="button" href="./data.html">Data</a><a class="button" href="./routing.html">Routing</a><a class="button" href="./api-reference.html">Article</a></nav>
+      <section class="page"><div class="page-inner">
+        <p class="eyebrow">Mobile navigation state</p><h1>Drawer-first navigation keeps the dense API map accessible on small screens.</h1><p class="lede">The mobile state prioritizes the same page set as desktop: reference hub, primary lanes, representative article, and external actions.</p>
+        <div class="section mobile-drawer">
+          <aside class="drawer-panel">
+            <div class="brand"><div class="brand-mark">S</div><div><strong>@stackpress/lib</strong><span>Docs</span></div></div>
+            <div class="meta-list"><a href="./index.html">Reference Hub</a><a href="./events.html">Events</a><a href="./system.html">System</a><a href="./data.html">Data</a><a href="./routing.html">Routing</a><a href="./api-reference.html">API Article</a><div>GitHub</div><div>npm</div></div>
+          </aside>
+          <div class="drawer-scrim">Current page is dimmed behind the navigation drawer.</div>
+        </div>
+      </div></section>
+    </main>
+  </div><script src="./script.js"></script>
+</body>
+</html>

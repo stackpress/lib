@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="Use Request when you want one request shape across HTTP servers, terminal adapters, or custom transports." name="description">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Request | @stackpress/lib" property="og:title">
+  <meta content="Use Request when you want one request shape across HTTP servers, terminal adapters, or custom transports." property="og:description">
+  <meta content="website" property="og:type">
+  <meta content="summary" name="twitter:card">
+  <title>Request | @stackpress/lib</title>
+  <link href="../../assets/styles/site.css" rel="stylesheet">
+</head>
+<body>
+  <div class="site-shell">
+    <aside aria-label="Site navigation" class="sidebar">
+      <a class="brand" href="../../index.html" title="@stackpress/lib">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>@stackpress/lib</strong><span>API reference hub</span></span>
+      </a>
+      <section class="sidebar-section">
+  <h2>Pages</h2>
+  <ul class="nav-list">
+    <li><a class="" href="../../index.html" title="Reference Hub">Reference Hub</a></li>
+    <li><a class="" href="../../events.html" title="Events">Events</a></li><li><a class="" href="../../system.html" title="System">System</a></li><li><a class="" href="../../data.html" title="Data">Data</a></li><li><a class="" href="../../routing.html" title="Routing">Routing</a></li><li><a class="" href="../../queue.html" title="Queue">Queue</a></li><li><a class="" href="../../runtime.html" title="Runtime">Runtime</a></li><li><a class="" href="../../types.html" title="Types">Types</a></li>
+  </ul>
+</section>
+
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <a class="topbar-brand" href="../../index.html" title="@stackpress/lib">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span><strong>@stackpress/lib</strong><span>Docs</span></span>
+        </a>
+        <nav aria-label="Top actions" class="top-actions">
+          <button aria-pressed="false" class="theme-toggle" type="button">Dark</button>
+          <a class="button" href="https://github.com/stackpress/lib" title="GitHub">GitHub</a>
+          <a class="button" href="https://www.npmjs.com/package/@stackpress/lib" title="npm">npm</a>
+        </nav>
+        <button aria-controls="mobile-nav" aria-expanded="false" aria-label="Menu" class="mobile-menu" type="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+      <nav aria-label="Mobile pages" class="mobile-nav" id="mobile-nav">
+        <a class="button" href="../../index.html" title="Hub">Hub</a>
+<a class="button" href="../../events.html" title="Events">Events</a>
+<a class="button" href="../../system.html" title="System">System</a>
+<a class="button" href="../../data.html" title="Data">Data</a>
+<a class="button" href="../../routing.html" title="Routing">Routing</a>
+<a class="button" href="../../queue.html" title="Queue">Queue</a>
+<a class="button" href="../../runtime.html" title="Runtime">Runtime</a>
+<a class="button" href="../../types.html" title="Types">Types</a>
+
+      </nav>
+      <div class="article-layout"><article class="page article-main">
+  <div class="page-inner">
+    <p class="eyebrow">API reference</p>
+    <h1>Request</h1>
+    <p class="lede">Use Request when you want one request shape across HTTP servers, terminal adapters, or custom transports.</p>
+    <div class="article-card markdown-body">
+      <h1 id="request">Request</h1>
+
+<p>Generic request wrapper for headers, query data, post data, session data, and optional body loading.</p>
+
+<h2 id="import">Import</h2>
+
+<pre class="code-block"><code class="language-ts">import { Request, withUnknownHost } from '@stackpress/lib';</code></pre>
+
+<h2 id="when-to-use-it">When To Use It</h2>
+
+<p>Use <code>Request</code>
+ when you want one request shape across HTTP servers, terminal adapters, or custom transports.</p>
+
+<h2 id="api">API</h2>
+
+<h3 id="constructor">Constructor</h3>
+
+<pre class="code-block"><code class="language-ts">const req = new Request({
+  method: 'POST',
+  url: 'http://localhost/users?page=1',
+  headers: { 'Content-Type': 'application/json' },
+  post: { name: 'Ada' }
+});</code></pre>
+
+<p><code>RequestOptions&lt;R&gt;</code>
+ accepts partial initialization for:</p>
+
+<ul>
+  <li><code>body</code>
+</li><li><code>data</code>
+</li><li><code>headers</code>
+</li><li><code>loader</code>
+</li><li><code>method</code>
+</li><li><code>mimetype</code>
+</li><li><code>post</code>
+</li><li><code>query</code>
+</li><li><code>resource</code>
+</li><li><code>session</code>
+</li><li><code>url</code>
+</li>
+</ul>
+
+<h3 id="properties">Properties</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>body</code>
+</td>
+<td>`Body \</td>
+<td>null`</td>
+<td>Raw body or loaded body.</td>
+
+    </tr><tr>
+      <td><code>data</code>
+</td>
+<td><code>CallableNest</code>
+</td>
+<td>Combined view of query, post, and extra <code>data</code>
+.</td>
+
+    </tr><tr>
+      <td><code>headers</code>
+</td>
+<td>`CallableMap&lt;string, string \</td>
+<td>string[]&gt;`</td>
+<td>Header map.</td>
+
+    </tr><tr>
+      <td><code>loaded</code>
+</td>
+<td><code>boolean</code>
+</td>
+<td>Whether <code>load()</code>
+ has already run.</td>
+
+    </tr><tr>
+      <td><code>method</code>
+</td>
+<td><code>Method</code>
+</td>
+<td>Defaults to <code>GET</code>
+.</td>
+
+    </tr><tr>
+      <td><code>mimetype</code>
+</td>
+<td><code>string</code>
+</td>
+<td>Defaults to <code>text/plain</code>
+.</td>
+
+    </tr><tr>
+      <td><code>post</code>
+</td>
+<td><code>CallableNest</code>
+</td>
+<td>Parsed post data only.</td>
+
+    </tr><tr>
+      <td><code>query</code>
+</td>
+<td><code>CallableNest</code>
+</td>
+<td>Parsed query data only.</td>
+
+    </tr><tr>
+      <td><code>resource</code>
+</td>
+<td><code>R</code>
+</td>
+<td>Original request resource, if any.</td>
+
+    </tr><tr>
+      <td><code>session</code>
+</td>
+<td><code>CallableSession</code>
+</td>
+<td>Session store. Defaults from <code>cookie</code>
+ header when explicit session data is missing.</td>
+
+    </tr><tr>
+      <td><code>type</code>
+</td>
+<td><code>string</code>
+</td>
+<td>Body type such as <code>string</code>
+, <code>object</code>
+, <code>array</code>
+, <code>buffer</code>
+, <code>uint8array</code>
+, or <code>null</code>
+.</td>
+
+    </tr><tr>
+      <td><code>url</code>
+</td>
+<td><code>URL</code>
+</td>
+<td>Parsed URL object.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="methods">Methods</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Method</th>
+<th>Returns</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>load()</code>
+</td>
+<td><code>Promise&lt;this&gt;</code>
+</td>
+<td>Runs the configured loader once and merges returned <code>post</code>
+ data into both <code>post</code>
+ and <code>data</code>
+.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="exported-helper">Exported Helper</h3>
+
+<p><code>withUnknownHost(url)</code>
+ prefixes relative paths with <code>http://unknownhost</code>
+ so <code>new URL()</code>
+ can accept them.</p>
+
+<h2 id="example">Example</h2>
+
+<pre class="code-block"><code class="language-ts">import { Request } from '@stackpress/lib';
+
+const req = new Request({
+  url: 'http://localhost/users?active=true',
+  headers: {
+    cookie: 'sessionId=abc123'
+  },
+  data: {
+    source: 'api'
+  }
+});
+
+const active = req.query('active');
+const sessionId = req.session('sessionId');
+const source = req.data('source');</code></pre>
+
+<h2 id="related">Related</h2>
+
+<ul>
+  <li><a href="./Response.html" title="Response">Response</a>
+</li><li><a href="./Router.html" title="Router">Router</a>
+</li><li><a href="./Session.html" title="Session">Session</a>
+</li>
+</ul>
+
+    </div>
+    <nav aria-label="Pagination" class="pager">
+      <a href="../data/Set.html" title="Set">Previous: Set</a>
+      <a href="./Response.html" title="Response">Next: Response</a>
+    </nav>
+  </div>
+</article>
+<aside class="article-toc">
+  <strong>On this page</strong>
+  <a href="#import" title="Import">Import</a><a href="#when-to-use-it" title="When To Use It">When To Use It</a><a href="#api" title="API">API</a><a href="#constructor" title="Constructor">Constructor</a><a href="#properties" title="Properties">Properties</a><a href="#methods" title="Methods">Methods</a><a href="#exported-helper" title="Exported Helper">Exported Helper</a><a href="#example" title="Example">Example</a><a href="#related" title="Related">Related</a>
+</aside>
+</div>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="../../assets/scripts/site.js"></script>
+</body>
+</html>

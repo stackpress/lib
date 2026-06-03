@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>System Creative Draft</title><link rel="stylesheet" href="./styles.css"></head>
+<body>
+  <div class="wireframe-note">Creative Round 1 design draft. System category page.</div>
+  <div class="shell">
+    <aside class="sidebar"><div class="brand"><div class="brand-mark">S</div><div><strong>@stackpress/lib</strong><span>API reference hub</span></div></div><section class="sidebar-section"><h2>Pages</h2><ul class="nav-list"><li><a href="./index.html">Reference Hub</a></li><li><a href="./events.html">Events</a></li><li><a class="active" href="./system.html">System</a></li><li><a href="./data.html">Data</a></li><li><a href="./routing.html">Routing</a></li><li><a href="./api-reference.html">API Article</a></li><li><a href="./mobile-nav.html">Mobile Nav State</a></li></ul></section></aside>
+    <main class="content">
+      <header class="topbar"><div class="topbar-brand"><div class="brand-mark">S</div><div><strong>@stackpress/lib</strong><span>Docs</span></div></div><nav class="top-actions"><a class="button" href="#">GitHub</a><a class="button" href="#">npm</a></nav><button class="mobile-menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-review-nav"><span></span><span></span><span></span></button></header>
+      <nav id="mobile-review-nav" class="mobile-review-nav"><a class="button" href="./index.html">Hub</a><a class="button" href="./events.html">Events</a><a class="button" href="./system.html">System</a><a class="button" href="./data.html">Data</a><a class="button" href="./routing.html">Routing</a><a class="button" href="./api-reference.html">Article</a></nav>
+      <section class="page"><div class="page-inner">
+        <p class="eyebrow">Focused category</p><h1>System</h1><p class="lede">Filesystem and module-loading primitives for callers that need explicit runtime boundaries.</p>
+        <section class="section"><div class="section-head"><div><h2>Choose by boundary</h2><p>Keep this page short: users arrive here to pick between filesystem access and loading behavior.</p></div></div><div class="doc-grid two">
+          <article class="doc-card"><h3>FileLoader</h3><p>Resolve, import, and load files or modules from explicit paths.</p></article>
+          <article class="doc-card"><h3>NodeFS</h3><p>Node-backed filesystem adapter with concrete file operations.</p></article>
+        </div></section>
+        <section class="section article-card"><h2>Comparison table</h2><div class="table-wire"><div class="table-row"><span>Primitive</span><span>Use when</span><span>Reference sections</span></div><div class="table-row"><span>FileLoader</span><span>load modules</span><span>constructor, path resolution, load methods, example</span></div><div class="table-row"><span>NodeFS</span><span>file access</span><span>read/write helpers, directories, adapter behavior</span></div></div></section>
+      </div></section>
+    </main>
+  </div><script src="./script.js"></script>
+</body>
+</html>

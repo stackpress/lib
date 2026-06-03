@@ -1,0 +1,31 @@
+<section class="page">
+  <div class="page-inner">
+    <p class="eyebrow">Focused category</p>
+    <h1>[[title]]</h1>
+    <p class="lede">[[description]]</p>
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Choose by job</h2>
+          <p>Category pages are quick routing pages for experienced developers.</p>
+        </div>
+      </div>
+      <div class="doc-grid[[twoColumnClass]]">
+        [[#@:cards card]]
+        <a class="doc-card" href="[[href]]" title="[[title]]"><h3>[[title]]</h3><p>[[summary]]</p></a>
+        [[/@:cards]]
+      </div>
+    </section>
+    <section class="section article-card">
+      <h2>Comparison table</h2>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Primitive</th><th>Use when</th><th>Reference</th></tr>
+          [[#@:rows row]]
+          <tr><td>[[title]]</td><td>[[useWhen]]</td><td><a href="[[href]]" title="[[title]]">Open reference</a></td></tr>
+          [[/@:rows]]
+        </table>
+      </div>
+    </section>
+  </div>
+</section>

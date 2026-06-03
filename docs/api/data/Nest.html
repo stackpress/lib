@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="Use Nest when your data is object-shaped, path-driven, or assembled from query strings, CLI args, or form payloads. Use ReadonlyNest when callers should only read. Use Re" name="description">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Nest | @stackpress/lib" property="og:title">
+  <meta content="Use Nest when your data is object-shaped, path-driven, or assembled from query strings, CLI args, or form payloads. Use ReadonlyNest when callers should only read. Use Re" property="og:description">
+  <meta content="website" property="og:type">
+  <meta content="summary" name="twitter:card">
+  <title>Nest | @stackpress/lib</title>
+  <link href="../../assets/styles/site.css" rel="stylesheet">
+</head>
+<body>
+  <div class="site-shell">
+    <aside aria-label="Site navigation" class="sidebar">
+      <a class="brand" href="../../index.html" title="@stackpress/lib">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>@stackpress/lib</strong><span>API reference hub</span></span>
+      </a>
+      <section class="sidebar-section">
+  <h2>Pages</h2>
+  <ul class="nav-list">
+    <li><a class="" href="../../index.html" title="Reference Hub">Reference Hub</a></li>
+    <li><a class="" href="../../events.html" title="Events">Events</a></li><li><a class="" href="../../system.html" title="System">System</a></li><li><a class="" href="../../data.html" title="Data">Data</a></li><li><a class="" href="../../routing.html" title="Routing">Routing</a></li><li><a class="" href="../../queue.html" title="Queue">Queue</a></li><li><a class="" href="../../runtime.html" title="Runtime">Runtime</a></li><li><a class="" href="../../types.html" title="Types">Types</a></li>
+  </ul>
+</section>
+
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <a class="topbar-brand" href="../../index.html" title="@stackpress/lib">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span><strong>@stackpress/lib</strong><span>Docs</span></span>
+        </a>
+        <nav aria-label="Top actions" class="top-actions">
+          <button aria-pressed="false" class="theme-toggle" type="button">Dark</button>
+          <a class="button" href="https://github.com/stackpress/lib" title="GitHub">GitHub</a>
+          <a class="button" href="https://www.npmjs.com/package/@stackpress/lib" title="npm">npm</a>
+        </nav>
+        <button aria-controls="mobile-nav" aria-expanded="false" aria-label="Menu" class="mobile-menu" type="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+      <nav aria-label="Mobile pages" class="mobile-nav" id="mobile-nav">
+        <a class="button" href="../../index.html" title="Hub">Hub</a>
+<a class="button" href="../../events.html" title="Events">Events</a>
+<a class="button" href="../../system.html" title="System">System</a>
+<a class="button" href="../../data.html" title="Data">Data</a>
+<a class="button" href="../../routing.html" title="Routing">Routing</a>
+<a class="button" href="../../queue.html" title="Queue">Queue</a>
+<a class="button" href="../../runtime.html" title="Runtime">Runtime</a>
+<a class="button" href="../../types.html" title="Types">Types</a>
+
+      </nav>
+      <div class="article-layout"><article class="page article-main">
+  <div class="page-inner">
+    <p class="eyebrow">API reference</p>
+    <h1>Nest</h1>
+    <p class="lede">Use Nest when your data is object-shaped, path-driven, or assembled from query strings, CLI args, or form payloads. Use ReadonlyNest when callers should only read. Use Re</p>
+    <div class="article-card markdown-body">
+      <h1 id="nest">Nest</h1>
+
+<p>Typed nested-object helpers for reading, writing, parsing, and traversing object-shaped data.</p>
+
+<h2 id="import">Import</h2>
+
+<pre class="code-block"><code class="language-ts">import {
+  Nest,
+  ReadonlyNest,
+  ReadonlyPath,
+  nest,
+  formDataToObject,
+  isObject,
+  makeArray,
+  makeObject,
+  objectFromArgs,
+  objectFromFormData,
+  objectFromJson,
+  objectFromQuery,
+  shouldBeAnArray
+} from '@stackpress/lib';</code></pre>
+
+<h2 id="when-to-use-it">When To Use It</h2>
+
+<p>Use <code>Nest</code>
+ when your data is object-shaped, path-driven, or assembled from query strings, CLI args, or form payloads. Use <code>ReadonlyNest</code>
+ when callers should only read. Use <code>ReadonlyPath</code>
+ or <code>withPath</code>
+ when dot notation is more convenient than variadic keys.</p>
+
+<h2 id="api">API</h2>
+
+<h3 id="constructor">Constructor</h3>
+
+<pre class="code-block"><code class="language-ts">const config = new Nest({
+  database: {
+    host: 'localhost',
+    port: 5432
+  }
+});</code></pre>
+
+<p><code>Nest.load(data?)</code>
+ starts a typed builder chain and narrows the stored type as <code>.set()</code>
+ calls are added.</p>
+
+<h3 id="properties">Properties</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>data</code>
+</td>
+<td><code>M</code>
+</td>
+<td>Raw nested object. <code>Nest</code>
+ enforces plain-object assignment.</td>
+
+    </tr><tr>
+      <td><code>size</code>
+</td>
+<td><code>number</code>
+</td>
+<td>Top-level key count.</td>
+
+    </tr><tr>
+      <td><code>withArgs</code>
+</td>
+<td><code>ArgString</code>
+</td>
+<td>Parses CLI-style arguments into the same store.</td>
+
+    </tr><tr>
+      <td><code>withFormData</code>
+</td>
+<td><code>FormData</code>
+</td>
+<td>Parses multipart payloads into the same store.</td>
+
+    </tr><tr>
+      <td><code>withPath</code>
+</td>
+<td><code>PathString</code>
+ on <code>Nest</code>
+, <code>ReadonlyPath</code>
+ on <code>ReadonlyNest</code>
+</td>
+<td>Dot-path access helpers.</td>
+
+    </tr><tr>
+      <td><code>withQuery</code>
+</td>
+<td><code>QueryString</code>
+</td>
+<td>Parses query strings into the same store.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="readonlynest-methods">ReadonlyNest Methods</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Method</th>
+<th>Returns</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>entries()</code>
+</td>
+<td><code>[string, unknown][]</code>
+</td>
+<td>Top-level entries.</td>
+
+    </tr><tr>
+      <td><code>forEach(...path, callback)</code>
+</td>
+<td><code>Promise&lt;boolean&gt;</code>
+</td>
+<td>Iterates arrays, objects, or strings at a path. Stops early when the callback returns <code>false</code>
+.</td>
+
+    </tr><tr>
+      <td><code>get(...path)</code>
+</td>
+<td>typed value</td>
+<td>Returns <code>undefined</code>
+ when the path is missing.</td>
+
+    </tr><tr>
+      <td><code>has(...path)</code>
+</td>
+<td><code>boolean</code>
+</td>
+<td>Tests whether a path is set.</td>
+
+    </tr><tr>
+      <td><code>keys()</code>
+</td>
+<td><code>string[]</code>
+</td>
+<td>Top-level keys.</td>
+
+    </tr><tr>
+      <td><code>path(notation, defaults?)</code>
+</td>
+<td>typed value</td>
+<td>Dot-path read helper.</td>
+
+    </tr><tr>
+      <td><code>toString(expand = true, ...path)</code>
+</td>
+<td><code>string</code>
+</td>
+<td>JSON output for the whole store or a subpath.</td>
+
+    </tr><tr>
+      <td><code>values()</code>
+</td>
+<td><code>unknown[]</code>
+</td>
+<td>Top-level values.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="nest-methods">Nest Methods</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Method</th>
+<th>Returns</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>clear()</code>
+</td>
+<td><code>Nest&lt;{}&gt;</code>
+</td>
+<td>Resets the store to an empty object.</td>
+
+    </tr><tr>
+      <td><code>delete(...path)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Removes one path if it exists.</td>
+
+    </tr><tr>
+      <td><code>set(object)</code>
+</td>
+<td>narrowed <code>Nest</code>
+</td>
+<td>Merges top-level keys from a plain object.</td>
+
+    </tr><tr>
+      <td><code>set(...path, value)</code>
+</td>
+<td>narrowed <code>Nest</code>
+</td>
+<td>Writes a nested value. Empty-string or <code>null</code>
+ path segments append array items.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="path-helpers">Path Helpers</h3>
+
+<p><code>ReadonlyPath</code>
+ provides:</p>
+
+<ul>
+  <li><code>get(notation, separator = '.')</code>
+</li><li><code>has(notation, separator = '.')</code>
+</li><li><code>forEach(notation, callback, separator = '.')</code>
+</li>
+</ul>
+
+<p><code>PathString</code>
+ adds:</p>
+
+<ul>
+  <li><code>set(notation, value, separator = '.')</code>
+</li><li><code>delete(notation, separator = '.')</code>
+</li>
+</ul>
+
+<h3 id="callable-helper">Callable Helper</h3>
+
+<p><code>nest(data?)</code>
+ returns a callable store:</p>
+
+<pre class="code-block"><code class="language-ts">const store = nest({ user: { name: 'Ada' } });
+
+store('user', 'name');
+store.get('user', 'name');
+store.set('user', 'active', true);</code></pre>
+
+<p>The callable form keeps the <code>Nest</code>
+ methods and reads through function invocation.</p>
+
+<h3 id="exported-utilities">Exported Utilities</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Export</th>
+<th>Purpose</th>
+
+    </tr><tr>
+      <td><code>formDataToObject(type, body)</code>
+</td>
+<td>Converts JSON, urlencoded, or multipart bodies into a plain object.</td>
+
+    </tr><tr>
+      <td><code>isObject(value)</code>
+</td>
+<td>Tests for plain JavaScript objects.</td>
+
+    </tr><tr>
+      <td><code>makeArray(object)</code>
+</td>
+<td>Converts object-like numeric keys to an array.</td>
+
+    </tr><tr>
+      <td><code>makeObject(array)</code>
+</td>
+<td>Converts an array to an object with numeric keys.</td>
+
+    </tr><tr>
+      <td><code>objectFromArgs(args)</code>
+</td>
+<td>Parses CLI args to a plain object.</td>
+
+    </tr><tr>
+      <td><code>objectFromJson(json)</code>
+</td>
+<td>Parses JSON safely.</td>
+
+    </tr><tr>
+      <td><code>objectFromQuery(query)</code>
+</td>
+<td>Parses query strings to nested objects.</td>
+
+    </tr><tr>
+      <td><code>objectFromFormData(data)</code>
+</td>
+<td>Parses multipart form data to nested objects.</td>
+
+    </tr><tr>
+      <td><code>shouldBeAnArray(object)</code>
+</td>
+<td>Detects when a nested object should be normalized to an array.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h2 id="example">Example</h2>
+
+<pre class="code-block"><code class="language-ts">import { Nest } from '@stackpress/lib';
+
+const request = new Nest();
+
+request.withQuery.set('filter[type]=user&amp;tags[]=one&amp;tags[]=two');
+request.set('meta', 'loaded', true);
+request.withPath.set('profile.name', 'Ada');
+
+const type = request.get('filter', 'type');
+const firstTag = request.path&lt;string&gt;('tags.0');
+const profile = request.get('profile');</code></pre>
+
+<h2 id="related">Related</h2>
+
+<ul>
+  <li><a href="./Parsers.html" title="Parsers">Parsers</a>
+</li><li><a href="./Map.html" title="Map">Map</a>
+</li><li><a href="./Set.html" title="Set">Set</a>
+</li><li><a href="../types/index.html" title="Types">Types</a>
+</li>
+</ul>
+
+    </div>
+    <nav aria-label="Pagination" class="pager">
+      <a href="./Map.html" title="Map">Previous: Map</a>
+      <a href="./Parsers.html" title="Parsers">Next: Parsers</a>
+    </nav>
+  </div>
+</article>
+<aside class="article-toc">
+  <strong>On this page</strong>
+  <a href="#import" title="Import">Import</a><a href="#when-to-use-it" title="When To Use It">When To Use It</a><a href="#api" title="API">API</a><a href="#constructor" title="Constructor">Constructor</a><a href="#properties" title="Properties">Properties</a><a href="#readonlynest-methods" title="ReadonlyNest Methods">ReadonlyNest Methods</a><a href="#nest-methods" title="Nest Methods">Nest Methods</a><a href="#path-helpers" title="Path Helpers">Path Helpers</a><a href="#callable-helper" title="Callable Helper">Callable Helper</a><a href="#exported-utilities" title="Exported Utilities">Exported Utilities</a><a href="#example" title="Example">Example</a><a href="#related" title="Related">Related</a>
+</aside>
+</div>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="../../assets/scripts/site.js"></script>
+</body>
+</html>

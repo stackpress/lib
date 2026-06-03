@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="Use Exception when you need one error type that can move between thrown errors, response payloads, and validation-style error objects." name="description">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Exception | @stackpress/lib" property="og:title">
+  <meta content="Use Exception when you need one error type that can move between thrown errors, response payloads, and validation-style error objects." property="og:description">
+  <meta content="website" property="og:type">
+  <meta content="summary" name="twitter:card">
+  <title>Exception | @stackpress/lib</title>
+  <link href="../../assets/styles/site.css" rel="stylesheet">
+</head>
+<body>
+  <div class="site-shell">
+    <aside aria-label="Site navigation" class="sidebar">
+      <a class="brand" href="../../index.html" title="@stackpress/lib">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>@stackpress/lib</strong><span>API reference hub</span></span>
+      </a>
+      <section class="sidebar-section">
+  <h2>Pages</h2>
+  <ul class="nav-list">
+    <li><a class="" href="../../index.html" title="Reference Hub">Reference Hub</a></li>
+    <li><a class="" href="../../events.html" title="Events">Events</a></li><li><a class="" href="../../system.html" title="System">System</a></li><li><a class="" href="../../data.html" title="Data">Data</a></li><li><a class="" href="../../routing.html" title="Routing">Routing</a></li><li><a class="" href="../../queue.html" title="Queue">Queue</a></li><li><a class="" href="../../runtime.html" title="Runtime">Runtime</a></li><li><a class="" href="../../types.html" title="Types">Types</a></li>
+  </ul>
+</section>
+
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <a class="topbar-brand" href="../../index.html" title="@stackpress/lib">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span><strong>@stackpress/lib</strong><span>Docs</span></span>
+        </a>
+        <nav aria-label="Top actions" class="top-actions">
+          <button aria-pressed="false" class="theme-toggle" type="button">Dark</button>
+          <a class="button" href="https://github.com/stackpress/lib" title="GitHub">GitHub</a>
+          <a class="button" href="https://www.npmjs.com/package/@stackpress/lib" title="npm">npm</a>
+        </nav>
+        <button aria-controls="mobile-nav" aria-expanded="false" aria-label="Menu" class="mobile-menu" type="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+      <nav aria-label="Mobile pages" class="mobile-nav" id="mobile-nav">
+        <a class="button" href="../../index.html" title="Hub">Hub</a>
+<a class="button" href="../../events.html" title="Events">Events</a>
+<a class="button" href="../../system.html" title="System">System</a>
+<a class="button" href="../../data.html" title="Data">Data</a>
+<a class="button" href="../../routing.html" title="Routing">Routing</a>
+<a class="button" href="../../queue.html" title="Queue">Queue</a>
+<a class="button" href="../../runtime.html" title="Runtime">Runtime</a>
+<a class="button" href="../../types.html" title="Types">Types</a>
+
+      </nav>
+      <div class="article-layout"><article class="page article-main">
+  <div class="page-inner">
+    <p class="eyebrow">API reference</p>
+    <h1>Exception</h1>
+    <p class="lede">Use Exception when you need one error type that can move between thrown errors, response payloads, and validation-style error objects.</p>
+    <div class="article-card markdown-body">
+      <h1 id="exception">Exception</h1>
+
+<p>Structured error type with response conversion, validation errors, and stack parsing.</p>
+
+<h2 id="import">Import</h2>
+
+<pre class="code-block"><code class="language-ts">import { Exception } from '@stackpress/lib';</code></pre>
+
+<h2 id="when-to-use-it">When To Use It</h2>
+
+<p>Use <code>Exception</code>
+ when you need one error type that can move between thrown errors, response payloads, and validation-style error objects.</p>
+
+<h2 id="api">API</h2>
+
+<h3 id="constructor">Constructor</h3>
+
+<pre class="code-block"><code class="language-ts">const error = new Exception('Invalid input', 400);</code></pre>
+
+<h3 id="static-methods">Static Methods</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Method</th>
+<th>Returns</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>Exception.for(message, ...values)</code>
+</td>
+<td><code>Exception</code>
+</td>
+<td><code>%s</code>
+ placeholder replacement.</td>
+
+    </tr><tr>
+      <td><code>Exception.forErrors(errors)</code>
+</td>
+<td><code>Exception</code>
+</td>
+<td>Builds an <code>Invalid Parameters</code>
+ error.</td>
+
+    </tr><tr>
+      <td><code>Exception.forResponse(response, message = '')</code>
+</td>
+<td><code>Exception</code>
+</td>
+<td>Rebuilds an exception from a status response.</td>
+
+    </tr><tr>
+      <td><code>Exception.require(condition, message, ...values)</code>
+</td>
+<td><code>void</code>
+</td>
+<td>Throws when the condition is false.</td>
+
+    </tr><tr>
+      <td><code>Exception.try(callback).catch(handler)</code>
+</td>
+<td>callback result</td>
+<td>Sync-only try/catch wrapper that normalizes error types.</td>
+
+    </tr><tr>
+      <td><code>Exception.upgrade(error, code = 500)</code>
+</td>
+<td><code>Exception</code>
+</td>
+<td>Wraps a regular <code>Error</code>
+ unless it is already an <code>Exception</code>
+.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="properties">Properties</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Name</th>
+<th>Type</th>
+
+    </tr><tr>
+      <td><code>code</code>
+</td>
+<td><code>number</code>
+</td>
+
+    </tr><tr>
+      <td><code>end</code>
+</td>
+<td><code>number</code>
+</td>
+
+    </tr><tr>
+      <td><code>errors</code>
+</td>
+<td>`NestedObject&lt;string \</td>
+<td>string[]&gt;`</td>
+
+    </tr><tr>
+      <td><code>start</code>
+</td>
+<td><code>number</code>
+</td>
+
+    </tr><tr>
+      <td><code>type</code>
+</td>
+<td><code>string</code>
+</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="instance-methods">Instance Methods</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Method</th>
+<th>Returns</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>toJSON()</code>
+</td>
+<td><code>string</code>
+</td>
+<td>Pretty JSON string of <code>toResponse()</code>
+.</td>
+
+    </tr><tr>
+      <td><code>toResponse(start = 0, end = 0)</code>
+</td>
+<td><code>ErrorResponse</code>
+</td>
+<td>Structured error payload.</td>
+
+    </tr><tr>
+      <td><code>trace(start = 0, end = 0)</code>
+</td>
+<td><code>Trace[]</code>
+</td>
+<td>Parsed stack-frame metadata.</td>
+
+    </tr><tr>
+      <td><code>withCode(code)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Updates code and status.</td>
+
+    </tr><tr>
+      <td><code>withErrors(errors)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Stores field-level errors.</td>
+
+    </tr><tr>
+      <td><code>withPosition(start, end)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Stores source position metadata.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h2 id="example">Example</h2>
+
+<pre class="code-block"><code class="language-ts">import { Exception } from '@stackpress/lib';
+
+const error = Exception
+  .for('Field %s is invalid', 'email')
+  .withCode(400)
+  .withErrors({ email: 'invalid format' })
+  .withPosition(12, 17);
+
+const response = error.toResponse();</code></pre>
+
+<h2 id="related">Related</h2>
+
+<ul>
+  <li><a href="../router/Response.html" title="Response">Response</a>
+</li><li><a href="./Status.html" title="Status">Status</a>
+</li><li><a href="../types/index.html" title="Types">Types</a>
+</li>
+</ul>
+
+    </div>
+    <nav aria-label="Pagination" class="pager">
+      <a href="../queue/TaskQueue.html" title="TaskQueue">Previous: TaskQueue</a>
+      <a href="./Reflection.html" title="Reflection">Next: Reflection</a>
+    </nav>
+  </div>
+</article>
+<aside class="article-toc">
+  <strong>On this page</strong>
+  <a href="#import" title="Import">Import</a><a href="#when-to-use-it" title="When To Use It">When To Use It</a><a href="#api" title="API">API</a><a href="#constructor" title="Constructor">Constructor</a><a href="#static-methods" title="Static Methods">Static Methods</a><a href="#properties" title="Properties">Properties</a><a href="#instance-methods" title="Instance Methods">Instance Methods</a><a href="#example" title="Example">Example</a><a href="#related" title="Related">Related</a>
+</aside>
+</div>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="../../assets/scripts/site.js"></script>
+</body>
+</html>

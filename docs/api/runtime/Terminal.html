@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="Use Terminal when a command-line entrypoint should route commands through the same emitter and response patterns as the rest of the library. Use control and input when yo" name="description">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Terminal | @stackpress/lib" property="og:title">
+  <meta content="Use Terminal when a command-line entrypoint should route commands through the same emitter and response patterns as the rest of the library. Use control and input when yo" property="og:description">
+  <meta content="website" property="og:type">
+  <meta content="summary" name="twitter:card">
+  <title>Terminal | @stackpress/lib</title>
+  <link href="../../assets/styles/site.css" rel="stylesheet">
+</head>
+<body>
+  <div class="site-shell">
+    <aside aria-label="Site navigation" class="sidebar">
+      <a class="brand" href="../../index.html" title="@stackpress/lib">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>@stackpress/lib</strong><span>API reference hub</span></span>
+      </a>
+      <section class="sidebar-section">
+  <h2>Pages</h2>
+  <ul class="nav-list">
+    <li><a class="" href="../../index.html" title="Reference Hub">Reference Hub</a></li>
+    <li><a class="" href="../../events.html" title="Events">Events</a></li><li><a class="" href="../../system.html" title="System">System</a></li><li><a class="" href="../../data.html" title="Data">Data</a></li><li><a class="" href="../../routing.html" title="Routing">Routing</a></li><li><a class="" href="../../queue.html" title="Queue">Queue</a></li><li><a class="" href="../../runtime.html" title="Runtime">Runtime</a></li><li><a class="" href="../../types.html" title="Types">Types</a></li>
+  </ul>
+</section>
+
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <a class="topbar-brand" href="../../index.html" title="@stackpress/lib">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span><strong>@stackpress/lib</strong><span>Docs</span></span>
+        </a>
+        <nav aria-label="Top actions" class="top-actions">
+          <button aria-pressed="false" class="theme-toggle" type="button">Dark</button>
+          <a class="button" href="https://github.com/stackpress/lib" title="GitHub">GitHub</a>
+          <a class="button" href="https://www.npmjs.com/package/@stackpress/lib" title="npm">npm</a>
+        </nav>
+        <button aria-controls="mobile-nav" aria-expanded="false" aria-label="Menu" class="mobile-menu" type="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+      <nav aria-label="Mobile pages" class="mobile-nav" id="mobile-nav">
+        <a class="button" href="../../index.html" title="Hub">Hub</a>
+<a class="button" href="../../events.html" title="Events">Events</a>
+<a class="button" href="../../system.html" title="System">System</a>
+<a class="button" href="../../data.html" title="Data">Data</a>
+<a class="button" href="../../routing.html" title="Routing">Routing</a>
+<a class="button" href="../../queue.html" title="Queue">Queue</a>
+<a class="button" href="../../runtime.html" title="Runtime">Runtime</a>
+<a class="button" href="../../types.html" title="Types">Types</a>
+
+      </nav>
+      <div class="article-layout"><article class="page article-main">
+  <div class="page-inner">
+    <p class="eyebrow">API reference</p>
+    <h1>Terminal</h1>
+    <p class="lede">Use Terminal when a command-line entrypoint should route commands through the same emitter and response patterns as the rest of the library. Use control and input when yo</p>
+    <div class="article-card markdown-body">
+      <h1 id="terminal">Terminal</h1>
+
+<p>CLI-oriented router plus prompt and console helpers.</p>
+
+<h2 id="import">Import</h2>
+
+<pre class="code-block"><code class="language-ts">import { Terminal, control, input } from '@stackpress/lib';</code></pre>
+
+<p>For direct subpath imports, <code>control</code>
+ and <code>input</code>
+ are also available through <code>@stackpress/lib/terminal/<em></code>
+ because the package exports <code>./terminal/</em>
+</code>
+.</p>
+
+<h2 id="when-to-use-it">When To Use It</h2>
+
+<p>Use <code>Terminal</code>
+ when a command-line entrypoint should route commands through the same emitter and response patterns as the rest of the library. Use <code>control</code>
+ and <code>input</code>
+ when you only need prompting or formatted console output.</p>
+
+<h2 id="terminal-api">Terminal API</h2>
+
+<h3 id="constructor">Constructor</h3>
+
+<pre class="code-block"><code class="language-ts">const terminal = new Terminal(process.argv.slice(2), '[app]');</code></pre>
+
+<h3 id="properties">Properties</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>args</code>
+</td>
+<td><code>string[]</code>
+</td>
+<td>CLI args after the command name.</td>
+
+    </tr><tr>
+      <td><code>brand</code>
+</td>
+<td><code>string</code>
+</td>
+<td>Prefix used by <code>control()</code>
+.</td>
+
+    </tr><tr>
+      <td><code>command</code>
+</td>
+<td><code>string</code>
+</td>
+<td>First CLI token.</td>
+
+    </tr><tr>
+      <td><code>control</code>
+</td>
+<td>frozen controls object</td>
+<td>Output and prompt helpers.</td>
+
+    </tr><tr>
+      <td><code>data</code>
+</td>
+<td><code>Record&lt;string, any&gt;</code>
+</td>
+<td>Parsed CLI args produced by <code>objectFromArgs()</code>
+.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="methods">Methods</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Method</th>
+<th>Returns</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>expect(flags, defaults)</code>
+</td>
+<td>typed value</td>
+<td>Returns the first truthy parsed flag value.</td>
+
+    </tr><tr>
+      <td><code>run()</code>
+</td>
+<td><code>Promise&lt;Partial&lt;StatusResponse&lt;T&gt;&gt;&gt;</code>
+</td>
+<td>Resolves the current command through the inherited router.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h2 id="control-brand"><code>control(brand = '')</code>
+</h2>
+
+<p>Returns a small console-helper object with:</p>
+
+<ul>
+  <li><code>brand</code>
+</li><li><code>error(message, variables?)</code>
+</li><li><code>info(message, variables?)</code>
+</li><li><code>input(question, answer?)</code>
+</li><li><code>output(message, variables?, color?)</code>
+</li><li><code>success(message, variables?)</code>
+</li><li><code>system(message, variables?)</code>
+</li><li><code>warning(message, variables?)</code>
+</li>
+</ul>
+
+<p>The formatting helpers replace <code>%s</code>
+ placeholders in order and prepend the brand when present.</p>
+
+<h2 id="input-config-context"><code>input(config, context?)</code>
+</h2>
+
+<p>Prompt helper for interactive terminal input.</p>
+
+<p>Important config fields from <code>TerminalInputConfig</code>
+:</p>
+
+<ul>
+  <li><code>default</code>
+</li><li><code>message</code>
+</li><li><code>pattern</code>
+</li><li><code>patternError</code>
+</li><li><code>prefill</code>
+</li><li><code>required</code>
+</li><li><code>theme</code>
+</li><li><code>transformer</code>
+</li><li><code>validate</code>
+</li>
+</ul>
+
+<p>Named exports also include:</p>
+
+<ul>
+  <li><code>createAbortError(message?)</code>
+</li><li><code>formatValue(config, value, isFinal)</code>
+</li><li><code>renderPrompt(config, state)</code>
+</li><li><code>clearRender(output, lines)</code>
+</li><li><code>validateInput(config, value)</code>
+</li>
+</ul>
+
+<h2 id="example">Example</h2>
+
+<pre class="code-block"><code class="language-ts">import { Terminal } from '@stackpress/lib';
+
+const terminal = new Terminal(['user:list', '--page', '2'], '[users]');
+
+terminal.route('ANY', 'user:list', async (req, res) =&gt; {
+  const page = req.data('page');
+  res.results({ page });
+});
+
+const result = await terminal.run&lt;{ page: number }&gt;();</code></pre>
+
+<h2 id="related">Related</h2>
+
+<ul>
+  <li><a href="../router/Router.html" title="Router">Router</a>
+</li><li><a href="../data/Nest.html" title="Nest">Nest</a>
+</li><li><a href="../types/index.html" title="Types">Types</a>
+</li>
+</ul>
+
+    </div>
+    <nav aria-label="Pagination" class="pager">
+      <a href="./Template.html" title="Template">Previous: Template</a>
+      <a href="../types/index.html" title="Types">Next: Types</a>
+    </nav>
+  </div>
+</article>
+<aside class="article-toc">
+  <strong>On this page</strong>
+  <a href="#import" title="Import">Import</a><a href="#when-to-use-it" title="When To Use It">When To Use It</a><a href="#terminal-api" title="Terminal API">Terminal API</a><a href="#constructor" title="Constructor">Constructor</a><a href="#properties" title="Properties">Properties</a><a href="#methods" title="Methods">Methods</a><a href="#control-brand" title="control(brand = '')">control(brand = '')</a><a href="#input-config-context" title="input(config, context?)">input(config, context?)</a><a href="#example" title="Example">Example</a><a href="#related" title="Related">Related</a>
+</aside>
+</div>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="../../assets/scripts/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="Use EventEmitter when your event names are exact strings and you want ordered async listeners, before/after hooks, and status results instead of fire-and-forget callbacks" name="description">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="EventEmitter | @stackpress/lib" property="og:title">
+  <meta content="Use EventEmitter when your event names are exact strings and you want ordered async listeners, before/after hooks, and status results instead of fire-and-forget callbacks" property="og:description">
+  <meta content="website" property="og:type">
+  <meta content="summary" name="twitter:card">
+  <title>EventEmitter | @stackpress/lib</title>
+  <link href="../../assets/styles/site.css" rel="stylesheet">
+</head>
+<body>
+  <div class="site-shell">
+    <aside aria-label="Site navigation" class="sidebar">
+      <a class="brand" href="../../index.html" title="@stackpress/lib">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>@stackpress/lib</strong><span>API reference hub</span></span>
+      </a>
+      <section class="sidebar-section">
+  <h2>Pages</h2>
+  <ul class="nav-list">
+    <li><a class="" href="../../index.html" title="Reference Hub">Reference Hub</a></li>
+    <li><a class="" href="../../events.html" title="Events">Events</a></li><li><a class="" href="../../system.html" title="System">System</a></li><li><a class="" href="../../data.html" title="Data">Data</a></li><li><a class="" href="../../routing.html" title="Routing">Routing</a></li><li><a class="" href="../../queue.html" title="Queue">Queue</a></li><li><a class="" href="../../runtime.html" title="Runtime">Runtime</a></li><li><a class="" href="../../types.html" title="Types">Types</a></li>
+  </ul>
+</section>
+
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <a class="topbar-brand" href="../../index.html" title="@stackpress/lib">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span><strong>@stackpress/lib</strong><span>Docs</span></span>
+        </a>
+        <nav aria-label="Top actions" class="top-actions">
+          <button aria-pressed="false" class="theme-toggle" type="button">Dark</button>
+          <a class="button" href="https://github.com/stackpress/lib" title="GitHub">GitHub</a>
+          <a class="button" href="https://www.npmjs.com/package/@stackpress/lib" title="npm">npm</a>
+        </nav>
+        <button aria-controls="mobile-nav" aria-expanded="false" aria-label="Menu" class="mobile-menu" type="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+      <nav aria-label="Mobile pages" class="mobile-nav" id="mobile-nav">
+        <a class="button" href="../../index.html" title="Hub">Hub</a>
+<a class="button" href="../../events.html" title="Events">Events</a>
+<a class="button" href="../../system.html" title="System">System</a>
+<a class="button" href="../../data.html" title="Data">Data</a>
+<a class="button" href="../../routing.html" title="Routing">Routing</a>
+<a class="button" href="../../queue.html" title="Queue">Queue</a>
+<a class="button" href="../../runtime.html" title="Runtime">Runtime</a>
+<a class="button" href="../../types.html" title="Types">Types</a>
+
+      </nav>
+      <div class="article-layout"><article class="page article-main">
+  <div class="page-inner">
+    <p class="eyebrow">API reference</p>
+    <h1>EventEmitter</h1>
+    <p class="lede">Use EventEmitter when your event names are exact strings and you want ordered async listeners, before/after hooks, and status results instead of fire-and-forget callbacks</p>
+    <div class="article-card markdown-body">
+      <h1 id="eventemitter">EventEmitter</h1>
+
+<p>Priority-aware async event emitter built on <code>TaskQueue</code>
+.</p>
+
+<h2 id="import">Import</h2>
+
+<pre class="code-block"><code class="language-ts">import { EventEmitter } from '@stackpress/lib';</code></pre>
+
+<h2 id="when-to-use-it">When To Use It</h2>
+
+<p>Use <code>EventEmitter</code>
+ when your event names are exact strings and you want ordered async listeners, before/after hooks, and status results instead of fire-and-forget callbacks.</p>
+
+<h2 id="api">API</h2>
+
+<h3 id="constructor">Constructor</h3>
+
+<pre class="code-block"><code class="language-ts">type Events = {
+  'user.created': [string];
+  'user.deleted': [string, boolean];
+};
+
+const emitter = new EventEmitter&lt;Events&gt;();</code></pre>
+
+<h3 id="properties">Properties</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>after</code>
+</td>
+<td><code>EventHook&lt;M[keyof M]&gt;</code>
+</td>
+<td>Runs after each task. Returning <code>false</code>
+ aborts the queue.</td>
+
+    </tr><tr>
+      <td><code>before</code>
+</td>
+<td><code>EventHook&lt;M[keyof M]&gt;</code>
+</td>
+<td>Runs before each task. Returning <code>false</code>
+ aborts the queue.</td>
+
+    </tr><tr>
+      <td><code>event</code>
+</td>
+<td>current <code>Event</code>
+</td>
+<td>Metadata for the task being executed.</td>
+
+    </tr><tr>
+      <td><code>listeners</code>
+</td>
+<td>frozen shallow copy</td>
+<td>Raw listener registry keyed by event name.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="methods">Methods</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Method</th>
+<th>Returns</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>clear(event)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Removes all listeners for one event.</td>
+
+    </tr><tr>
+      <td><code>emit(event, ...args)</code>
+</td>
+<td><code>Promise&lt;ResponseStatus&gt;</code>
+</td>
+<td>Returns <code>Status.NOT_FOUND</code>
+, <code>Status.ABORT</code>
+, or <code>Status.OK</code>
+.</td>
+
+    </tr><tr>
+      <td><code>makeQueue()</code>
+</td>
+<td><code>TaskQueue</code>
+</td>
+<td>Overridable queue factory.</td>
+
+    </tr><tr>
+      <td><code>match(event)</code>
+</td>
+<td><code>Map&lt;string, EventMatch&gt;</code>
+</td>
+<td>Exact-match lookup in the base class.</td>
+
+    </tr><tr>
+      <td><code>on(event, action, priority = 0)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Adds a listener. Higher priority runs first.</td>
+
+    </tr><tr>
+      <td><code>tasks(event)</code>
+</td>
+<td><code>TaskQueue</code>
+</td>
+<td>Materializes the matching listeners into a queue.</td>
+
+    </tr><tr>
+      <td><code>unbind(event, action)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Removes one listener function.</td>
+
+    </tr><tr>
+      <td><code>use(emitter)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Merges listeners from another emitter.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h2 id="example">Example</h2>
+
+<pre class="code-block"><code class="language-ts">import { EventEmitter } from '@stackpress/lib';
+
+type Events = {
+  saved: [string];
+};
+
+const emitter = new EventEmitter&lt;Events&gt;();
+
+emitter.before = async event =&gt; {
+  console.log('before', event.event);
+};
+
+emitter.on('saved', async id =&gt; {
+  console.log('saved', id);
+}, 10);
+
+await emitter.emit('saved', 'abc123');</code></pre>
+
+<h2 id="related">Related</h2>
+
+<ul>
+  <li><a href="./ExpressEmitter.html" title="ExpressEmitter">ExpressEmitter</a>
+</li><li><a href="../queue/TaskQueue.html" title="TaskQueue">TaskQueue</a>
+</li><li><a href="../runtime/Status.html" title="Status">Status</a>
+</li>
+</ul>
+
+    </div>
+    <nav aria-label="Pagination" class="pager">
+      <span></span>
+      <a href="./ExpressEmitter.html" title="ExpressEmitter">Next: ExpressEmitter</a>
+    </nav>
+  </div>
+</article>
+<aside class="article-toc">
+  <strong>On this page</strong>
+  <a href="#import" title="Import">Import</a><a href="#when-to-use-it" title="When To Use It">When To Use It</a><a href="#api" title="API">API</a><a href="#constructor" title="Constructor">Constructor</a><a href="#properties" title="Properties">Properties</a><a href="#methods" title="Methods">Methods</a><a href="#example" title="Example">Example</a><a href="#related" title="Related">Related</a>
+</aside>
+</div>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="../../assets/scripts/site.js"></script>
+</body>
+</html>

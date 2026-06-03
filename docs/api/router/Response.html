@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="Use Response when you want transport-agnostic response building and a consistent status/result payload shape across adapters." name="description">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Response | @stackpress/lib" property="og:title">
+  <meta content="Use Response when you want transport-agnostic response building and a consistent status/result payload shape across adapters." property="og:description">
+  <meta content="website" property="og:type">
+  <meta content="summary" name="twitter:card">
+  <title>Response | @stackpress/lib</title>
+  <link href="../../assets/styles/site.css" rel="stylesheet">
+</head>
+<body>
+  <div class="site-shell">
+    <aside aria-label="Site navigation" class="sidebar">
+      <a class="brand" href="../../index.html" title="@stackpress/lib">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>@stackpress/lib</strong><span>API reference hub</span></span>
+      </a>
+      <section class="sidebar-section">
+  <h2>Pages</h2>
+  <ul class="nav-list">
+    <li><a class="" href="../../index.html" title="Reference Hub">Reference Hub</a></li>
+    <li><a class="" href="../../events.html" title="Events">Events</a></li><li><a class="" href="../../system.html" title="System">System</a></li><li><a class="" href="../../data.html" title="Data">Data</a></li><li><a class="" href="../../routing.html" title="Routing">Routing</a></li><li><a class="" href="../../queue.html" title="Queue">Queue</a></li><li><a class="" href="../../runtime.html" title="Runtime">Runtime</a></li><li><a class="" href="../../types.html" title="Types">Types</a></li>
+  </ul>
+</section>
+
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <a class="topbar-brand" href="../../index.html" title="@stackpress/lib">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span><strong>@stackpress/lib</strong><span>Docs</span></span>
+        </a>
+        <nav aria-label="Top actions" class="top-actions">
+          <button aria-pressed="false" class="theme-toggle" type="button">Dark</button>
+          <a class="button" href="https://github.com/stackpress/lib" title="GitHub">GitHub</a>
+          <a class="button" href="https://www.npmjs.com/package/@stackpress/lib" title="npm">npm</a>
+        </nav>
+        <button aria-controls="mobile-nav" aria-expanded="false" aria-label="Menu" class="mobile-menu" type="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+      <nav aria-label="Mobile pages" class="mobile-nav" id="mobile-nav">
+        <a class="button" href="../../index.html" title="Hub">Hub</a>
+<a class="button" href="../../events.html" title="Events">Events</a>
+<a class="button" href="../../system.html" title="System">System</a>
+<a class="button" href="../../data.html" title="Data">Data</a>
+<a class="button" href="../../routing.html" title="Routing">Routing</a>
+<a class="button" href="../../queue.html" title="Queue">Queue</a>
+<a class="button" href="../../runtime.html" title="Runtime">Runtime</a>
+<a class="button" href="../../types.html" title="Types">Types</a>
+
+      </nav>
+      <div class="article-layout"><article class="page article-main">
+  <div class="page-inner">
+    <p class="eyebrow">API reference</p>
+    <h1>Response</h1>
+    <p class="lede">Use Response when you want transport-agnostic response building and a consistent status/result payload shape across adapters.</p>
+    <div class="article-card markdown-body">
+      <h1 id="response">Response</h1>
+
+<p>Generic response wrapper with status helpers, body helpers, error conversion, and dispatch support.</p>
+
+<h2 id="import">Import</h2>
+
+<pre class="code-block"><code class="language-ts">import { Response } from '@stackpress/lib';</code></pre>
+
+<h2 id="when-to-use-it">When To Use It</h2>
+
+<p>Use <code>Response</code>
+ when you want transport-agnostic response building and a consistent status/result payload shape across adapters.</p>
+
+<h2 id="api">API</h2>
+
+<h3 id="constructor">Constructor</h3>
+
+<pre class="code-block"><code class="language-ts">const res = new Response({
+  headers: { 'x-request-id': 'abc123' },
+  data: { source: 'api' }
+});</code></pre>
+
+<p><code>ResponseOptions&lt;S&gt;</code>
+ accepts partial initialization for <code>body</code>
+, <code>data</code>
+, <code>headers</code>
+, <code>mimetype</code>
+, and <code>resource</code>
+.</p>
+
+<h3 id="properties">Properties</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>body</code>
+</td>
+<td>`Body \</td>
+<td>null`</td>
+<td>Response payload.</td>
+
+    </tr><tr>
+      <td><code>code</code>
+</td>
+<td><code>number</code>
+</td>
+<td>Status code. Assigning this also resolves the status message through <code>Status.get()</code>
+.</td>
+
+    </tr><tr>
+      <td><code>data</code>
+</td>
+<td><code>CallableNest</code>
+</td>
+<td>Extra response metadata storage.</td>
+
+    </tr><tr>
+      <td><code>dispatcher</code>
+</td>
+<td><code>ResponseDispatcher&lt;S&gt;</code>
+</td>
+<td>Optional transport adapter used by <code>dispatch()</code>
+.</td>
+
+    </tr><tr>
+      <td><code>error</code>
+</td>
+<td>`string \</td>
+<td>undefined`</td>
+<td>Primary error string.</td>
+
+    </tr><tr>
+      <td><code>errors</code>
+</td>
+<td>`CallableNest&lt;NestedObject&lt;string \</td>
+<td>string[]&gt;&gt;`</td>
+<td>Validation-style error details.</td>
+
+    </tr><tr>
+      <td><code>headers</code>
+</td>
+<td>`CallableMap&lt;string, string \</td>
+<td>string[]&gt;`</td>
+<td>Response headers.</td>
+
+    </tr><tr>
+      <td><code>mimetype</code>
+</td>
+<td>`string \</td>
+<td>undefined`</td>
+<td>Response content type.</td>
+
+    </tr><tr>
+      <td><code>redirected</code>
+</td>
+<td><code>boolean</code>
+</td>
+<td>True when <code>Location</code>
+ is set.</td>
+
+    </tr><tr>
+      <td><code>resource</code>
+</td>
+<td><code>S</code>
+</td>
+<td>Original transport resource.</td>
+
+    </tr><tr>
+      <td><code>sent</code>
+</td>
+<td><code>boolean</code>
+</td>
+<td>True after <code>dispatch()</code>
+ or <code>stop()</code>
+.</td>
+
+    </tr><tr>
+      <td><code>session</code>
+</td>
+<td><code>CallableSession</code>
+</td>
+<td>Session changes to be written by an adapter.</td>
+
+    </tr><tr>
+      <td><code>stack</code>
+</td>
+<td>`Trace[] \</td>
+<td>undefined`</td>
+<td>Error trace data.</td>
+
+    </tr><tr>
+      <td><code>status</code>
+</td>
+<td><code>string</code>
+</td>
+<td>Status message.</td>
+
+    </tr><tr>
+      <td><code>total</code>
+</td>
+<td><code>number</code>
+</td>
+<td>Total items for list-style responses.</td>
+
+    </tr><tr>
+      <td><code>type</code>
+</td>
+<td><code>string</code>
+</td>
+<td>Body type such as <code>object</code>
+, <code>array</code>
+, <code>string</code>
+, <code>buffer</code>
+, or <code>null</code>
+.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="methods">Methods</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Method</th>
+<th>Returns</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>dispatch()</code>
+</td>
+<td><code>Promise&lt;S&gt;</code>
+</td>
+<td>Runs the dispatcher once, marks the response sent, and returns the native resource.</td>
+
+    </tr><tr>
+      <td><code>fromException(exception)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Copies exception code, error message, errors, and stack.</td>
+
+    </tr><tr>
+      <td><code>fromStatusResponse(response)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Copies a status-response object into the wrapper.</td>
+
+    </tr><tr>
+      <td><code>redirect(url, code = 302, status?)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Sets the <code>Location</code>
+ header and status.</td>
+
+    </tr><tr>
+      <td><code>set(type, body, code = 200, status?)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Low-level setter for body and mime type.</td>
+
+    </tr><tr>
+      <td><code>setError(error, errors = {}, stack = [], code = 400, status?)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Accepts either a string or an <code>ErrorResponse</code>
+.</td>
+
+    </tr><tr>
+      <td><code>html(body, code = 200, status?)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Shortcut for <code>text/html</code>
+.</td>
+
+    </tr><tr>
+      <td><code>json(body, code = 200, status?)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Serializes objects to pretty JSON strings.</td>
+
+    </tr><tr>
+      <td><code>results(body, code = 200, status?)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Sets one JSON result and <code>total = 1</code>
+.</td>
+
+    </tr><tr>
+      <td><code>rows(body, total = 0, code = 200, status?)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Sets a JSON array result plus total count.</td>
+
+    </tr><tr>
+      <td><code>statusCode(code, message?)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Updates code and status.</td>
+
+    </tr><tr>
+      <td><code>xml(body, code = 200, status?)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Shortcut for <code>text/xml</code>
+.</td>
+
+    </tr><tr>
+      <td><code>stop()</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Marks the response sent without dispatching.</td>
+
+    </tr><tr>
+      <td><code>toException(message?)</code>
+</td>
+<td><code>Exception</code>
+</td>
+<td>Rebuilds the response as an <code>Exception</code>
+.</td>
+
+    </tr><tr>
+      <td><code>toStatusResponse()</code>
+</td>
+<td><code>Partial&lt;StatusResponse&lt;T&gt;&gt;</code>
+</td>
+<td>Serializes the wrapper into the library response shape.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h2 id="example">Example</h2>
+
+<pre class="code-block"><code class="language-ts">import { Response } from '@stackpress/lib';
+
+const res = new Response();
+
+res.headers.set('x-request-id', 'abc123');
+res.rows([{ id: 1 }, { id: 2 }], 2);
+
+const payload = res.toStatusResponse&lt;{ id: number }[]&gt;();</code></pre>
+
+<h2 id="related">Related</h2>
+
+<ul>
+  <li><a href="./Request.html" title="Request">Request</a>
+</li><li><a href="./Router.html" title="Router">Router</a>
+</li><li><a href="../runtime/Exception.html" title="Exception">Exception</a>
+</li><li><a href="../runtime/Status.html" title="Status">Status</a>
+</li>
+</ul>
+
+    </div>
+    <nav aria-label="Pagination" class="pager">
+      <a href="./Request.html" title="Request">Previous: Request</a>
+      <a href="./Router.html" title="Router">Next: Router</a>
+    </nav>
+  </div>
+</article>
+<aside class="article-toc">
+  <strong>On this page</strong>
+  <a href="#import" title="Import">Import</a><a href="#when-to-use-it" title="When To Use It">When To Use It</a><a href="#api" title="API">API</a><a href="#constructor" title="Constructor">Constructor</a><a href="#properties" title="Properties">Properties</a><a href="#methods" title="Methods">Methods</a><a href="#example" title="Example">Example</a><a href="#related" title="Related">Related</a>
+</aside>
+</div>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="../../assets/scripts/site.js"></script>
+</body>
+</html>

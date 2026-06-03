@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="Use Reflection when you need structured call-site information and your runtime exposes the V8 stack-trace API." name="description">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Reflection | @stackpress/lib" property="og:title">
+  <meta content="Use Reflection when you need structured call-site information and your runtime exposes the V8 stack-trace API." property="og:description">
+  <meta content="website" property="og:type">
+  <meta content="summary" name="twitter:card">
+  <title>Reflection | @stackpress/lib</title>
+  <link href="../../assets/styles/site.css" rel="stylesheet">
+</head>
+<body>
+  <div class="site-shell">
+    <aside aria-label="Site navigation" class="sidebar">
+      <a class="brand" href="../../index.html" title="@stackpress/lib">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>@stackpress/lib</strong><span>API reference hub</span></span>
+      </a>
+      <section class="sidebar-section">
+  <h2>Pages</h2>
+  <ul class="nav-list">
+    <li><a class="" href="../../index.html" title="Reference Hub">Reference Hub</a></li>
+    <li><a class="" href="../../events.html" title="Events">Events</a></li><li><a class="" href="../../system.html" title="System">System</a></li><li><a class="" href="../../data.html" title="Data">Data</a></li><li><a class="" href="../../routing.html" title="Routing">Routing</a></li><li><a class="" href="../../queue.html" title="Queue">Queue</a></li><li><a class="" href="../../runtime.html" title="Runtime">Runtime</a></li><li><a class="" href="../../types.html" title="Types">Types</a></li>
+  </ul>
+</section>
+
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <a class="topbar-brand" href="../../index.html" title="@stackpress/lib">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span><strong>@stackpress/lib</strong><span>Docs</span></span>
+        </a>
+        <nav aria-label="Top actions" class="top-actions">
+          <button aria-pressed="false" class="theme-toggle" type="button">Dark</button>
+          <a class="button" href="https://github.com/stackpress/lib" title="GitHub">GitHub</a>
+          <a class="button" href="https://www.npmjs.com/package/@stackpress/lib" title="npm">npm</a>
+        </nav>
+        <button aria-controls="mobile-nav" aria-expanded="false" aria-label="Menu" class="mobile-menu" type="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+      <nav aria-label="Mobile pages" class="mobile-nav" id="mobile-nav">
+        <a class="button" href="../../index.html" title="Hub">Hub</a>
+<a class="button" href="../../events.html" title="Events">Events</a>
+<a class="button" href="../../system.html" title="System">System</a>
+<a class="button" href="../../data.html" title="Data">Data</a>
+<a class="button" href="../../routing.html" title="Routing">Routing</a>
+<a class="button" href="../../queue.html" title="Queue">Queue</a>
+<a class="button" href="../../runtime.html" title="Runtime">Runtime</a>
+<a class="button" href="../../types.html" title="Types">Types</a>
+
+      </nav>
+      <div class="article-layout"><article class="page article-main">
+  <div class="page-inner">
+    <p class="eyebrow">API reference</p>
+    <h1>Reflection</h1>
+    <p class="lede">Use Reflection when you need structured call-site information and your runtime exposes the V8 stack-trace API.</p>
+    <div class="article-card markdown-body">
+      <h1 id="reflection">Reflection</h1>
+
+<p>Thin wrapper around V8 <code>CallSite</code>
+ stack frames.</p>
+
+<h2 id="import">Import</h2>
+
+<pre class="code-block"><code class="language-ts">import { Reflection } from '@stackpress/lib';</code></pre>
+
+<h2 id="when-to-use-it">When To Use It</h2>
+
+<p>Use <code>Reflection</code>
+ when you need structured call-site information and your runtime exposes the V8 stack-trace API.</p>
+
+<h2 id="api">API</h2>
+
+<h3 id="static-methods">Static Methods</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Method</th>
+<th>Returns</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>Reflection.stack()</code>
+</td>
+<td><code>Reflection[]</code>
+</td>
+<td>Returns the current stack as <code>Reflection</code>
+ objects. Returns an empty array when the V8 stack-trace hooks are unavailable.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="constructor">Constructor</h3>
+
+<pre class="code-block"><code class="language-ts">const [frame] = Reflection.stack();</code></pre>
+
+<p>The constructor accepts a <code>CallSite</code>
+ object directly, but most callers use <code>Reflection.stack()</code>
+.</p>
+
+<h3 id="properties">Properties</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Name</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>trace</code>
+</td>
+<td>Raw <code>CallSite</code>
+ instance.</td>
+
+    </tr><tr>
+      <td><code>column</code>
+</td>
+<td>Column number.</td>
+
+    </tr><tr>
+      <td><code>evalOrigin</code>
+</td>
+<td>Eval origin string.</td>
+
+    </tr><tr>
+      <td><code>file</code>
+</td>
+<td>File name.</td>
+
+    </tr><tr>
+      <td><code>func</code>
+</td>
+<td>Raw function reference.</td>
+
+    </tr><tr>
+      <td><code>funcName</code>
+</td>
+<td>Function name.</td>
+
+    </tr><tr>
+      <td><code>line</code>
+</td>
+<td>Line number.</td>
+
+    </tr><tr>
+      <td><code>method</code>
+</td>
+<td>Method name.</td>
+
+    </tr><tr>
+      <td><code>promiseIndex</code>
+</td>
+<td>Promise index for async <code>Promise.all()</code>
+ or <code>Promise.any()</code>
+ traces.</td>
+
+    </tr><tr>
+      <td><code>self</code>
+</td>
+<td><code>this</code>
+ value.</td>
+
+    </tr><tr>
+      <td><code>type</code>
+</td>
+<td>Type name.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="methods">Methods</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Method</th>
+<th>Returns</th>
+
+    </tr><tr>
+      <td><code>isAsync()</code>
+</td>
+<td><code>boolean</code>
+</td>
+
+    </tr><tr>
+      <td><code>isConstructor()</code>
+</td>
+<td><code>boolean</code>
+</td>
+
+    </tr><tr>
+      <td><code>isEval()</code>
+</td>
+<td><code>boolean</code>
+</td>
+
+    </tr><tr>
+      <td><code>isNative()</code>
+</td>
+<td><code>boolean</code>
+</td>
+
+    </tr><tr>
+      <td><code>isPromiseAll()</code>
+</td>
+<td><code>boolean</code>
+</td>
+
+    </tr><tr>
+      <td><code>isTopLevel()</code>
+</td>
+<td><code>boolean</code>
+</td>
+
+    </tr><tr>
+      <td><code>toObject()</code>
+</td>
+<td>plain-object snapshot</td>
+
+    </tr>
+  </table>
+</div>
+
+<h2 id="example">Example</h2>
+
+<pre class="code-block"><code class="language-ts">import { Reflection } from '@stackpress/lib';
+
+const stack = Reflection.stack();
+const first = stack[0]?.toObject();</code></pre>
+
+<h2 id="related">Related</h2>
+
+<ul>
+  <li><a href="./Exception.html" title="Exception">Exception</a>
+</li><li><a href="../types/index.html" title="Types">Types</a>
+</li>
+</ul>
+
+    </div>
+    <nav aria-label="Pagination" class="pager">
+      <a href="./Exception.html" title="Exception">Previous: Exception</a>
+      <a href="./Status.html" title="Status">Next: Status</a>
+    </nav>
+  </div>
+</article>
+<aside class="article-toc">
+  <strong>On this page</strong>
+  <a href="#import" title="Import">Import</a><a href="#when-to-use-it" title="When To Use It">When To Use It</a><a href="#api" title="API">API</a><a href="#static-methods" title="Static Methods">Static Methods</a><a href="#constructor" title="Constructor">Constructor</a><a href="#properties" title="Properties">Properties</a><a href="#methods" title="Methods">Methods</a><a href="#example" title="Example">Example</a><a href="#related" title="Related">Related</a>
+</aside>
+</div>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="../../assets/scripts/site.js"></script>
+</body>
+</html>

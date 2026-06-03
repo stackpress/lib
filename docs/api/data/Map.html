@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="Use DataMap when you want native Map semantics with collection helpers. Use ReadonlyMap when a consumer should not mutate the store. Use map() when you want a callable ge" name="description">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Map | @stackpress/lib" property="og:title">
+  <meta content="Use DataMap when you want native Map semantics with collection helpers. Use ReadonlyMap when a consumer should not mutate the store. Use map() when you want a callable ge" property="og:description">
+  <meta content="website" property="og:type">
+  <meta content="summary" name="twitter:card">
+  <title>Map | @stackpress/lib</title>
+  <link href="../../assets/styles/site.css" rel="stylesheet">
+</head>
+<body>
+  <div class="site-shell">
+    <aside aria-label="Site navigation" class="sidebar">
+      <a class="brand" href="../../index.html" title="@stackpress/lib">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>@stackpress/lib</strong><span>API reference hub</span></span>
+      </a>
+      <section class="sidebar-section">
+  <h2>Pages</h2>
+  <ul class="nav-list">
+    <li><a class="" href="../../index.html" title="Reference Hub">Reference Hub</a></li>
+    <li><a class="" href="../../events.html" title="Events">Events</a></li><li><a class="" href="../../system.html" title="System">System</a></li><li><a class="" href="../../data.html" title="Data">Data</a></li><li><a class="" href="../../routing.html" title="Routing">Routing</a></li><li><a class="" href="../../queue.html" title="Queue">Queue</a></li><li><a class="" href="../../runtime.html" title="Runtime">Runtime</a></li><li><a class="" href="../../types.html" title="Types">Types</a></li>
+  </ul>
+</section>
+
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <a class="topbar-brand" href="../../index.html" title="@stackpress/lib">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span><strong>@stackpress/lib</strong><span>Docs</span></span>
+        </a>
+        <nav aria-label="Top actions" class="top-actions">
+          <button aria-pressed="false" class="theme-toggle" type="button">Dark</button>
+          <a class="button" href="https://github.com/stackpress/lib" title="GitHub">GitHub</a>
+          <a class="button" href="https://www.npmjs.com/package/@stackpress/lib" title="npm">npm</a>
+        </nav>
+        <button aria-controls="mobile-nav" aria-expanded="false" aria-label="Menu" class="mobile-menu" type="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+      <nav aria-label="Mobile pages" class="mobile-nav" id="mobile-nav">
+        <a class="button" href="../../index.html" title="Hub">Hub</a>
+<a class="button" href="../../events.html" title="Events">Events</a>
+<a class="button" href="../../system.html" title="System">System</a>
+<a class="button" href="../../data.html" title="Data">Data</a>
+<a class="button" href="../../routing.html" title="Routing">Routing</a>
+<a class="button" href="../../queue.html" title="Queue">Queue</a>
+<a class="button" href="../../runtime.html" title="Runtime">Runtime</a>
+<a class="button" href="../../types.html" title="Types">Types</a>
+
+      </nav>
+      <div class="article-layout"><article class="page article-main">
+  <div class="page-inner">
+    <p class="eyebrow">API reference</p>
+    <h1>Map</h1>
+    <p class="lede">Use DataMap when you want native Map semantics with collection helpers. Use ReadonlyMap when a consumer should not mutate the store. Use map() when you want a callable ge</p>
+    <div class="article-card markdown-body">
+      <h1 id="map">Map</h1>
+
+<p>Extended <code>Map</code>
+ utilities plus callable and readonly wrappers.</p>
+
+<h2 id="import">Import</h2>
+
+<pre class="code-block"><code class="language-ts">import { DataMap, ReadonlyMap, map } from '@stackpress/lib';</code></pre>
+
+<h2 id="when-to-use-it">When To Use It</h2>
+
+<p>Use <code>DataMap</code>
+ when you want native <code>Map</code>
+ semantics with collection helpers. Use <code>ReadonlyMap</code>
+ when a consumer should not mutate the store. Use <code>map()</code>
+ when you want a callable getter plus <code>Map</code>
+ methods on one value.</p>
+
+<h2 id="api">API</h2>
+
+<h3 id="constructor">Constructor</h3>
+
+<pre class="code-block"><code class="language-ts">const users = new DataMap&lt;string, number&gt;([
+  ['ada', 1],
+  ['grace', 2]
+]);</code></pre>
+
+<p><code>ReadonlyMap</code>
+ takes the same entry-array shape.</p>
+
+<h3 id="datamap-methods">DataMap Methods</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Method</th>
+<th>Returns</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>filter(callback)</code>
+</td>
+<td>new <code>DataMap</code>
+ subclass</td>
+<td>Filters entries by value and key.</td>
+
+    </tr><tr>
+      <td><code>find(callback)</code>
+</td>
+<td>`[K, V] \</td>
+<td>undefined`</td>
+<td>First matching entry.</td>
+
+    </tr><tr>
+      <td><code>findKey(callback)</code>
+</td>
+<td>`K \</td>
+<td>undefined`</td>
+<td>First matching key.</td>
+
+    </tr><tr>
+      <td><code>findValue(callback)</code>
+</td>
+<td>`V \</td>
+<td>undefined`</td>
+<td>First matching value.</td>
+
+    </tr><tr>
+      <td><code>first()</code>
+</td>
+<td>`V \</td>
+<td>undefined`</td>
+<td>Alias for <code>index(0)</code>
+.</td>
+
+    </tr><tr>
+      <td><code>index(index)</code>
+</td>
+<td>`V \</td>
+<td>undefined`</td>
+<td>Value by insertion order.</td>
+
+    </tr><tr>
+      <td><code>last()</code>
+</td>
+<td>`V \</td>
+<td>undefined`</td>
+<td>Value at <code>size - 1</code>
+.</td>
+
+    </tr><tr>
+      <td><code>map(callback)</code>
+</td>
+<td>new <code>DataMap&lt;K, T&gt;</code>
+</td>
+<td>Maps values while preserving keys.</td>
+
+    </tr><tr>
+      <td><code>toArray()</code>
+</td>
+<td><code>V[]</code>
+</td>
+<td>Values only.</td>
+
+    </tr><tr>
+      <td><code>toObject()</code>
+</td>
+<td><code>Record&lt;string, V&gt;</code>
+</td>
+<td>Converts entries to a plain object.</td>
+
+    </tr><tr>
+      <td><code>toString(replacer?, space?)</code>
+</td>
+<td><code>string</code>
+</td>
+<td>JSON string of <code>toObject()</code>
+.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="readonlymap-methods">ReadonlyMap Methods</h3>
+
+<p><code>ReadonlyMap</code>
+ exposes read and transform helpers over an internal <code>DataMap</code>
+:</p>
+
+<ul>
+  <li><code>entries()</code>
+</li><li><code>filter(callback)</code>
+</li><li><code>find(callback)</code>
+</li><li><code>findKey(callback)</code>
+</li><li><code>findValue(callback)</code>
+</li><li><code>forEach(iterator)</code>
+</li><li><code>get(key)</code>
+</li><li><code>has(key)</code>
+</li><li><code>keys()</code>
+</li><li><code>map(callback)</code>
+</li><li><code>size</code>
+</li><li><code>toObject()</code>
+</li><li><code>toString(replacer?, space?)</code>
+</li><li><code>values()</code>
+</li>
+</ul>
+
+<h3 id="callable-helper">Callable Helper</h3>
+
+<pre class="code-block"><code class="language-ts">const headers = map&lt;string, string&gt;();
+
+headers.set('content-type', 'application/json');
+headers('content-type');
+headers.get('content-type');</code></pre>
+
+<p><code>map(data?)</code>
+ returns a callable <code>CallableMap&lt;K, V&gt;</code>
+. It supports normal <code>DataMap</code>
+ methods and a getter function signature.</p>
+
+<h2 id="example">Example</h2>
+
+<pre class="code-block"><code class="language-ts">import { DataMap } from '@stackpress/lib';
+
+const scores = new DataMap&lt;string, number&gt;();
+scores.set('one', 1);
+scores.set('two', 2);
+scores.set('three', 3);
+
+const passing = scores.filter(value =&gt; value &gt;= 2);
+const first = scores.first();
+const serialized = scores.toString();</code></pre>
+
+<h2 id="related">Related</h2>
+
+<ul>
+  <li><a href="./Set.html" title="Set">Set</a>
+</li><li><a href="./Nest.html" title="Nest">Nest</a>
+</li><li><a href="../types/index.html" title="Types">Types</a>
+</li>
+</ul>
+
+    </div>
+    <nav aria-label="Pagination" class="pager">
+      <a href="./Cookie.html" title="cookie">Previous: cookie</a>
+      <a href="./Nest.html" title="Nest">Next: Nest</a>
+    </nav>
+  </div>
+</article>
+<aside class="article-toc">
+  <strong>On this page</strong>
+  <a href="#import" title="Import">Import</a><a href="#when-to-use-it" title="When To Use It">When To Use It</a><a href="#api" title="API">API</a><a href="#constructor" title="Constructor">Constructor</a><a href="#datamap-methods" title="DataMap Methods">DataMap Methods</a><a href="#readonlymap-methods" title="ReadonlyMap Methods">ReadonlyMap Methods</a><a href="#callable-helper" title="Callable Helper">Callable Helper</a><a href="#example" title="Example">Example</a><a href="#related" title="Related">Related</a>
+</aside>
+</div>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="../../assets/scripts/site.js"></script>
+</body>
+</html>

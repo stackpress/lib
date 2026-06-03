@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="Use RouteEmitter when your events are method-plus-path routes but you do not need the full Request and Response wrappers from Router." name="description">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="RouteEmitter | @stackpress/lib" property="og:title">
+  <meta content="Use RouteEmitter when your events are method-plus-path routes but you do not need the full Request and Response wrappers from Router." property="og:description">
+  <meta content="website" property="og:type">
+  <meta content="summary" name="twitter:card">
+  <title>RouteEmitter | @stackpress/lib</title>
+  <link href="../../assets/styles/site.css" rel="stylesheet">
+</head>
+<body>
+  <div class="site-shell">
+    <aside aria-label="Site navigation" class="sidebar">
+      <a class="brand" href="../../index.html" title="@stackpress/lib">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>@stackpress/lib</strong><span>API reference hub</span></span>
+      </a>
+      <section class="sidebar-section">
+  <h2>Pages</h2>
+  <ul class="nav-list">
+    <li><a class="" href="../../index.html" title="Reference Hub">Reference Hub</a></li>
+    <li><a class="" href="../../events.html" title="Events">Events</a></li><li><a class="" href="../../system.html" title="System">System</a></li><li><a class="" href="../../data.html" title="Data">Data</a></li><li><a class="" href="../../routing.html" title="Routing">Routing</a></li><li><a class="" href="../../queue.html" title="Queue">Queue</a></li><li><a class="" href="../../runtime.html" title="Runtime">Runtime</a></li><li><a class="" href="../../types.html" title="Types">Types</a></li>
+  </ul>
+</section>
+
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <a class="topbar-brand" href="../../index.html" title="@stackpress/lib">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span><strong>@stackpress/lib</strong><span>Docs</span></span>
+        </a>
+        <nav aria-label="Top actions" class="top-actions">
+          <button aria-pressed="false" class="theme-toggle" type="button">Dark</button>
+          <a class="button" href="https://github.com/stackpress/lib" title="GitHub">GitHub</a>
+          <a class="button" href="https://www.npmjs.com/package/@stackpress/lib" title="npm">npm</a>
+        </nav>
+        <button aria-controls="mobile-nav" aria-expanded="false" aria-label="Menu" class="mobile-menu" type="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+      <nav aria-label="Mobile pages" class="mobile-nav" id="mobile-nav">
+        <a class="button" href="../../index.html" title="Hub">Hub</a>
+<a class="button" href="../../events.html" title="Events">Events</a>
+<a class="button" href="../../system.html" title="System">System</a>
+<a class="button" href="../../data.html" title="Data">Data</a>
+<a class="button" href="../../routing.html" title="Routing">Routing</a>
+<a class="button" href="../../queue.html" title="Queue">Queue</a>
+<a class="button" href="../../runtime.html" title="Runtime">Runtime</a>
+<a class="button" href="../../types.html" title="Types">Types</a>
+
+      </nav>
+      <div class="article-layout"><article class="page article-main">
+  <div class="page-inner">
+    <p class="eyebrow">API reference</p>
+    <h1>RouteEmitter</h1>
+    <p class="lede">Use RouteEmitter when your events are method-plus-path routes but you do not need the full Request and Response wrappers from Router.</p>
+    <div class="article-card markdown-body">
+      <h1 id="routeemitter">RouteEmitter</h1>
+
+<p>HTTP-style route emitter built on <code>ExpressEmitter</code>
+.</p>
+
+<h2 id="import">Import</h2>
+
+<pre class="code-block"><code class="language-ts">import { RouteEmitter } from '@stackpress/lib';</code></pre>
+
+<h2 id="when-to-use-it">When To Use It</h2>
+
+<p>Use <code>RouteEmitter</code>
+ when your events are method-plus-path routes but you do not need the full <code>Request</code>
+ and <code>Response</code>
+ wrappers from <code>Router</code>
+.</p>
+
+<h2 id="api">API</h2>
+
+<h3 id="constructor">Constructor</h3>
+
+<pre class="code-block"><code class="language-ts">const emitter = new RouteEmitter();</code></pre>
+
+<h3 id="properties">Properties</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>routes</code>
+</td>
+<td><code>Map&lt;string, Route&gt;</code>
+</td>
+<td>Maps generated event keys back to <code>{ method, path }</code>
+.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="methods">Methods</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Method</th>
+<th>Returns</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>route(method, path, action, priority = 0)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Registers a route listener.</td>
+
+    </tr><tr>
+      <td><code>use(emitter)</code>
+</td>
+<td><code>this</code>
+</td>
+<td>Merges listeners, patterns, and route metadata from another <code>RouteEmitter</code>
+.</td>
+
+    </tr>
+  </table>
+</div>
+
+<p>Routes support exact paths, <code>:params</code>
+, <code><em></code>
+, <code></em>
+*</code>
+, and the special <code>ANY</code>
+ method.</p>
+
+<h2 id="example">Example</h2>
+
+<pre class="code-block"><code class="language-ts">import { RouteEmitter } from '@stackpress/lib';
+
+const emitter = new RouteEmitter();
+
+emitter.route('GET', '/users/:id', async (req, res) =&gt; {
+  console.log(req, res);
+});</code></pre>
+
+<h2 id="related">Related</h2>
+
+<ul>
+  <li><a href="./ExpressEmitter.html" title="ExpressEmitter">ExpressEmitter</a>
+</li><li><a href="../router/Router.html" title="Router">Router</a>
+</li>
+</ul>
+
+    </div>
+    <nav aria-label="Pagination" class="pager">
+      <a href="./ExpressEmitter.html" title="ExpressEmitter">Previous: ExpressEmitter</a>
+      <a href="../system/FileLoader.html" title="FileLoader">Next: FileLoader</a>
+    </nav>
+  </div>
+</article>
+<aside class="article-toc">
+  <strong>On this page</strong>
+  <a href="#import" title="Import">Import</a><a href="#when-to-use-it" title="When To Use It">When To Use It</a><a href="#api" title="API">API</a><a href="#constructor" title="Constructor">Constructor</a><a href="#properties" title="Properties">Properties</a><a href="#methods" title="Methods">Methods</a><a href="#example" title="Example">Example</a><a href="#related" title="Related">Related</a>
+</aside>
+</div>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="../../assets/scripts/site.js"></script>
+</body>
+</html>

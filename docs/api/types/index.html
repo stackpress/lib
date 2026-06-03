@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="Public type families exported from @stackpress/lib/types. ## Import ``ts import type { CallableMap, CallableNest, CallableSet, CookieOptions, ErrorResponse, Event, EventD" name="description">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Types | @stackpress/lib" property="og:title">
+  <meta content="Public type families exported from @stackpress/lib/types. ## Import ``ts import type { CallableMap, CallableNest, CallableSet, CookieOptions, ErrorResponse, Event, EventD" property="og:description">
+  <meta content="website" property="og:type">
+  <meta content="summary" name="twitter:card">
+  <title>Types | @stackpress/lib</title>
+  <link href="../../assets/styles/site.css" rel="stylesheet">
+</head>
+<body>
+  <div class="site-shell">
+    <aside aria-label="Site navigation" class="sidebar">
+      <a class="brand" href="../../index.html" title="@stackpress/lib">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>@stackpress/lib</strong><span>API reference hub</span></span>
+      </a>
+      <section class="sidebar-section">
+  <h2>Pages</h2>
+  <ul class="nav-list">
+    <li><a class="" href="../../index.html" title="Reference Hub">Reference Hub</a></li>
+    <li><a class="" href="../../events.html" title="Events">Events</a></li><li><a class="" href="../../system.html" title="System">System</a></li><li><a class="" href="../../data.html" title="Data">Data</a></li><li><a class="" href="../../routing.html" title="Routing">Routing</a></li><li><a class="" href="../../queue.html" title="Queue">Queue</a></li><li><a class="" href="../../runtime.html" title="Runtime">Runtime</a></li><li><a class="" href="../../types.html" title="Types">Types</a></li>
+  </ul>
+</section>
+
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <a class="topbar-brand" href="../../index.html" title="@stackpress/lib">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span><strong>@stackpress/lib</strong><span>Docs</span></span>
+        </a>
+        <nav aria-label="Top actions" class="top-actions">
+          <button aria-pressed="false" class="theme-toggle" type="button">Dark</button>
+          <a class="button" href="https://github.com/stackpress/lib" title="GitHub">GitHub</a>
+          <a class="button" href="https://www.npmjs.com/package/@stackpress/lib" title="npm">npm</a>
+        </nav>
+        <button aria-controls="mobile-nav" aria-expanded="false" aria-label="Menu" class="mobile-menu" type="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+      <nav aria-label="Mobile pages" class="mobile-nav" id="mobile-nav">
+        <a class="button" href="../../index.html" title="Hub">Hub</a>
+<a class="button" href="../../events.html" title="Events">Events</a>
+<a class="button" href="../../system.html" title="System">System</a>
+<a class="button" href="../../data.html" title="Data">Data</a>
+<a class="button" href="../../routing.html" title="Routing">Routing</a>
+<a class="button" href="../../queue.html" title="Queue">Queue</a>
+<a class="button" href="../../runtime.html" title="Runtime">Runtime</a>
+<a class="button" href="../../types.html" title="Types">Types</a>
+
+      </nav>
+      <div class="article-layout"><article class="page article-main">
+  <div class="page-inner">
+    <p class="eyebrow">API reference</p>
+    <h1>Types</h1>
+    <p class="lede">Public type families exported from @stackpress/lib/types. ## Import ``ts import type { CallableMap, CallableNest, CallableSet, CookieOptions, ErrorResponse, Event, EventD</p>
+    <div class="article-card markdown-body">
+      <h1 id="types">Types</h1>
+
+<p>Public type families exported from <code>@stackpress/lib/types</code>
+.</p>
+
+<h2 id="import">Import</h2>
+
+<pre class="code-block"><code class="language-ts">import type {
+  CallableMap,
+  CallableNest,
+  CallableSet,
+  CookieOptions,
+  ErrorResponse,
+  Event,
+  EventData,
+  EventHook,
+  EventMap,
+  EventMatch,
+  FileSystem,
+  NestedObject,
+  RequestOptions,
+  ResponseOptions,
+  ResponseStatus,
+  Route,
+  RouteAction,
+  RouteMap,
+  RouterAction,
+  RouterMap,
+  StatusResponse,
+  SuccessResponse,
+  TemplateOptions,
+  TerminalInputConfig,
+  TypeOf
+} from '@stackpress/lib/types';</code></pre>
+
+<p>Use <code>@stackpress/lib/types</code>
+ when you want a dedicated import path for the public type surface. Many of these types are also re-exported from the root barrel, but the <code>types</code>
+ subpath is the clearest stable reference point.</p>
+
+<h2 id="data-types">Data Types</h2>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Type</th>
+<th>Purpose</th>
+
+    </tr><tr>
+      <td><code>TypeOf&lt;T&gt;</code>
+</td>
+<td>Normalizes primitive generic reads.</td>
+
+    </tr><tr>
+      <td><code>Key</code>
+</td>
+<td>`string</td>
+<td>number` path segments.</td>
+
+    </tr><tr>
+      <td><code>NestedObject&lt;V&gt;</code>
+</td>
+<td>Nested object tree.</td>
+
+    </tr><tr>
+      <td><code>UnknownNest</code>
+</td>
+<td><code>NestedObject&lt;unknown&gt;</code>
+.</td>
+
+    </tr><tr>
+      <td><code>Scalar</code>
+</td>
+<td>`string</td>
+<td>number</td>
+<td>boolean</td>
+<td>null`.</td>
+
+    </tr><tr>
+      <td><code>Hash</code>
+</td>
+<td>Nested scalar-only object.</td>
+
+    </tr><tr>
+      <td><code>ScalarInput</code>
+</td>
+<td>Scalar, scalar array, or hash.</td>
+
+    </tr><tr>
+      <td><code>CallableNest&lt;M&gt;</code>
+</td>
+<td>Callable wrapper returned by <code>nest()</code>
+.</td>
+
+    </tr><tr>
+      <td><code>CallableMap&lt;K, V&gt;</code>
+</td>
+<td>Callable wrapper returned by <code>map()</code>
+.</td>
+
+    </tr><tr>
+      <td><code>CallableSet&lt;V&gt;</code>
+</td>
+<td>Callable wrapper returned by <code>set()</code>
+.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h2 id="status-and-error-types">Status And Error Types</h2>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Type</th>
+<th>Purpose</th>
+
+    </tr><tr>
+      <td><code>ResponseStatus</code>
+</td>
+<td><code>{ code, status }</code>
+.</td>
+
+    </tr><tr>
+      <td><code>ErrorResponse</code>
+</td>
+<td>Error status payload with <code>error</code>
+, <code>errors</code>
+, <code>stack</code>
+, and optional position fields.</td>
+
+    </tr><tr>
+      <td><code>SuccessResponse&lt;T&gt;</code>
+</td>
+<td>Success payload with <code>results</code>
+ and <code>total</code>
+.</td>
+
+    </tr><tr>
+      <td><code>StatusResponse&lt;T&gt;</code>
+</td>
+<td>Partial combination of error and success fields.</td>
+
+    </tr><tr>
+      <td><code>Trace</code>
+</td>
+<td>Parsed stack frame metadata.</td>
+
+    </tr><tr>
+      <td><code>CookieOptions</code>
+</td>
+<td>Cookie serialization options.</td>
+
+    </tr><tr>
+      <td><code>CookieParseOptions</code>
+</td>
+<td>Cookie parse options.</td>
+
+    </tr><tr>
+      <td><code>CookieSerializeOptions</code>
+</td>
+<td>Cookie serialize options.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h2 id="queue-and-event-types">Queue And Event Types</h2>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Type</th>
+<th>Purpose</th>
+
+    </tr><tr>
+      <td><code>Item&lt;I&gt;</code>
+</td>
+<td>Priority queue item.</td>
+
+    </tr><tr>
+      <td><code>TaskResult</code>
+</td>
+<td>Allowed task return shape.</td>
+
+    </tr><tr>
+      <td><code>TaskAction&lt;A&gt;</code>
+</td>
+<td>Async or sync queue task signature.</td>
+
+    </tr><tr>
+      <td><code>TaskItem&lt;A&gt;</code>
+</td>
+<td>Queue item wrapping a task.</td>
+
+    </tr><tr>
+      <td><code>EventMap</code>
+</td>
+<td>Event-name to argument-tuple map.</td>
+
+    </tr><tr>
+      <td><code>EventName&lt;M&gt;</code>
+</td>
+<td>Event-name key type.</td>
+
+    </tr><tr>
+      <td><code>EventData</code>
+</td>
+<td>Extracted args and params.</td>
+
+    </tr><tr>
+      <td><code>EventMatch</code>
+</td>
+<td>Match metadata.</td>
+
+    </tr><tr>
+      <td><code>Event&lt;A&gt;</code>
+</td>
+<td>Current event plus action and args.</td>
+
+    </tr><tr>
+      <td><code>EventHook&lt;A&gt;</code>
+</td>
+<td>Hook signature for emitter before/after callbacks.</td>
+
+    </tr><tr>
+      <td><code>EventExpression</code>
+</td>
+<td>Stored expression metadata.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h2 id="router-types">Router Types</h2>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Type</th>
+<th>Purpose</th>
+
+    </tr><tr>
+      <td><code>Body</code>
+</td>
+<td>Allowed request/response body types.</td>
+
+    </tr><tr>
+      <td><code>ResponseDispatcher&lt;S&gt;</code>
+</td>
+<td>Native response adapter signature.</td>
+
+    </tr><tr>
+      <td><code>ResponseOptions&lt;S&gt;</code>
+</td>
+<td>Response constructor options.</td>
+
+    </tr><tr>
+      <td><code>Headers</code>
+</td>
+<td>Plain-object header map.</td>
+
+    </tr><tr>
+      <td><code>Data</code>
+</td>
+<td>Request data input shape.</td>
+
+    </tr><tr>
+      <td><code>Query</code>
+</td>
+<td>Query input shape.</td>
+
+    </tr><tr>
+      <td><code>Session</code>
+</td>
+<td>Session input shape.</td>
+
+    </tr><tr>
+      <td><code>Post</code>
+</td>
+<td>Post-body input shape.</td>
+
+    </tr><tr>
+      <td><code>LoaderResults</code>
+</td>
+<td>Return shape for <code>RequestLoader</code>
+.</td>
+
+    </tr><tr>
+      <td><code>RequestLoader&lt;R&gt;</code>
+</td>
+<td>Request body loader signature.</td>
+
+    </tr><tr>
+      <td><code>CallableSession</code>
+</td>
+<td>Callable wrapper returned by <code>session()</code>
+.</td>
+
+    </tr><tr>
+      <td><code>RequestOptions&lt;R&gt;</code>
+</td>
+<td>Request constructor options.</td>
+
+    </tr><tr>
+      <td><code>Revision</code>
+</td>
+<td>Pending session write instruction.</td>
+
+    </tr><tr>
+      <td><code>Method</code>
+</td>
+<td>Allowed request method names.</td>
+
+    </tr><tr>
+      <td><code>Route</code>
+</td>
+<td><code>{ method, path }</code>
+.</td>
+
+    </tr><tr>
+      <td><code>RouteMap&lt;R, S&gt;</code>
+</td>
+<td>Event map for route emitters.</td>
+
+    </tr><tr>
+      <td><code>RouteAction&lt;R, S&gt;</code>
+</td>
+<td>Route emitter action signature.</td>
+
+    </tr><tr>
+      <td><code>RouterContext&lt;R, S, X&gt;</code>
+</td>
+<td>Handler context type.</td>
+
+    </tr><tr>
+      <td><code>RouterArgs&lt;R, S, X&gt;</code>
+</td>
+<td>Router handler tuple.</td>
+
+    </tr><tr>
+      <td><code>RouterMap&lt;R, S, X&gt;</code>
+</td>
+<td>Event map for routers.</td>
+
+    </tr><tr>
+      <td><code>RouterAction&lt;R, S, X&gt;</code>
+</td>
+<td>Router handler signature.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h2 id="filesystem-types">Filesystem Types</h2>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Type</th>
+<th>Purpose</th>
+
+    </tr><tr>
+      <td><code>FileRecursiveOption</code>
+</td>
+<td>Recursive mkdir option.</td>
+
+    </tr><tr>
+      <td><code>FileStat</code>
+</td>
+<td>Minimal stat interface.</td>
+
+    </tr><tr>
+      <td><code>FileStream</code>
+</td>
+<td>Minimal readable-stream interface.</td>
+
+    </tr><tr>
+      <td><code>FileSystem</code>
+</td>
+<td>Filesystem contract consumed by <code>FileLoader</code>
+.</td>
+
+    </tr><tr>
+      <td><code>CallSite</code>
+</td>
+<td>V8 stack-frame interface used by <code>Reflection</code>
+.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h2 id="terminal-and-template-types">Terminal And Template Types</h2>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Type</th>
+<th>Purpose</th>
+
+    </tr><tr>
+      <td><code>TerminalInputTheme</code>
+</td>
+<td>Prompt theme options.</td>
+
+    </tr><tr>
+      <td><code>TerminalInputConfig</code>
+</td>
+<td>Prompt configuration.</td>
+
+    </tr><tr>
+      <td><code>TerminalInputContext</code>
+</td>
+<td>Prompt I/O context.</td>
+
+    </tr><tr>
+      <td><code>TerminalTTYInput</code>
+</td>
+<td>Input stream contract.</td>
+
+    </tr><tr>
+      <td><code>TerminalTTYOutput</code>
+</td>
+<td>Output stream contract.</td>
+
+    </tr><tr>
+      <td><code>TerminalPromptState</code>
+</td>
+<td>Prompt render state.</td>
+
+    </tr><tr>
+      <td><code>TemplateHelperOptions</code>
+</td>
+<td>Helper execution context.</td>
+
+    </tr><tr>
+      <td><code>TemplateHelper</code>
+</td>
+<td>Template helper signature.</td>
+
+    </tr><tr>
+      <td><code>TemplateResolver</code>
+</td>
+<td>Value resolver signature.</td>
+
+    </tr><tr>
+      <td><code>TemplateOptions</code>
+</td>
+<td><code>TemplateEngine</code>
+ configuration.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h2 id="related">Related</h2>
+
+<ul>
+  <li><a href="../data/Nest.html" title="Nest">Nest</a>
+</li><li><a href="../router/Router.html" title="Router">Router</a>
+</li><li><a href="../runtime/Template.html" title="Template">Template</a>
+</li><li><a href="../runtime/Terminal.html" title="Terminal">Terminal</a>
+</li>
+</ul>
+
+    </div>
+    <nav aria-label="Pagination" class="pager">
+      <a href="../runtime/Terminal.html" title="Terminal">Previous: Terminal</a>
+      <span></span>
+    </nav>
+  </div>
+</article>
+<aside class="article-toc">
+  <strong>On this page</strong>
+  <a href="#import" title="Import">Import</a><a href="#data-types" title="Data Types">Data Types</a><a href="#status-and-error-types" title="Status And Error Types">Status And Error Types</a><a href="#queue-and-event-types" title="Queue And Event Types">Queue And Event Types</a><a href="#router-types" title="Router Types">Router Types</a><a href="#filesystem-types" title="Filesystem Types">Filesystem Types</a><a href="#terminal-and-template-types" title="Terminal And Template Types">Terminal And Template Types</a><a href="#related" title="Related">Related</a>
+</aside>
+</div>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="../../assets/scripts/site.js"></script>
+</body>
+</html>

@@ -230,7 +230,10 @@
     "build:tsc:esm": "tsc -p ./tsconfig.esm.json",
     "test": "yarn test:env nyc ts-mocha -r tsx tests/*.test.ts",
     "test:env": "NODE_OPTIONS=\"--disable-warning=ExperimentalWarning --experimental-loader @istanbuljs/esm-loader-hook\"",
-    "report": "nyc report -r lcov"
+    "report": "nyc report -r lcov",
+    "www:build": "yarn build:tsc:esm && node www/build.mjs",
+    "www:serve": "node www/serve.mjs",
+    "www:check": "node www/check.mjs"
   },
   "dependencies": {},
   "devDependencies": {

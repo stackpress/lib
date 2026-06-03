@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>@stackpress/lib Docs Wireframes - Round 1</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #111111;
+      --muted: #5f5f5f;
+      --line: #cfcfcf;
+      --line-dark: #9c9c9c;
+      --paper: #ffffff;
+      --wash: #f4f4f4;
+      --wash-2: #e8e8e8;
+      --wash-3: #d9d9d9;
+      --shadow: 0 1px 0 #d7d7d7;
+      --radius: 6px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.45;
+      padding-top: 34px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      border: 1px solid var(--line-dark);
+      border-radius: var(--radius);
+      background: var(--paper);
+      color: var(--ink);
+      cursor: pointer;
+      font: inherit;
+      min-height: 38px;
+      padding: 8px 12px;
+    }
+
+    button[aria-pressed="true"] {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .wireframe-note {
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 13px;
+      left: 0;
+      padding: 8px 18px;
+      position: fixed;
+      right: 0;
+      text-align: center;
+      top: 0;
+      z-index: 10;
+    }
+
+    .shell {
+      display: block;
+      min-height: calc(100vh - 34px);
+    }
+
+    .sidebar {
+      background: var(--paper);
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      bottom: 0;
+      left: 0;
+      padding: 20px 18px;
+      position: fixed;
+      top: 34px;
+      width: 280px;
+      z-index: 4;
+    }
+
+    .brand {
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      gap: 10px;
+      padding-bottom: 18px;
+    }
+
+    .brand-mark {
+      align-items: center;
+      border: 2px solid var(--ink);
+      display: flex;
+      font-weight: 700;
+      height: 36px;
+      justify-content: center;
+      width: 36px;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 15px;
+    }
+
+    .brand span {
+      color: var(--muted);
+      display: block;
+      font-size: 12px;
+    }
+
+    .screen-switcher,
+    .sidebar-section {
+      border-bottom: 1px solid var(--line);
+      padding: 18px 0;
+    }
+
+    .screen-switcher {
+      display: grid;
+      gap: 8px;
+    }
+
+    .sidebar h2,
+    .sidebar h3 {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+      margin: 0 0 10px;
+      text-transform: uppercase;
+    }
+
+    .nav-list {
+      display: grid;
+      gap: 4px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-list a {
+      border-radius: var(--radius);
+      display: block;
+      font-size: 14px;
+      padding: 8px;
+    }
+
+    .nav-list a.primary {
+      background: var(--wash);
+      border: 1px solid var(--line);
+      font-weight: 700;
+    }
+
+    .content {
+      margin-left: 280px;
+      min-width: 0;
+    }
+
+    .topbar {
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      gap: 12px;
+      min-height: 66px;
+      padding: 14px 28px;
+      position: sticky;
+      top: 34px;
+      background: var(--paper);
+      z-index: 2;
+    }
+
+    .topbar-brand {
+      align-items: center;
+      display: none;
+      gap: 8px;
+      min-width: 172px;
+    }
+
+    .topbar-brand strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.1;
+    }
+
+    .topbar-brand span {
+      color: var(--muted);
+      display: block;
+      font-size: 11px;
+      line-height: 1.1;
+    }
+
+    .mobile-menu {
+      display: none;
+      margin-left: auto;
+    }
+
+    .mobile-menu span {
+      background: var(--ink);
+      display: block;
+      height: 2px;
+      width: 18px;
+    }
+
+    .mobile-review-nav {
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      display: none;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 16px;
+    }
+
+    .mobile-review-nav.open {
+      display: flex;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .page {
+      display: none;
+      padding: 36px 36px 72px;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .page-inner {
+      margin: 0 auto;
+      max-width: 1180px;
+    }
+
+    .eyebrow {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 42px;
+      line-height: 1.05;
+      margin: 0;
+      max-width: 760px;
+    }
+
+    .lede {
+      color: var(--muted);
+      font-size: 18px;
+      margin: 18px 0 0;
+      max-width: 760px;
+    }
+
+    .hero-grid {
+      display: grid;
+      gap: 22px;
+      grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr);
+      margin-top: 32px;
+    }
+
+    .panel,
+    .lane,
+    .doc-card,
+    .article-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .panel {
+      padding: 20px;
+    }
+
+    .code-block {
+      background: var(--wash);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 0;
+      overflow: auto;
+      padding: 16px;
+      white-space: pre;
+    }
+
+    .quick-links {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .quick-links a {
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      display: flex;
+      justify-content: space-between;
+      min-height: 46px;
+      padding: 10px 12px;
+    }
+
+    .section {
+      margin-top: 44px;
+    }
+
+    .section-head {
+      align-items: end;
+      display: flex;
+      gap: 18px;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .section h2 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      margin: 4px 0 0;
+      max-width: 620px;
+    }
+
+    .lane-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lane {
+      display: flex;
+      flex-direction: column;
+      min-height: 236px;
+      padding: 16px;
+    }
+
+    .lane-kicker {
+      align-items: center;
+      display: flex;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .lane-icon {
+      border: 1px solid var(--line-dark);
+      border-radius: 4px;
+      height: 28px;
+      width: 28px;
+    }
+
+    .lane h3 {
+      font-size: 20px;
+      margin: 0 0 8px;
+    }
+
+    .lane p {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .lane ul {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 16px 0 0;
+      padding-left: 18px;
+    }
+
+    .lane a {
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: auto;
+      padding-top: 12px;
+    }
+
+    .doc-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .doc-card {
+      min-height: 126px;
+      padding: 16px;
+    }
+
+    .doc-card h3 {
+      font-size: 17px;
+      margin: 0 0 8px;
+    }
+
+    .doc-card p {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .article-layout {
+      display: grid;
+      gap: 26px;
+      grid-template-columns: minmax(0, 1fr) 240px;
+    }
+
+    .article-main {
+      min-width: 0;
+    }
+
+    .article-toc {
+      border-left: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+      padding-left: 18px;
+      position: sticky;
+      top: 104px;
+      align-self: start;
+    }
+
+    .article-toc a {
+      display: block;
+      margin: 8px 0;
+    }
+
+    .article-card {
+      margin-top: 20px;
+      padding: 18px;
+    }
+
+    .article-card h2 {
+      font-size: 22px;
+      margin: 0 0 12px;
+    }
+
+    .table-wire {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .table-row {
+      display: grid;
+      grid-template-columns: 160px 150px minmax(0, 1fr);
+    }
+
+    .table-row span {
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      min-height: 42px;
+      padding: 10px;
+    }
+
+    .table-row span:last-child {
+      border-right: 0;
+    }
+
+    .table-row:last-child span {
+      border-bottom: 0;
+    }
+
+    .mobile-drawer {
+      border: 1px solid var(--line-dark);
+      border-radius: var(--radius);
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      min-height: 650px;
+      overflow: hidden;
+    }
+
+    .drawer-panel {
+      background: var(--wash);
+      border-right: 1px solid var(--line);
+      padding: 18px;
+    }
+
+    .drawer-scrim {
+      align-items: center;
+      background: repeating-linear-gradient(
+        45deg,
+        var(--wash-2),
+        var(--wash-2) 10px,
+        var(--wash-3) 10px,
+        var(--wash-3) 20px
+      );
+      color: var(--muted);
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .meta-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .meta-list div {
+      background: var(--wash);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      min-height: 38px;
+      padding: 9px 10px;
+    }
+
+    @media (max-width: 980px) {
+      .shell {
+        display: block;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .content {
+        margin-left: 0;
+      }
+
+      .mobile-menu {
+        align-items: center;
+        display: inline-flex;
+        flex-direction: column;
+        gap: 4px;
+        justify-content: center;
+        padding: 8px;
+        width: 42px;
+      }
+
+      .topbar-brand {
+        display: flex;
+      }
+
+      .topbar {
+        padding: 12px 16px;
+      }
+
+      .top-actions {
+        display: none;
+      }
+
+      .mobile-review-nav {
+        display: none;
+      }
+
+      .page {
+        padding: 24px 16px 56px;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+
+      .hero-grid,
+      .article-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .article-toc {
+        border-left: 0;
+        border-top: 1px solid var(--line);
+        padding: 16px 0 0;
+        position: static;
+      }
+
+      .lane-grid,
+      .doc-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .mobile-drawer {
+        grid-template-columns: minmax(220px, 82%) minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wireframe-note">Round 1 grayscale wireframe for @stackpress/lib docs. Layout and hierarchy only; no final color, type, imagery, or production code decisions.</div>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Wireframe navigation">
+      <div class="brand">
+        <div class="brand-mark">S</div>
+        <div>
+          <strong>@stackpress/lib</strong>
+          <span>API reference hub</span>
+        </div>
+      </div>
+
+      <section class="screen-switcher" aria-label="Screens">
+        <h2>Wireframe Screens</h2>
+        <button type="button" data-screen="home" aria-pressed="true">Reference Hub</button>
+        <button type="button" data-screen="category" aria-pressed="false">Focused Category</button>
+        <button type="button" data-screen="article" aria-pressed="false">API Article</button>
+        <button type="button" data-screen="mobile" aria-pressed="false">Mobile Nav State</button>
+      </section>
+
+      <section class="sidebar-section">
+        <h3>Primary Lanes</h3>
+        <ul class="nav-list">
+          <li><a class="primary" href="#events">Events</a></li>
+          <li><a class="primary" href="#system">System</a></li>
+          <li><a class="primary" href="#data">Data</a></li>
+          <li><a class="primary" href="#routing">Routing</a></li>
+        </ul>
+      </section>
+
+      <section class="sidebar-section">
+        <h3>Secondary APIs</h3>
+        <ul class="nav-list">
+          <li><a href="#queue">Queue</a></li>
+          <li><a href="#runtime">Runtime</a></li>
+          <li><a href="#types">Types</a></li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div class="topbar-brand" aria-label="@stackpress/lib">
+          <div class="brand-mark">S</div>
+          <div>
+            <strong>@stackpress/lib</strong>
+            <span>Docs</span>
+          </div>
+        </div>
+        <nav class="top-actions" aria-label="Top actions">
+          <button type="button">GitHub</button>
+          <button type="button">Package</button>
+        </nav>
+        <button class="mobile-menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-review-nav">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+      <nav id="mobile-review-nav" class="mobile-review-nav" aria-label="Mobile wireframe screens">
+        <button type="button" data-screen="home" aria-pressed="true">Reference Hub</button>
+        <button type="button" data-screen="category" aria-pressed="false">Focused Category</button>
+        <button type="button" data-screen="article" aria-pressed="false">API Article</button>
+        <button type="button" data-screen="mobile" aria-pressed="false">Mobile Nav State</button>
+      </nav>
+
+      <section id="home" class="page active">
+        <div class="page-inner">
+          <p class="eyebrow">Reference hub</p>
+          <h1>Low-level Stackpress primitives, grouped by the jobs experienced developers reach for first.</h1>
+          <p class="lede">Fast paths into events, file loading, nested data, and route-aware request handling. Everything else remains one click away as API reference.</p>
+
+          <div class="hero-grid">
+            <div class="panel">
+              <pre class="code-block">import {
+  EventEmitter,
+  FileLoader,
+  Nest,
+  Router
+} from '@stackpress/lib';</pre>
+            </div>
+            <aside class="panel">
+              <strong>Start by problem area</strong>
+              <div class="quick-links">
+                <a href="#events"><span>Coordinate async event flows</span><span>Events</span></a>
+                <a href="#system"><span>Load files and modules</span><span>System</span></a>
+                <a href="#data"><span>Parse and traverse nested payloads</span><span>Data</span></a>
+                <a href="#routing"><span>Resolve typed request handlers</span><span>Routing</span></a>
+              </div>
+            </aside>
+          </div>
+
+          <section class="section">
+            <div class="section-head">
+              <div>
+                <h2>Primary API lanes</h2>
+                <p>These get first-screen priority because they describe the library’s practical center of gravity.</p>
+              </div>
+              <button type="button">View all APIs</button>
+            </div>
+            <div class="lane-grid">
+              <article id="events" class="lane">
+                <div class="lane-kicker"><span class="lane-icon"></span> Events</div>
+                <h3>EventEmitter, ExpressEmitter, RouteEmitter</h3>
+                <p>Priority-aware async listeners, route-style matching, and queue-backed execution.</p>
+                <ul>
+                  <li>before and after hooks</li>
+                  <li>status results</li>
+                  <li>pattern matching</li>
+                </ul>
+                <a href="#article">Open EventEmitter reference</a>
+              </article>
+              <article id="system" class="lane">
+                <div class="lane-kicker"><span class="lane-icon"></span> System</div>
+                <h3>FileLoader, NodeFS</h3>
+                <p>Filesystem abstraction and module loading utilities for runtime boundaries.</p>
+                <ul>
+                  <li>absolute and relative paths</li>
+                  <li>module resolution</li>
+                  <li>Node-backed file operations</li>
+                </ul>
+                <a href="#category">Open system references</a>
+              </article>
+              <article id="data" class="lane">
+                <div class="lane-kicker"><span class="lane-icon"></span> Data</div>
+                <h3>Nest, Map, Set, parsers, cookies</h3>
+                <p>Nested object access, readonly wrappers, callable stores, and payload parsers.</p>
+                <ul>
+                  <li>query and form parsing</li>
+                  <li>dot-path helpers</li>
+                  <li>typed stores</li>
+                </ul>
+                <a href="#category">Open data references</a>
+              </article>
+              <article id="routing" class="lane">
+                <div class="lane-kicker"><span class="lane-icon"></span> Routing</div>
+                <h3>Router, Request, Response, Session</h3>
+                <p>Request and response wrappers around route-aware event resolution.</p>
+                <ul>
+                  <li>method and path matching</li>
+                  <li>typed wrappers</li>
+                  <li>response status handling</li>
+                </ul>
+                <a href="#category">Open router references</a>
+              </article>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-head">
+              <div>
+                <h2>Secondary API index</h2>
+                <p>Kept visible, but lower priority than the four main primitive families.</p>
+              </div>
+            </div>
+            <div class="doc-grid">
+              <article id="queue" class="doc-card">
+                <h3>Queue</h3>
+                <p>ItemQueue and TaskQueue references for ordered work execution.</p>
+              </article>
+              <article id="runtime" class="doc-card">
+                <h3>Runtime</h3>
+                <p>Exception, Reflection, Status, Template, and terminal helpers.</p>
+              </article>
+              <article id="types" class="doc-card">
+                <h3>Types</h3>
+                <p>Public type families from @stackpress/lib/types.</p>
+              </article>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="category" class="page">
+        <div class="page-inner">
+          <p class="eyebrow">Focused category page</p>
+          <h1>Data primitives</h1>
+          <p class="lede">A category page should help experienced users choose the right primitive without forcing them through tutorial copy.</p>
+
+          <div class="section">
+            <div class="section-head">
+              <div>
+                <h2>Choose by shape</h2>
+                <p>This page pattern repeats for Events, System, Data, and Routing.</p>
+              </div>
+            </div>
+            <div class="doc-grid">
+              <article class="doc-card">
+                <h3>Nest</h3>
+                <p>Nested object store with path helpers, parsers, and typed builder behavior.</p>
+              </article>
+              <article class="doc-card">
+                <h3>Map</h3>
+                <p>Map helpers and readonly wrappers for key/value access.</p>
+              </article>
+              <article class="doc-card">
+                <h3>Set</h3>
+                <p>Set helpers and readonly wrappers for collection access.</p>
+              </article>
+              <article class="doc-card">
+                <h3>Parsers</h3>
+                <p>Query, args, JSON, and form payload conversion utilities.</p>
+              </article>
+              <article class="doc-card">
+                <h3>Cookie</h3>
+                <p>Cookie helpers with parsing and serialization behavior.</p>
+              </article>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="article-card">
+              <h2>Category comparison table</h2>
+              <div class="table-wire">
+                <div class="table-row"><span>Primitive</span><span>Use when</span><span>Primary docs path</span></div>
+                <div class="table-row"><span>Nest</span><span>nested objects</span><span>constructor, methods, path helpers, callable helper</span></div>
+                <div class="table-row"><span>Parsers</span><span>payload input</span><span>query, args, JSON, form data conversion</span></div>
+                <div class="table-row"><span>Cookie</span><span>headers</span><span>parse, serialize, options</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="article" class="page">
+        <div class="page-inner article-layout">
+          <article class="article-main">
+            <p class="eyebrow">API article</p>
+            <h1>EventEmitter</h1>
+            <p class="lede">Article pages should stay calm and highly scannable: import first, when-to-use next, API tables, example, related references.</p>
+
+            <section class="article-card">
+              <h2>Import</h2>
+              <pre class="code-block">import { EventEmitter } from '@stackpress/lib';</pre>
+            </section>
+
+            <section class="article-card">
+              <h2>When to use it</h2>
+              <p>Use this area for a concise decision rule, not a tutorial. Experienced users should know whether they are in the right place within a few seconds.</p>
+            </section>
+
+            <section class="article-card">
+              <h2>API</h2>
+              <div class="table-wire">
+                <div class="table-row"><span>Method</span><span>Returns</span><span>Notes</span></div>
+                <div class="table-row"><span>emit()</span><span>Promise status</span><span>Executes matching listeners in queue order.</span></div>
+                <div class="table-row"><span>on()</span><span>this</span><span>Adds a priority-aware listener.</span></div>
+                <div class="table-row"><span>use()</span><span>this</span><span>Merges listeners from another emitter.</span></div>
+              </div>
+            </section>
+
+            <section class="article-card">
+              <h2>Example</h2>
+              <pre class="code-block">const emitter = new EventEmitter();
+
+emitter.on('saved', async id => {
+  console.log('saved', id);
+}, 10);
+
+await emitter.emit('saved', 'abc123');</pre>
+            </section>
+
+            <section class="article-card">
+              <h2>Related</h2>
+              <div class="quick-links">
+                <a href="#category"><span>ExpressEmitter</span><span>Events</span></a>
+                <a href="#category"><span>RouteEmitter</span><span>Events</span></a>
+                <a href="#home"><span>TaskQueue</span><span>Queue</span></a>
+              </div>
+            </section>
+          </article>
+          <aside class="article-toc">
+            <strong>On this page</strong>
+            <a href="#article">Import</a>
+            <a href="#article">When to use it</a>
+            <a href="#article">API</a>
+            <a href="#article">Example</a>
+            <a href="#article">Related</a>
+          </aside>
+        </div>
+      </section>
+
+      <section id="mobile" class="page">
+        <div class="page-inner">
+          <p class="eyebrow">Mobile navigation state</p>
+          <h1>Drawer-first navigation keeps the dense API map accessible on small screens.</h1>
+          <p class="lede">The mobile state should prioritize search and the four primary lanes before exposing the full API tree.</p>
+
+          <div class="section mobile-drawer">
+            <aside class="drawer-panel">
+              <div class="brand">
+                <div class="brand-mark">S</div>
+                <div>
+                  <strong>@stackpress/lib</strong>
+                  <span>Docs</span>
+                </div>
+              </div>
+              <div class="meta-list">
+                <div>Search symbols</div>
+                <div>Events</div>
+                <div>System</div>
+                <div>Data</div>
+                <div>Routing</div>
+                <div>All APIs</div>
+                <div>GitHub</div>
+              </div>
+            </aside>
+            <div class="drawer-scrim">
+              Current page is dimmed behind the navigation drawer.
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const buttons = Array.from(document.querySelectorAll('[data-screen]'));
+    const pages = Array.from(document.querySelectorAll('.page'));
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const mobileReviewNav = document.querySelector('#mobile-review-nav');
+
+    function showScreen(id) {
+      buttons.forEach(button => {
+        button.setAttribute('aria-pressed', String(button.dataset.screen === id));
+      });
+      pages.forEach(page => {
+        page.classList.toggle('active', page.id === id);
+      });
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => showScreen(button.dataset.screen));
+    });
+
+    mobileMenu.addEventListener('click', () => {
+      const isOpen = mobileReviewNav.classList.toggle('open');
+      mobileMenu.setAttribute('aria-expanded', String(isOpen));
+    });
+  </script>
+</body>
+</html>

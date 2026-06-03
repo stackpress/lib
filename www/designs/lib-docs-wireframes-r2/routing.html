@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Routing Wireframe</title><link rel="stylesheet" href="./styles.css"></head>
+<body>
+  <div class="wireframe-note">Round 2 full grayscale wireframe set. Routing category page.</div>
+  <div class="shell">
+    <aside class="sidebar"><div class="brand"><div class="brand-mark">S</div><div><strong>@stackpress/lib</strong><span>API reference hub</span></div></div><section class="sidebar-section"><h2>Pages</h2><ul class="nav-list"><li><a href="./index.html">Reference Hub</a></li><li><a href="./events.html">Events</a></li><li><a href="./system.html">System</a></li><li><a href="./data.html">Data</a></li><li><a class="active" href="./routing.html">Routing</a></li><li><a href="./api-reference.html">API Article</a></li><li><a href="./mobile-nav.html">Mobile Nav State</a></li></ul></section></aside>
+    <main class="content">
+      <header class="topbar"><div class="topbar-brand"><div class="brand-mark">S</div><div><strong>@stackpress/lib</strong><span>Docs</span></div></div><nav class="top-actions"><a class="button" href="#">GitHub</a><a class="button" href="#">Package</a></nav><button class="mobile-menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-review-nav"><span></span><span></span><span></span></button></header>
+      <nav id="mobile-review-nav" class="mobile-review-nav"><a class="button" href="./index.html">Hub</a><a class="button" href="./events.html">Events</a><a class="button" href="./system.html">System</a><a class="button" href="./data.html">Data</a><a class="button" href="./routing.html">Routing</a><a class="button" href="./api-reference.html">Article</a></nav>
+      <section class="page"><div class="page-inner">
+        <p class="eyebrow">Focused category</p><h1>Routing</h1><p class="lede">Route-aware request handling primitives built around typed request and response wrappers.</p>
+        <section class="section"><div class="section-head"><div><h2>Choose by routing job</h2><p>Routing pages should make relationships obvious: Router owns composition, wrappers own request/response/session shape.</p></div></div><div class="doc-grid">
+          <article class="doc-card"><h3>Router</h3><p>Route registration, resolve behavior, event composition, and status responses.</p></article>
+          <article class="doc-card"><h3>Request</h3><p>Typed request wrapper with params, query, body, headers, and data helpers.</p></article>
+          <article class="doc-card"><h3>Response</h3><p>Typed response wrapper for status, body, headers, redirects, and results.</p></article>
+          <article class="doc-card"><h3>Session</h3><p>Session helper used by routing surfaces and request/response flows.</p></article>
+        </div></section>
+        <section class="section article-card"><h2>Comparison table</h2><div class="table-wire"><div class="table-row"><span>Primitive</span><span>Use when</span><span>Reference sections</span></div><div class="table-row"><span>Router</span><span>resolve route</span><span>constructor, route patterns, resolve overloads, example</span></div><div class="table-row"><span>Request</span><span>read input</span><span>properties, params, query, body helpers</span></div><div class="table-row"><span>Response</span><span>write output</span><span>status, headers, body, result helpers</span></div></div></section>
+      </div></section>
+    </main>
+  </div><script src="./script.js"></script>
+</body>
+</html>

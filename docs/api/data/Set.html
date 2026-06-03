@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="Use DataSet when you want Set uniqueness with indexed read helpers and transformation methods. Use ReadonlySet when you want read-only access. Use set() when a callable i" name="description">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Set | @stackpress/lib" property="og:title">
+  <meta content="Use DataSet when you want Set uniqueness with indexed read helpers and transformation methods. Use ReadonlySet when you want read-only access. Use set() when a callable i" property="og:description">
+  <meta content="website" property="og:type">
+  <meta content="summary" name="twitter:card">
+  <title>Set | @stackpress/lib</title>
+  <link href="../../assets/styles/site.css" rel="stylesheet">
+</head>
+<body>
+  <div class="site-shell">
+    <aside aria-label="Site navigation" class="sidebar">
+      <a class="brand" href="../../index.html" title="@stackpress/lib">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>@stackpress/lib</strong><span>API reference hub</span></span>
+      </a>
+      <section class="sidebar-section">
+  <h2>Pages</h2>
+  <ul class="nav-list">
+    <li><a class="" href="../../index.html" title="Reference Hub">Reference Hub</a></li>
+    <li><a class="" href="../../events.html" title="Events">Events</a></li><li><a class="" href="../../system.html" title="System">System</a></li><li><a class="" href="../../data.html" title="Data">Data</a></li><li><a class="" href="../../routing.html" title="Routing">Routing</a></li><li><a class="" href="../../queue.html" title="Queue">Queue</a></li><li><a class="" href="../../runtime.html" title="Runtime">Runtime</a></li><li><a class="" href="../../types.html" title="Types">Types</a></li>
+  </ul>
+</section>
+
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <a class="topbar-brand" href="../../index.html" title="@stackpress/lib">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span><strong>@stackpress/lib</strong><span>Docs</span></span>
+        </a>
+        <nav aria-label="Top actions" class="top-actions">
+          <button aria-pressed="false" class="theme-toggle" type="button">Dark</button>
+          <a class="button" href="https://github.com/stackpress/lib" title="GitHub">GitHub</a>
+          <a class="button" href="https://www.npmjs.com/package/@stackpress/lib" title="npm">npm</a>
+        </nav>
+        <button aria-controls="mobile-nav" aria-expanded="false" aria-label="Menu" class="mobile-menu" type="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+      <nav aria-label="Mobile pages" class="mobile-nav" id="mobile-nav">
+        <a class="button" href="../../index.html" title="Hub">Hub</a>
+<a class="button" href="../../events.html" title="Events">Events</a>
+<a class="button" href="../../system.html" title="System">System</a>
+<a class="button" href="../../data.html" title="Data">Data</a>
+<a class="button" href="../../routing.html" title="Routing">Routing</a>
+<a class="button" href="../../queue.html" title="Queue">Queue</a>
+<a class="button" href="../../runtime.html" title="Runtime">Runtime</a>
+<a class="button" href="../../types.html" title="Types">Types</a>
+
+      </nav>
+      <div class="article-layout"><article class="page article-main">
+  <div class="page-inner">
+    <p class="eyebrow">API reference</p>
+    <h1>Set</h1>
+    <p class="lede">Use DataSet when you want Set uniqueness with indexed read helpers and transformation methods. Use ReadonlySet when you want read-only access. Use set() when a callable i</p>
+    <div class="article-card markdown-body">
+      <h1 id="set">Set</h1>
+
+<p>Extended <code>Set</code>
+ utilities plus callable and readonly wrappers.</p>
+
+<h2 id="import">Import</h2>
+
+<pre class="code-block"><code class="language-ts">import { DataSet, ReadonlySet, set } from '@stackpress/lib';</code></pre>
+
+<h2 id="when-to-use-it">When To Use It</h2>
+
+<p>Use <code>DataSet</code>
+ when you want <code>Set</code>
+ uniqueness with indexed read helpers and transformation methods. Use <code>ReadonlySet</code>
+ when you want read-only access. Use <code>set()</code>
+ when a callable index-based getter is convenient.</p>
+
+<h2 id="api">API</h2>
+
+<h3 id="constructor">Constructor</h3>
+
+<pre class="code-block"><code class="language-ts">const tags = new DataSet&lt;string&gt;(['api', 'router', 'queue']);</code></pre>
+
+<p><code>ReadonlySet</code>
+ accepts the same initial array.</p>
+
+<h3 id="dataset-methods">DataSet Methods</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr>
+      <th>Method</th>
+<th>Returns</th>
+<th>Notes</th>
+
+    </tr><tr>
+      <td><code>filter(callback)</code>
+</td>
+<td>new <code>DataSet</code>
+ subclass</td>
+<td>Filters values by value and insertion index.</td>
+
+    </tr><tr>
+      <td><code>find(callback)</code>
+</td>
+<td>`[number, V] \</td>
+<td>undefined`</td>
+<td>First matching <code>[index, value]</code>
+.</td>
+
+    </tr><tr>
+      <td><code>findIndex(callback)</code>
+</td>
+<td><code>number</code>
+</td>
+<td>Returns <code>-1</code>
+ when no value matches.</td>
+
+    </tr><tr>
+      <td><code>findValue(callback)</code>
+</td>
+<td>`V \</td>
+<td>undefined`</td>
+<td>First matching value.</td>
+
+    </tr><tr>
+      <td><code>first()</code>
+</td>
+<td>`V \</td>
+<td>undefined`</td>
+<td>Alias for <code>index(0)</code>
+.</td>
+
+    </tr><tr>
+      <td><code>index(index)</code>
+</td>
+<td>`V \</td>
+<td>undefined`</td>
+<td>Value by insertion order.</td>
+
+    </tr><tr>
+      <td><code>last()</code>
+</td>
+<td>`V \</td>
+<td>undefined`</td>
+<td>Value at <code>size - 1</code>
+.</td>
+
+    </tr><tr>
+      <td><code>map(callback)</code>
+</td>
+<td>new <code>DataSet&lt;T&gt;</code>
+</td>
+<td>Maps each value into a new set.</td>
+
+    </tr><tr>
+      <td><code>toArray()</code>
+</td>
+<td><code>V[]</code>
+</td>
+<td>Array snapshot.</td>
+
+    </tr><tr>
+      <td><code>toString(replacer?, space?)</code>
+</td>
+<td><code>string</code>
+</td>
+<td>JSON string of <code>toArray()</code>
+.</td>
+
+    </tr>
+  </table>
+</div>
+
+<h3 id="readonlyset-methods">ReadonlySet Methods</h3>
+
+<p><code>ReadonlySet</code>
+ exposes the read side of the collection:</p>
+
+<ul>
+  <li><code>entries()</code>
+</li><li><code>filter(callback)</code>
+</li><li><code>find(callback)</code>
+</li><li><code>findIndex(callback)</code>
+</li><li><code>findValue(callback)</code>
+</li><li><code>forEach(iterator)</code>
+</li><li><code>has(value)</code>
+</li><li><code>index(index)</code>
+</li><li><code>keys()</code>
+</li><li><code>map(callback)</code>
+</li><li><code>size</code>
+</li><li><code>toArray()</code>
+</li><li><code>toString(replacer?, space?)</code>
+</li><li><code>values()</code>
+</li>
+</ul>
+
+<h3 id="callable-helper">Callable Helper</h3>
+
+<pre class="code-block"><code class="language-ts">const queue = set(['first', 'second']);
+
+queue(0);
+queue.index(1);
+queue.add('third');</code></pre>
+
+<p><code>set(data?)</code>
+ returns a <code>CallableSet&lt;V&gt;</code>
+ with the <code>DataSet</code>
+ method surface plus a function signature for indexed reads.</p>
+
+<h2 id="example">Example</h2>
+
+<pre class="code-block"><code class="language-ts">import { DataSet } from '@stackpress/lib';
+
+const flags = new DataSet&lt;number&gt;();
+flags.add(1);
+flags.add(2);
+flags.add(3);
+
+const doubled = flags.map(value =&gt; value * 2);
+const second = flags.index(1);
+const found = flags.findValue(value =&gt; value === 3);</code></pre>
+
+<h2 id="related">Related</h2>
+
+<ul>
+  <li><a href="./Map.html" title="Map">Map</a>
+</li><li><a href="./Nest.html" title="Nest">Nest</a>
+</li><li><a href="../types/index.html" title="Types">Types</a>
+</li>
+</ul>
+
+    </div>
+    <nav aria-label="Pagination" class="pager">
+      <a href="./Parsers.html" title="Parsers">Previous: Parsers</a>
+      <a href="../router/Request.html" title="Request">Next: Request</a>
+    </nav>
+  </div>
+</article>
+<aside class="article-toc">
+  <strong>On this page</strong>
+  <a href="#import" title="Import">Import</a><a href="#when-to-use-it" title="When To Use It">When To Use It</a><a href="#api" title="API">API</a><a href="#constructor" title="Constructor">Constructor</a><a href="#dataset-methods" title="DataSet Methods">DataSet Methods</a><a href="#readonlyset-methods" title="ReadonlySet Methods">ReadonlySet Methods</a><a href="#callable-helper" title="Callable Helper">Callable Helper</a><a href="#example" title="Example">Example</a><a href="#related" title="Related">Related</a>
+</aside>
+</div>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="../../assets/scripts/site.js"></script>
+</body>
+</html>
